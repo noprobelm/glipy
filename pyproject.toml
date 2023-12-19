@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "terminal-cellular-automaton"
+version = "0.1.0"
+description = ""
+authors = ["noprobelm <noprobelm@protonmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+rich = "^13.7.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+'tca' = 'terminal-cellular-automaton.__main__:main'
