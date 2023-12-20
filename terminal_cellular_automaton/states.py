@@ -5,22 +5,56 @@ from .matrix import Matrix2D
 
 
 class CellState:
+    """Top level class for a CellState
+
+    All cell state subclasses should derive themselves from this one.
+
+    Methods:
+        change_state: Defines how a cell should behave.
+    """
+
     def change_state(self, neighbors: list[Coordinate], matrix: Matrix2D):
         pass
 
 
 class ConwayState(CellState):
-    def __init__(self, colors: Tuple[str, ...], alive: bool):
+    """A ConwayState
+
+    This will emulate the classic rules to "Conway's Game of Life"
+
+    - If a cell is ALIVE and is adjacent to 2 or 3 other cells that are also ALIVE, the cell will become DEAD
+    - If a cell is DEAD and is adjacent to exactly 3 other cells that are ALIVE, the cell will become ALIVE
+
+    Attributes:
+        colors (Tuple[str, str]): A tuple of colors (see Textualize's documentation for 'rich' for accepted values).
+                                      The first index is the color for ALIVE states. 2nd is DEAD
+        alive (bool): Flag for whether the cell is ALIVE (True) or DEAD (False)
+    """
+
+    def __init__(self, colors: Tuple[str, str], alive: bool):
+        """Initializes an instance of the ConwayState class
+
+        Args
+            colors (Tuple[str, str]): A tuple of colors (see Textualize's documentation for 'rich' for accepted values).
+                                      The first index is the color for ALIVE states. 2nd is DEAD
+            alive (bool): Flag for whether the cell is ALIVE (True) or DEAD (False)
+        """
         self.colors = colors
         self.alive = alive
 
     @property
-    def color(self):
+    def color(self) -> str:
         if self.alive is True:
             return self.colors[0]
         return self.colors[1]
 
-    def change_state(self, neighbors: list[Coordinate], matrix: Matrix2D):
+    def change_state(self, neighbors: list[Coordinate], matrix: Matrix2D) -> None:
+        """Changes the state of the cell
+
+        - If a cell is ALIVE and is adjacent to 2 or 3 other cells that are also ALIVE, the cell will become DEAD
+        - If a cell is DEAD and is adjacent to exactly 3 other cells that are ALIVE, the cell will become ALIVE
+
+        """
         alive_count = 0
         for nc in neighbors:
             n = matrix[nc]
