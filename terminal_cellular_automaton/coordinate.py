@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 
-@dataclass(eq=True, order=True, frozen=True, slots=True)
+@dataclass(frozen=True, slots=True)
 class Coordinate:
     """An x/y coordinate to reference location in a CellMatrix"""
 
