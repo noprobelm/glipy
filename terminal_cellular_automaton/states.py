@@ -1,18 +1,19 @@
-from typing import Protocol
+from typing import Protocol, Tuple
 
 from .coordinate import Coordinate
 from .matrix import CellMatrix
 
 
 class CellState(Protocol):
-    color: str
+    colors: Tuple[str, str]
 
-    def change_state(self, matrix: CellMatrix):
+    def change_state(self, neighbors: list[Coordinate], matrix: CellMatrix):
         pass
 
 
 class ConwayState:
-    def __init__(self, alive: bool):
+    def __init__(self, colors: Tuple[str, str], alive: bool):
+        self.colors = colors
         self.alive = alive
 
     @property
