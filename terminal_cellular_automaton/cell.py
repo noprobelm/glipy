@@ -22,7 +22,7 @@ class Cell(Protocol):
 
 
 class MooreCell:
-    """A cell that references memebrs of a MooreNeighborhood
+    """A cell that references members of a MooreNeighborhood
 
     +---+---+---+
     | 1 | 2 | 3 |
