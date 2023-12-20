@@ -1,4 +1,4 @@
-"""Main entrypoint for running the falling sand simulation"""
+"""Main entrypoint for running a simulation"""
 
 from . import scenarios
 from .args import args
