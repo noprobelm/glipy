@@ -18,7 +18,7 @@ usage: `tca [-r REFRESH_RATE] [-d DURATION] [-x] [-n] [-s SCENARIO]`
 
 ## Creating your own game
 - Select a `Cell` type from the `cell` module (or make your own; it must adhere to the `Cell` protocol)
-- Select a `CellState` type from the `states` module (or make your own; it must adhere to the `CellState` protocol)
+- Select a `CellState` type from the `states` module (or make your own; it should derive itself from the `CellState` class)
 - Create a new scenario in the `scenarios` module following the existing boilerplate code
 - Run the sim!
 
