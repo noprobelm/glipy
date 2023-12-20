@@ -15,4 +15,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-'tca' = 'terminal-cellular-automaton.__main__:main'
+'tca' = 'terminal_cellular_automaton.__main__:main'

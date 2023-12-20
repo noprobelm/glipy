@@ -32,6 +32,24 @@ class Simulation:
 
         self.matrix = CellMatrix(xmax, ymax)
 
+    @property
+    def xmax(self):
+        return self.matrix.max_coord.x
+
+    @property
+    def ymax(self):
+        return self.matrix.max_coord.y
+
+    def spawn(self, element) -> None:
+        """Spawns an element at a given x/y coordinate
+
+        Args:
+            element (ElementType): An 'ElementType' type
+            coord (Coordinate): The coordinate to spawn the element at
+        """
+
+        self.matrix[element.coord] = element
+
     def start(
         self,
         refresh_rate: int = 0,
@@ -115,15 +133,5 @@ class Simulation:
         for y in range(self.matrix.max_coord.y + 1):
             row = self.matrix.max_coord.y - y
             for x in range(self.matrix.max_coord.x + 1):
-                cell = self.matrix[row][x]
+                cell = self.matrix[Coordinate(x, row)]
                 cell.change_state(self.matrix)
-
-    def spawn(self, element, coord: Coordinate) -> None:
-        """Spawns an element at a given x/y coordinate
-
-        Args:
-            element (ElementType): An 'ElementType' type
-            coord (Coordinate): The coordinate to spawn the element at
-        """
-
-        self.matrix[coord.y][coord.x] = element(coord)
