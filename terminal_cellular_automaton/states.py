@@ -1,13 +1,13 @@
 from typing import Protocol, Tuple
 
 from .coordinate import Coordinate
-from .matrix import CellMatrix
+from .matrix import Matrix2D
 
 
 class CellState(Protocol):
     colors: Tuple[str, str]
 
-    def change_state(self, neighbors: list[Coordinate], matrix: CellMatrix):
+    def change_state(self, neighbors: list[Coordinate], matrix: Matrix2D):
         pass
 
 
@@ -18,11 +18,11 @@ class ConwayState:
 
     @property
     def color(self):
-        if self.alive == True:
-            return "green"
-        return "red"
+        if self.alive is True:
+            return self.colors[0]
+        return self.colors[1]
 
-    def change_state(self, neighbors: list[Coordinate], matrix: CellMatrix):
+    def change_state(self, neighbors: list[Coordinate], matrix: Matrix2D):
         alive_count = 0
         for nc in neighbors:
             n = matrix[nc]

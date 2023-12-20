@@ -1,9 +1,8 @@
 from __future__ import annotations
 
 from typing import Protocol
-
 from .coordinate import Coordinate, MooreNeighborhood
-from .matrix import CellMatrix
+from .matrix import Matrix2D
 from .states import CellState
 
 
@@ -14,7 +13,7 @@ class Cell(Protocol):
 
 
 class MooreCell:
-    def __init__(self, coordinate: Coordinate, state: CellState, matrix: CellMatrix):
+    def __init__(self, coordinate: Coordinate, state: CellState, matrix: Matrix2D):
         self.coord = coordinate
         self.state = state
         self.neighbors = []
