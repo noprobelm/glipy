@@ -39,5 +39,6 @@ parser.add_argument(
     help="Disables simulation rendering to the terminal",
 )
 
+parser.add_argument("-s", "--scenario", default="CONWAY_2")
 
 args = vars(parser.parse_args())

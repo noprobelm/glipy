@@ -6,7 +6,8 @@ from .args import args
 
 def main() -> None:
     """Main entrypoint for running a simulation on default settings"""
-    sim = scenarios.CONWAY_2
+    sim = getattr(scenarios, args["scenario"])
+    del args["scenario"]
     sim.start(**args)
 
 
