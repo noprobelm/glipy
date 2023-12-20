@@ -6,7 +6,7 @@ from .args import args
 
 def main() -> None:
     """Main entrypoint for running a simulation on default settings"""
-    sim = getattr(scenarios, args["scenario"])
+    sim = getattr(scenarios, args["scenario"].upper())
     del args["scenario"]
     sim.start(**args)
 
