@@ -6,6 +6,7 @@ from typing import Optional, Union
 from rich.console import Console
 from rich.live import Live
 
+from .cell import Cell, CellState
 from .coordinate import Coordinate
 from .matrix import CellMatrix
 
@@ -40,7 +41,7 @@ class Simulation:
     def ymax(self):
         return self.matrix.max_coord.y
 
-    def spawn(self, element) -> None:
+    def spawn(self, cell: CellState) -> None:
         """Spawns an element at a given x/y coordinate
 
         Args:
@@ -48,7 +49,7 @@ class Simulation:
             coord (Coordinate): The coordinate to spawn the element at
         """
 
-        self.matrix[element.coord] = element
+        self.matrix[cell.coord] = cell
 
     def start(
         self,
@@ -134,4 +135,4 @@ class Simulation:
             row = self.matrix.max_coord.y - y
             for x in range(self.matrix.max_coord.x + 1):
                 cell = self.matrix[Coordinate(x, row)]
-                cell.change_state(self.matrix)
+                cell.state.change_state(cell.neighbors, self.matrix)

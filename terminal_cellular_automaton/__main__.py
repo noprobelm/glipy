@@ -1,13 +1,13 @@
 """Main entrypoint for running the falling sand simulation"""
 
+from . import scenarios
 from .args import args
 from .simulation import Simulation
-from . import scenarios
 
 
 def main() -> None:
     """Main entrypoint for running a simulation on default settings"""
-    sim = scenarios.MOORE_NBHD_2
+    sim = scenarios.CONWAY_1
     sim.start(**args)
 
 

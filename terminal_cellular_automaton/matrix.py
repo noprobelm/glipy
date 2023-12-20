@@ -2,13 +2,14 @@
 
 """Hosts the CellMatrix class used to run the simulation"""
 
+from random import randint
+from typing import Any
+
 from rich.console import Console, ConsoleOptions, RenderResult
 from rich.segment import Segment
 from rich.style import Style
 
 from .coordinate import Coordinate
-from random import randint
-from .cell import MooreCellState
 
 
 class CellMatrix:
@@ -52,9 +53,9 @@ class CellMatrix:
         else:
             raise TypeError("Index must be a Coordinate instance")
 
-    def __setitem__(self, coord: Coordinate, value):
+    def __setitem__(self, coord: Coordinate, item: Any):
         if isinstance(coord, Coordinate):
-            self.matrix[coord.y][coord.x] = value
+            self.matrix[coord.y][coord.x] = item
         else:
             raise TypeError("Index must be a Coordinate instance")
 
@@ -72,7 +73,7 @@ class CellMatrix:
         """
         for y in range(self.max_coord.y)[::2]:
             for x in range(self.max_coord.x + 1):
-                bg = self.matrix[y][x].state.value
-                fg = self.matrix[y + 1][x].state.value
+                bg = self.matrix[y][x].state.color
+                fg = self.matrix[y + 1][x].state.color
                 yield Segment("▄", Style(color=fg, bgcolor=bg))
             yield Segment.line()
