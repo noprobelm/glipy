@@ -1,13 +1,7 @@
-#!/usr/bin/env python3
-
-"""The coordinate system used by the CellMatrix simulation
-
-Includes the Neighbors namedtuple, which is used in the cell and cell_state modules
-"""
+"""The coordinate system used by the Matrix2D class"""
 
 from __future__ import annotations
 
-from collections import namedtuple
 from dataclasses import dataclass
 from enum import Enum
 
