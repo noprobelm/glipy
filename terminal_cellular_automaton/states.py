@@ -1,23 +1,15 @@
-from typing import Protocol, Tuple
+from typing import Tuple
 
 from .coordinate import Coordinate
 from .matrix import Matrix2D
 
 
-class CellState(Protocol):
-    """Protocol definition for a CellState.
-
-    A CellState must have:
-        1. colors (Tuple[str, str]): The color the cell will render
-    """
-
-    colors: Tuple[str, ...]
-
+class CellState:
     def change_state(self, neighbors: list[Coordinate], matrix: Matrix2D):
         pass
 
 
-class ConwayState:
+class ConwayState(CellState):
     def __init__(self, colors: Tuple[str, ...], alive: bool):
         self.colors = colors
         self.alive = alive
