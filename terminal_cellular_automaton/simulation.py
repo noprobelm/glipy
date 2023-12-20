@@ -1,21 +1,20 @@
-from __future__ import annotations
-
-from time import sleep
+import time
 from typing import Optional, Union
 
 from rich.console import Console
 from rich.live import Live
 
-from .cell import Cell, CellState
+from .cell import Cell
 from .coordinate import Coordinate
-from .matrix import CellMatrix
+from .matrix import Matrix2D
+
+from rich.console import Console, ConsoleOptions, RenderResult
+from rich.segment import Segment
+from rich.style import Style
 
 
 class Simulation:
     """A class to run a simulation from the terminal
-
-    Default behavior is to run the simulation at the current dimensions of the terminal. Currently, this is not
-    modifiable by the user without direct interference with the underlying matrix attr
 
     Attributes:
         1. matrix (CellMatrix): The underlying cell matrix
@@ -31,7 +30,7 @@ class Simulation:
             if ymax is None:
                 ymax = console.height * 2
 
-        self.matrix = CellMatrix(xmax, ymax)
+        self.matrix = Matrix2D(xmax, ymax)
 
     @property
     def xmax(self):
@@ -41,7 +40,7 @@ class Simulation:
     def ymax(self):
         return self.matrix.max_coord.y
 
-    def spawn(self, cell: CellState) -> None:
+    def spawn(self, cell: Cell) -> None:
         """Spawns an element at a given x/y coordinate
 
         Args:
@@ -67,9 +66,9 @@ class Simulation:
             debug (bool): Controls if the simulation runs in debug mode. This will run cProfile and disable rendering
         """
         if refresh_rate == 0:
-            sleep_for = 0
+            sleep = 0
         else:
-            sleep_for = 1 / refresh_rate
+            sleep = 1 / refresh_rate
 
         if duration == 0:
             duration = float("inf")
@@ -82,57 +81,64 @@ class Simulation:
             )
 
         elif render is True:
-            self.run(duration, sleep_for, True)
+            self.run(duration, sleep, True)
 
         else:
-            self.run(duration, sleep_for, False)
+            self.run(duration, sleep, False)
 
     def run(
         self,
         duration: Union[float, int],
-        sleep_for: Union[float, int],
+        sleep: Union[float, int],
         render: bool,
     ) -> None:
         """Runs the simulation
 
         Args:
             duration (Union[float, int]): The duration the simulation should run for
-            sleep_for (Union[float, int]): The time the simulation should sleep between each step
+            sleep_time (Union[float, int]): The time the simulation should sleep between each step
             render: bool: Cotnrols if the simulation renders to the terminal
         """
         elapsed = 0
         if render is True:
-            with Live(self.matrix, screen=True, auto_refresh=False) as live:
+            with Live(self, screen=True, auto_refresh=False) as live:
                 while elapsed < duration:
                     self.step()
-                    live.update(self.matrix, refresh=True)
-                    sleep(sleep_for)
+                    live.update(self, refresh=True)
+                    time.sleep(sleep)
                     elapsed += 1
         else:
             while elapsed < duration:
                 self.step()
-                sleep(sleep_for)
+                time.sleep(sleep)
                 elapsed += 1
 
     def step(self) -> None:
         """Steps the simulation forward once
 
-        Explores every element in the simulation by working bottom to top, then left -> middle; right -> middle for each
-        row. Each step in the simulation calls the 'step' method on the underlying Cell type. Cell.step will determien
-        its next place in the CellMatrix and modify the CellMatrix reference passed to it accordingly.
-
-        Issue:
-            When we step each element from left -> right or right -> left, the elements on the trailing end exhibit odd
-            behavior. Specifically, elements will move diagonally and to the left (or right) depending on the order
-            we're stepping them in. Unsure of the exact cause of this, but for now, working "middle out" in either
-            direction visually solves the problem. This probably means there's some odd behavior in the middle of the
-            matrix for each step, but it's not visually identifiable. Working "middle out" is an acceptable workaround
-            for now.
-
-        After each cell has been stepped through, reset its updated flag to False
+        Visits each cell in the 2d matrix and executes its 'change_state' method
         """
         for y in range(self.matrix.max_coord.y + 1):
             row = self.matrix.max_coord.y - y
             for x in range(self.matrix.max_coord.x + 1):
                 cell = self.matrix[Coordinate(x, row)]
                 cell.state.change_state(cell.neighbors, self.matrix)
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -> RenderResult:
+        """Renders each Cell in the simulation using the Rich Console Protocol
+
+        Due to the typical 2:1 height/width aspect ratio of a terminal, each cell rendered from the CellMatrix simulation
+        actually occupies 2 rows in the terminal. I picked up this trick from rich's __main__ module. Run
+        'python -m rich and observe the color palette at the top of stdout for another example of what this refers to.
+
+        Yields:
+            2 cells in the simulation, row by row, until all cell states have been rendered.
+        """
+        for y in range(self.matrix.max_coord.y)[::2]:
+            for x in range(self.matrix.max_coord.x + 1):
+                bg = self.matrix[Coordinate(x, y)].state.color
+                fg = self.matrix[Coordinate(x, y + 1)].state.color
+                yield Segment("▄", Style(color=fg, bgcolor=bg))
+            yield Segment.line()
