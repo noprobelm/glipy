@@ -5,14 +5,20 @@ from .matrix import Matrix2D
 
 
 class CellState(Protocol):
-    colors: Tuple[str, str]
+    """Protocol definition for a CellState.
+
+    A CellState must have:
+        1. colors (Tuple[str, str]): The color the cell will render
+    """
+
+    colors: Tuple[str, ...]
 
     def change_state(self, neighbors: list[Coordinate], matrix: Matrix2D):
         pass
 
 
 class ConwayState:
-    def __init__(self, colors: Tuple[str, str], alive: bool):
+    def __init__(self, colors: Tuple[str, ...], alive: bool):
         self.colors = colors
         self.alive = alive
 

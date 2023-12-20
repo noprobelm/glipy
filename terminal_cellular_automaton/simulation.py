@@ -63,7 +63,7 @@ class Simulation:
             debug (bool): Controls if the simulation runs in debug mode. This will run cProfile and disable rendering
         """
         if refresh_rate == 0:
-            sleep = 0
+            sleep = 0.0
         else:
             sleep = 1 / refresh_rate
 

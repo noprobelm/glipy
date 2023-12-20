@@ -2,7 +2,7 @@
 
 """Defines the Matrix2D class"""
 
-from typing import Any
+from typing import Any, List
 
 from .coordinate import Coordinate
 
@@ -29,7 +29,7 @@ class Matrix2D:
 
         """
         self.max_coord = Coordinate(xmax - 1, ymax - 1)
-        self.matrix = []
+        self.matrix: List[List[Any]] = []
         for y in range(ymax):
             self.matrix.append([])
             for _ in range(xmax):
