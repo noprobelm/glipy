@@ -2,12 +2,11 @@
 
 from . import scenarios
 from .args import args
-from .simulation import Simulation
 
 
 def main() -> None:
     """Main entrypoint for running a simulation on default settings"""
-    sim = scenarios.CONWAY_1
+    sim = scenarios.CONWAY_2
     sim.start(**args)
 
 
