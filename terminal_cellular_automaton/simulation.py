@@ -39,11 +39,10 @@ class Simulation:
         return self.matrix.max_coord.y
 
     def spawn(self, cell: Cell) -> None:
-        """Spawns an element at a given x/y coordinate
+        """Spawns a cell at a given x/y coordinate
 
         Args:
-            element (ElementType): An 'ElementType' type
-            coord (Coordinate): The coordinate to spawn the element at
+            cell (Cell): A 'Cell' (conforms to the Cell protocol in the cell module)
         """
 
         self.matrix[cell.coord] = cell
