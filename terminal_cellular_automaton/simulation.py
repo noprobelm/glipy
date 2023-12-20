@@ -1,16 +1,14 @@
 import time
 from typing import Optional, Union
 
-from rich.console import Console
+from rich.console import Console, ConsoleOptions, RenderResult
 from rich.live import Live
+from rich.segment import Segment
+from rich.style import Style
 
 from .cell import Cell
 from .coordinate import Coordinate
 from .matrix import Matrix2D
-
-from rich.console import Console, ConsoleOptions, RenderResult
-from rich.segment import Segment
-from rich.style import Style
 
 
 class Simulation:
