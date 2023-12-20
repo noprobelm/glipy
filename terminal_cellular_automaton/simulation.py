@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from time import sleep
-from typing import Optional, Type, Union
+from typing import Optional, Union
 
 from rich.console import Console
 from rich.live import Live
@@ -114,25 +114,11 @@ class Simulation:
         """
         for y in range(self.matrix.max_coord.y + 1):
             row = self.matrix.max_coord.y - y
-            for x in range(self.matrix.midpoint + 1):
-                element = self.matrix[row][x]
-                if element.ignore is False and element.updated is False:
-                    element.change_state(Coordinate(x, row), self.matrix)
-            for x in range(self.matrix.midpoint, self.matrix.max_coord.x + 1):
-                element = self.matrix[row][
-                    self.matrix.max_coord.x - x + self.matrix.midpoint
-                ]
-                if element.ignore is False and element.updated is False:
-                    element.change_state(
-                        Coordinate(
-                            self.matrix.max_coord.x - x + self.matrix.midpoint, row
-                        ),
-                        self.matrix,
-                    )
+            for x in range(self.matrix.max_coord.x + 1):
+                cell = self.matrix[row][x]
+                cell.change_state(self.matrix)
 
-        self.reset_updated()
-
-    def spawn(self, element: Type[ElementType], coord: Coordinate) -> None:
+    def spawn(self, element, coord: Coordinate) -> None:
         """Spawns an element at a given x/y coordinate
 
         Args:
@@ -141,10 +127,3 @@ class Simulation:
         """
 
         self.matrix[coord.y][coord.x] = element(coord)
-
-    def reset_updated(self):
-        """Resets the 'updated' attribute for all elements in the matrix"""
-        for y in range(self.matrix.max_coord.y + 1):
-            row = self.matrix.max_coord.y - y
-            for x in range(self.matrix.max_coord.x + 1):
-                self.matrix[row][x].updated = False
