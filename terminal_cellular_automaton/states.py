@@ -9,11 +9,11 @@ class CellState:
     All cell state subclasses should derive themselves from this one.
 
     Methods:
-        change_state: Defines how a cell should behave.
+        change_state: Method signature for CellState subclasses. Should return a new instance of Self
     """
 
-    def change_state(self, neighbors: list[Self]):
-        pass
+    def change_state(self, neighbors: list[Self]) -> CellState:
+        return self
 
 
 class ConwayState(CellState):
