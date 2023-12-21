@@ -1,7 +1,6 @@
 from typing import Protocol
 
 from .coordinate import Coordinate, MooreNeighborhood
-from .matrix import Matrix2D
 from .states import CellState
 
 
