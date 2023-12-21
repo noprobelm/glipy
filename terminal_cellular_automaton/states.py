@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Tuple, Self, List
+from typing import Tuple
 
 from .coordinate import Coordinate
 from .matrix import Matrix2D
@@ -49,7 +49,7 @@ class ConwayState(CellState):
             return self.colors[0]
         return self.colors[1]
 
-    def change_state(self, neighbors: list[ConwayState]) -> Self:
+    def change_state(self, neighbors: list[ConwayState]) -> ConwayState:
         """Changes the state of the cell
 
         - If a cell is ALIVE and is adjacent to 2 or 3 other cells that are also ALIVE, the cell will become DEAD
