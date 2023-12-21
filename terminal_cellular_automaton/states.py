@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Self, Tuple, List
+from typing import List, Self, Tuple
 
 
 class CellState:
