@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Self, Tuple
+from typing import Self, Tuple, List
 
 
 class CellState:
@@ -47,12 +47,14 @@ class ConwayState(CellState):
             return self.colors[0]
         return self.colors[1]
 
-    def change_state(self, neighbors: list[ConwayState]) -> ConwayState:
+    def change_state(self, neighbors: List[ConwayState]) -> ConwayState:
         """Changes the state of the cell
 
         - If a cell is ALIVE and is adjacent to 2 or 3 other cells that are also ALIVE, the cell will become DEAD
         - If a cell is DEAD and is adjacent to exactly 3 other cells that are ALIVE, the cell will become ALIVE
 
+        Args:
+            neighbors (List[ConwayState]): A list of neighbor's states
         """
         alive_count = 0
         for n in neighbors:
