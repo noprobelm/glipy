@@ -2,9 +2,6 @@ from __future__ import annotations
 
 from typing import Tuple, Self
 
-from .coordinate import Coordinate
-from .matrix import Matrix2D
-
 
 class CellState:
     """Top level class for a CellState
