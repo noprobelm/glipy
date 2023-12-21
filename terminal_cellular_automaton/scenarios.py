@@ -9,13 +9,8 @@ from .coordinate import Coordinate
 from .simulation import Simulation
 
 
-console = Console()
-xmax = console.width
-ymax = console.height * 2
-
-
 def conway_1() -> Simulation:
-    sim = Simulation(xmax, ymax)
+    sim = Simulation()
     for y in range(sim.ymax + 1):
         for x in range(sim.xmax + 1):
             alive = bool(random.randint(0, 1))
@@ -29,7 +24,7 @@ def conway_1() -> Simulation:
 
 
 def conway_2() -> Simulation:
-    sim = Simulation(xmax, ymax)
+    sim = Simulation()
     for y in range(sim.ymax + 1):
         for x in range(sim.xmax + 1):
             r = random.randint(0, 10)
