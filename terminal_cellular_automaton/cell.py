@@ -33,6 +33,7 @@ class MooreCell:
         coord (Coordinate): The coordinate of the cell
         state (CellState): The corresponding CellState
         neighbors (list[Coordinate]): A list of the valid cell neighbors to pass to CellState.change_state
+        neighborhood (MooreNeighborhood): The neighborhood to reference when setting neighbors
     """
 
     neighborhood = MooreNeighborhood
@@ -43,7 +44,7 @@ class MooreCell:
         Args:
         coord (Coordinate): The coordinate of the cell
         state (CellState): The corresponding CellState
-        matrix (Matrix2D): Reference to the underlying matrix. Used to set neighbors
+        max_coord (Coordinate): The maximum coordinate in the corresponding matrix (used to cache neighbors)
 
         """
         self.coord = coordinate
