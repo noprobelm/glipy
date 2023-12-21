@@ -8,7 +8,7 @@ from enum import Enum
 
 @dataclass(frozen=True, slots=True)
 class Coordinate:
-    """An x/y coordinate to reference location in a CellMatrix"""
+    """An x/y coordinate to reference location in a Matrix2D"""
 
     x: int
     y: int
