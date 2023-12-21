@@ -122,9 +122,8 @@ class Simulation:
         """
         ref = copy(self.matrix)
         for y in range(self.matrix.max_coord.y + 1):
-            row = self.matrix.max_coord.y - y
             for x in range(self.matrix.max_coord.x + 1):
-                cell = ref[Coordinate(x, row)]
+                cell = ref[Coordinate(x, y)]
                 neighbors = []
                 for nc in cell.neighbors:
                     neighbor_state = ref[nc].state
