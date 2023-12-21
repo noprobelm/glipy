@@ -47,7 +47,7 @@ class Simulation:
         """Spawns a cell at a given x/y coordinate
 
         Args:
-            cell (Cell): A 'Cell' (conforms to the Cell protocol in the cell module)
+            cell (Cell): An object which conforms to the Cell protocol
         """
 
         self.matrix[cell.coord] = cell
