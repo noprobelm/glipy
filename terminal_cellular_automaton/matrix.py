@@ -65,6 +65,11 @@ class Matrix2D:
         self.matrix[coord.y][coord.x] = item
 
     def __copy__(self) -> Matrix2D:
+        """Returns a shallow copy of an instance
+
+        Returns:
+            A shallow copy of a Matrix2D instance
+        """
         matrix = Matrix2D(self.max_coord.x + 1, self.max_coord.y + 1)
         for y in range(self.max_coord.y + 1):
             for x in range(self.max_coord.x + 1):
