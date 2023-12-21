@@ -14,7 +14,7 @@ class CellState:
         change_state: Defines how a cell should behave.
     """
 
-    def change_state(self, neighbors: list[Coordinate], matrix: Matrix2D):
+    def change_state(self, neighbors: list[ConwayState]):
         pass
 
 
