@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """Defines the Matrix2D class"""
 
 from __future__ import annotations
