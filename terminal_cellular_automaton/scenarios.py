@@ -9,16 +9,12 @@ from .coordinate import Coordinate
 from .simulation import Simulation
 
 
-def _get_dimensions():
-    """Gets the xmax and ymax for the terminal's dimensions"""
-    console = Console()
-    xmax = console.width
-    ymax = console.height * 2
-    return (xmax, ymax)
+console = Console()
+xmax = console.width
+ymax = console.height * 2
 
 
 def conway_1() -> Simulation:
-    xmax, ymax = _get_dimensions()
     sim = Simulation(xmax, ymax)
     for y in range(sim.ymax + 1):
         for x in range(sim.xmax + 1):
@@ -33,7 +29,6 @@ def conway_1() -> Simulation:
 
 
 def conway_2() -> Simulation:
-    xmax, ymax = _get_dimensions()
     sim = Simulation(xmax, ymax)
     for y in range(sim.ymax + 1):
         for x in range(sim.xmax + 1):
