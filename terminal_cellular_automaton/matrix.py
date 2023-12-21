@@ -2,9 +2,11 @@
 
 """Defines the Matrix2D class"""
 
-from typing import Any, List
+from __future__ import annotations
+from typing import Any, List, Self
 
 from .coordinate import Coordinate
+from copy import copy
 
 
 class Matrix2D:
@@ -62,3 +64,10 @@ class Matrix2D:
         """
 
         self.matrix[coord.y][coord.x] = item
+
+    def __copy__(self) -> Self:
+        matrix = Matrix2D(self.max_coord.x + 1, self.max_coord.y + 1)
+        for y in range(self.max_coord.y + 1):
+            for x in range(self.max_coord.x + 1):
+                matrix[Coordinate(x, y)] = copy(self[Coordinate(x, y)])
+        return matrix
