@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Tuple
+from typing import Tuple, Self
 
 from .coordinate import Coordinate
 from .matrix import Matrix2D
@@ -15,7 +15,7 @@ class CellState:
         change_state: Defines how a cell should behave.
     """
 
-    def change_state(self, neighbors: list[ConwayState]):
+    def change_state(self, neighbors: list[Self]):
         pass
 
 
