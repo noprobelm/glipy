@@ -17,10 +17,11 @@ class Coordinate:
         """Returns the sum of one coordinate and another. Primarily used to identify neighbors"""
         return Coordinate(self.x + other.x, self.y + other.y)
 
-    def __contains__(self, other: Coordinate) -> True:
+    def __contains__(self, other: Coordinate) -> bool:
         if 0 <= other.x <= self.x and 0 <= other.y <= self.y:
             return True
         return False
+
 
 class MooreNeighborhood(Enum):
     """Enumeration for variants of neighbors found in a Moore Neighborhood"""
