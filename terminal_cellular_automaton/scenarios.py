@@ -2,8 +2,6 @@
 
 import random
 
-from rich.console import Console
-
 from . import cell, states
 from .coordinate import Coordinate
 from .simulation import Simulation
