@@ -45,9 +45,7 @@ class Matrix2D:
             coord (Coordinate): The coordinate to check against
         """
 
-        if 0 <= coord.x <= self.max_coord.x and 0 <= coord.y <= self.max_coord.y:
-            return True
-        return False
+        return coord in self.max_coord
 
     def __getitem__(self, coord: Coordinate):
         """Gets a cell from a provided coordinate
