@@ -26,7 +26,6 @@ def conway_1() -> Simulation:
             c = cell.MooreCell(
                 Coordinate(x, y),
                 states.ConwayState(("green", "red"), alive),
-                sim.matrix,
             )
             sim.spawn(c)
     return sim
@@ -45,7 +44,6 @@ def conway_2() -> Simulation:
             c = cell.MooreCell(
                 Coordinate(x, y),
                 states.ConwayState(("green", "red"), alive),
-                sim.matrix,
             )
             sim.spawn(c)
     return sim

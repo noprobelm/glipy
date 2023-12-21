@@ -9,6 +9,7 @@ from rich.style import Style
 from .cell import Cell
 from .coordinate import Coordinate
 from .matrix import Matrix2D
+from copy import copy
 
 
 class Simulation:
@@ -74,7 +75,7 @@ class Simulation:
             import cProfile
 
             cProfile.runctx(
-                "exec(self.run(duration, sleep_for, False))", globals(), locals()
+                "exec(self.run(duration, sleep, False))", globals(), locals()
             )
 
         elif render is True:
@@ -115,11 +116,18 @@ class Simulation:
 
         Visits each cell in the 2d matrix and executes its 'change_state' method
         """
+        ref = copy(self.matrix)
         for y in range(self.matrix.max_coord.y + 1):
             row = self.matrix.max_coord.y - y
             for x in range(self.matrix.max_coord.x + 1):
-                cell = self.matrix[Coordinate(x, row)]
-                cell.state.change_state(cell.neighbors, self.matrix)
+                cell = ref[Coordinate(x, row)]
+                neighbors = []
+                for nc in cell.neighbors:
+                    c = cell.coord + nc.value
+                    if c in ref:
+                        neighbors.append(ref[c].state)
+                new = cell.state.change_state(neighbors)
+                self.matrix[cell.coord].state = new
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
