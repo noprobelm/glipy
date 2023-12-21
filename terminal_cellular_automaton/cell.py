@@ -36,7 +36,9 @@ class MooreCell:
         neighbors (list[Coordinate]): A list of the valid cell neighbors to pass to CellState.change_state
     """
 
-    def __init__(self, coordinate: Coordinate, state: CellState, matrix: Matrix2D):
+    neighbors = MooreNeighborhood
+
+    def __init__(self, coordinate: Coordinate, state: CellState):
         """Initializes an instance of the MooreCell class
 
         Args:
@@ -47,8 +49,3 @@ class MooreCell:
         """
         self.coord = coordinate
         self.state = state
-        self.neighbors = []
-        for n in MooreNeighborhood:
-            nc = self.coord + n.value
-            if nc in matrix:
-                self.neighbors.append(nc)
