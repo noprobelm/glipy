@@ -3,10 +3,11 @@
 """Defines the Matrix2D class"""
 
 from __future__ import annotations
+
+from copy import copy
 from typing import Any, List
 
 from .coordinate import Coordinate
-from copy import copy
 
 
 class Matrix2D:

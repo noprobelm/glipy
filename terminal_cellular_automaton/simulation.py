@@ -1,4 +1,5 @@
 import time
+from copy import copy
 from typing import Optional, Union
 
 from rich.console import Console, ConsoleOptions, RenderResult
@@ -9,7 +10,6 @@ from rich.style import Style
 from .cell import Cell
 from .coordinate import Coordinate
 from .matrix import Matrix2D
-from copy import copy
 
 
 class Simulation:
