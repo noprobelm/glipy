@@ -25,6 +25,7 @@ def conway_1() -> Simulation:
             alive = bool(random.randint(0, 1))
             c = cell.MooreCell(
                 Coordinate(x, y),
+                sim.max_coord,
                 states.ConwayState(("green", "red"), alive),
             )
             sim.spawn(c)
@@ -43,6 +44,7 @@ def conway_2() -> Simulation:
                 alive = False
             c = cell.MooreCell(
                 Coordinate(x, y),
+                sim.max_coord,
                 states.ConwayState(("green", "red"), alive),
             )
             sim.spawn(c)

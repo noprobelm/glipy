@@ -39,6 +39,10 @@ class Simulation:
     def ymax(self):
         return self.matrix.max_coord.y
 
+    @property
+    def max_coord(self):
+        return self.matrix.max_coord
+
     def spawn(self, cell: Cell) -> None:
         """Spawns a cell at a given x/y coordinate
 
@@ -123,9 +127,8 @@ class Simulation:
                 cell = ref[Coordinate(x, row)]
                 neighbors = []
                 for nc in cell.neighbors:
-                    c = cell.coord + nc.value
-                    if c in ref:
-                        neighbors.append(ref[c].state)
+                    neighbor_state = ref[nc].state
+                    neighbors.append(neighbor_state)
                 new = cell.state.change_state(neighbors)
                 self.matrix[cell.coord].state = new
 

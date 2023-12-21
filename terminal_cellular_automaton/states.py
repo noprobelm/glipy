@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Tuple, Self
+from typing import Tuple, Self, List
 
 from .coordinate import Coordinate
 from .matrix import Matrix2D
