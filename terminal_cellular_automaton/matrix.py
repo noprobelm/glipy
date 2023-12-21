@@ -15,7 +15,7 @@ class Matrix2D:
 
     Attributes:
         max_coord (Coordinate): The maximum valid coordinate found in the grid
-        matrix (List): The underlying 2d matrix
+        matrix (List[List[Any]]): The underlying 2d matrix
 
     """
 
