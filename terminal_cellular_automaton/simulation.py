@@ -98,7 +98,7 @@ class Simulation:
 
         Args:
             duration (Union[float, int]): The duration the simulation should run for
-            sleep_time (Union[float, int]): The time the simulation should sleep between each step
+            sleep (Union[float, int]): The time the simulation should sleep between each step
             render: bool: Cotnrols if the simulation renders to the terminal
         """
         elapsed = 0
