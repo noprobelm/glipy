@@ -1,21 +1,14 @@
-from typing import Protocol
+from typing import Protocol, Tuple
 
-from .coordinate import Coordinate, MooreNeighborhood
-from .states import CellState
+from .coordinate import Coordinate
 
 
 class Cell(Protocol):
-    """Protocol definition for a cell.
-
-    A cell must have:
-        1. coord (Coordinate)
-        2. state (CellState): This defines a cell's behavior when changing states
-        3. neighbors (list[Coordinate]): A list of all valid neighbors for a cell
-    """
-
+    neighbors: tuple[Coordinate, ...]
     coord: Coordinate
-    state: CellState
-    neighbors: list[Coordinate]
+
+    def get_neighbors(self, max_coord: Coordinate) -> list[Coordinate]:
+        ...
 
 
 class MooreCell:
@@ -29,28 +22,35 @@ class MooreCell:
     | 6 | 7 | 8 |
     +---+---+---+
 
-    Attributes:
-        coord (Coordinate): The coordinate of the cell
-        state (CellState): The corresponding CellState
-        neighbors (list[Coordinate]): A list of the valid cell neighbors to pass to CellState.change_state
-        neighborhood (MooreNeighborhood): The neighborhood to reference when setting neighbors
     """
 
-    neighborhood = MooreNeighborhood
+    neighbors: Tuple[Coordinate, ...] = (
+        # Upper left
+        Coordinate(-1, -1),
+        # Upper
+        Coordinate(0, -1),
+        # Upper right
+        Coordinate(1, -1),
+        # Right
+        Coordinate(1, 0),
+        # Lower right
+        Coordinate(1, 1),
+        # Lower
+        Coordinate(0, 1),
+        # Lower left
+        Coordinate(-1, 1),
+        # Left
+        Coordinate(-1, 0),
+    )
 
-    def __init__(self, coordinate: Coordinate, max_coord: Coordinate, state: CellState):
-        """Initializes an instance of the MooreCell class
+    def __init__(self, coord: Coordinate):
+        self.coord = coord
 
-        Args:
-        coord (Coordinate): The coordinate of the cell
-        state (CellState): The corresponding CellState
-        max_coord (Coordinate): The maximum coordinate in the corresponding matrix (used to cache neighbors)
+    def get_neighbors(self, max_coord: Coordinate) -> list[Coordinate]:
+        neighbors = []
+        for nc in self.neighbors:
+            n = nc + self.coord
+            if n in max_coord:
+                neighbors.append(n)
 
-        """
-        self.coord = coordinate
-        self.state = state
-        self.neighbors = []
-        for nc in self.neighborhood:
-            c = self.coord + nc.value
-            if c in max_coord:
-                self.neighbors.append(c)
+        return neighbors
