@@ -1,6 +1,6 @@
 import time
 from copy import copy
-from typing import Optional, Union, Type
+from typing import Optional, Union, Type, List
 
 from rich.console import Console, ConsoleOptions, RenderResult
 from rich.live import Live
@@ -17,7 +17,14 @@ from dataclasses import dataclass
 
 @dataclass
 class StateData:
-    neighbors: list[Coordinate]
+    """Used to simplify access of neighbors and state data in the Simulation class
+
+    Args:
+        neighbors (List[Coordinate]): A list of the neighbor's coordinates to access
+        state (CellState): An instance of a a CellState
+    """
+
+    neighbors: List[Coordinate]
     state: CellState
 
 
@@ -28,8 +35,13 @@ class Simulation:
         1. matrix (CellMatrix): The underlying cell matrix
     """
 
-    def __init__(self, cell_type: Type[Cell], initial_state: S) -> None:
-        """Initializes an instance of the Simulation class"""
+    def __init__(self, cell_type: Type[Cell], initial_state: CellState) -> None:
+        """Initializes an instance of the Simulation class
+
+        Args:
+            cell_type (Type[Cell]): The type of cell the simulation should use when determining neighbors
+            initial_state (CellState): The initial state of a cell the matrix should be filled with
+        """
 
         console = Console()
         xmax = console.width
@@ -45,21 +57,38 @@ class Simulation:
                 self.matrix[coord] = StateData(neighbors, state)
 
     @property
-    def xmax(self):
+    def xmax(self) -> int:
+        """Interface to access the max x coordinate of the underlying matrix
+
+        Returns
+            The max y coordinate of the underlying matrix
+        """
         return self.matrix.max_coord.x
 
     @property
-    def ymax(self):
+    def ymax(self) -> int:
+        """Interface to access the max y coordinate of the underlying matrix
+
+        Returns
+            The max y coordinate of the underlying matrix
+        """
         return self.matrix.max_coord.y
 
     @property
-    def max_coord(self):
+    def max_coord(self) -> Coordinate:
+        """Interface to access the max coordinate of the underlying matrix
+
+        Returns
+            The max coordinate of the underlying matrix
+        """
+
         return self.matrix.max_coord
 
-    def spawn(self, coord: Coordinate, state: S) -> None:
-        """Spawns a cell at a given x/y coordinate
+    def spawn(self, coord: Coordinate, state: CellState) -> None:
+        """Spawns a CellState instance at a given x/y coordinate
 
         Args:
+            coord (Coordinate): The coordinate to spawn a cell state at
             cell (Cell): An object which conforms to the Cell protocol
         """
 
@@ -131,7 +160,8 @@ class Simulation:
     def step(self) -> None:
         """Steps the simulation forward once
 
-        Visits each cell in the 2d matrix and executes its 'change_state' method
+        Visits each cell in the 2d matrix and retrieves its new state by passing its neighbor states to the change_state
+        method.
         """
         ref = copy(self.matrix)
         for y in range(self.matrix.max_coord.y + 1):
