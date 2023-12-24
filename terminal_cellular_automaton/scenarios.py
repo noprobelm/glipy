@@ -12,7 +12,7 @@ Box = namedtuple("Box", ["top_left", "top_right", "bottom_left", "bottom_right"]
 
 
 def conway_1() -> Simulation:
-    sim = Simulation[ConwayState](MooreCell, ConwayState(False))
+    sim = Simulation(MooreCell, ConwayState(False))
     for y in range(sim.ymax + 1):
         for x in range(sim.xmax + 1):
             alive = bool(random.randint(0, 1))
@@ -23,7 +23,7 @@ def conway_1() -> Simulation:
 
 
 def conway_2() -> Simulation:
-    sim = Simulation[ConwayState](MooreCell, ConwayState(False))
+    sim = Simulation(MooreCell, ConwayState(False))
     for y in range(sim.ymax + 1):
         for x in range(sim.xmax + 1):
             coord = Coordinate(x, y)
@@ -38,7 +38,7 @@ def conway_2() -> Simulation:
 
 
 def pulsar() -> Simulation:
-    sim = Simulation[ConwayState](MooreCell, ConwayState(False))
+    sim = Simulation(MooreCell, ConwayState(False))
     for y in range(sim.ymax + 1):
         for x in range(sim.xmax + 1):
             coord = Coordinate(x, y)
