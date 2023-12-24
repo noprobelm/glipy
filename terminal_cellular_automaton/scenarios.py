@@ -2,7 +2,8 @@
 
 import random
 
-from . import cell, states
+from .cell import MooreCell
+from .state import ConwayState
 from .coordinate import Coordinate
 from .simulation import Simulation
 from collections import namedtuple
@@ -11,18 +12,18 @@ Box = namedtuple("Box", ["top_left", "top_right", "bottom_left", "bottom_right"]
 
 
 def conway_1() -> Simulation:
-    sim = Simulation[states.ConwayState](cell.MooreCell, states.ConwayState(False))
+    sim = Simulation[ConwayState](MooreCell, ConwayState(False))
     for y in range(sim.ymax + 1):
         for x in range(sim.xmax + 1):
             alive = bool(random.randint(0, 1))
             coord = Coordinate(x, y)
-            s = states.ConwayState(alive)
+            s = ConwayState(alive)
             sim.spawn(coord, s)
     return sim
 
 
 def conway_2() -> Simulation:
-    sim = Simulation[states.ConwayState](cell.MooreCell, states.ConwayState(False))
+    sim = Simulation[ConwayState](MooreCell, ConwayState(False))
     for y in range(sim.ymax + 1):
         for x in range(sim.xmax + 1):
             coord = Coordinate(x, y)
@@ -31,22 +32,22 @@ def conway_2() -> Simulation:
                 alive = True
             else:
                 alive = False
-            s = states.ConwayState(alive)
+            s = ConwayState(alive)
             sim.spawn(coord, s)
     return sim
 
 
 def pulsar() -> Simulation:
-    sim = Simulation[states.ConwayState](cell.MooreCell, states.ConwayState(False))
+    sim = Simulation[ConwayState](MooreCell, ConwayState(False))
     for y in range(sim.ymax + 1):
         for x in range(sim.xmax + 1):
             coord = Coordinate(x, y)
-            s = states.ConwayState(alive=False)
+            s = ConwayState(alive=False)
             sim.spawn(coord, s)
 
     midpoint = Coordinate(sim.xmax // 2, sim.ymax // 2)
     top_left = Coordinate(midpoint.x - 7, midpoint.y - 7)
-    state = states.ConwayState(alive=True)
+    state = ConwayState(alive=True)
     row = top_left + Coordinate(0, 3)
     for x in range(4, 7):
         coord = row + Coordinate(x, 0)
