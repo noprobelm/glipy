@@ -1,6 +1,6 @@
 import time
 from copy import copy
-from typing import Optional, Union, Generic, TypeVar, Type
+from typing import Optional, Union, Type
 
 from rich.console import Console, ConsoleOptions, RenderResult
 from rich.live import Live
@@ -14,8 +14,6 @@ from .matrix import Matrix2D
 from rich.console import Console
 from dataclasses import dataclass
 
-S = TypeVar("S", bound=CellState)
-
 
 @dataclass
 class StateData:
@@ -23,7 +21,7 @@ class StateData:
     state: CellState
 
 
-class Simulation(Generic[S]):
+class Simulation:
     """A class to run a simulation from the terminal
 
     Attributes:
