@@ -8,7 +8,7 @@ from rich.segment import Segment
 from rich.style import Style
 
 from .cell import Cell
-from .states import CellState
+from .state import CellState
 from .coordinate import Coordinate
 from .matrix import Matrix2D
 from rich.console import Console
