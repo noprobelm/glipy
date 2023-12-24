@@ -7,6 +7,9 @@ class Cell(Protocol):
     neighbors: tuple[Coordinate, ...]
     coord: Coordinate
 
+    def __init__(self, coord: Coordinate) -> None:
+        ...
+
     def get_neighbors(self, max_coord: Coordinate) -> list[Coordinate]:
         ...
 
