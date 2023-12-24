@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from copy import copy
-from typing import Any, List, Optional
+from typing import Any, List
 
 from .coordinate import Coordinate
 
