@@ -13,7 +13,6 @@ from .coordinate import Coordinate
 from .matrix import Matrix2D
 from rich.console import Console
 
-C = TypeVar("C", bound=Cell)
 S = TypeVar("S", bound=CellState)
 
 
