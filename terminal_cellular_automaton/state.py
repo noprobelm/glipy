@@ -1,14 +1,26 @@
 from __future__ import annotations
 
-from typing import List, Self, Tuple, Protocol
+from typing import List, Protocol, Self, Tuple
 
 
 class CellState(Protocol):
+    """A protocol to reference when creating a new type of cell"""
+
     @property
     def color(self) -> str:
+        """Correlates a color with arbitrary attributes of a CellState instance
+
+        Returns:
+            A valid color designator (can be 'red', hex codes, etc. See the rich documentation for details)
+        """
         ...
 
     def change_state(self, neighbors: list[Self]) -> CellState:
+        """Retrieves a new state based on its neighbors
+
+        Returns:
+            The cell's new state
+        """
         ...
 
 

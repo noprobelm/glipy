@@ -1,12 +1,12 @@
 """A module for storing commonly used scenarios"""
 
 import random
+from collections import namedtuple
 
 from .cell import MooreCell
-from .state import ConwayState
 from .coordinate import Coordinate
 from .simulation import Simulation
-from collections import namedtuple
+from .state import ConwayState
 
 Box = namedtuple("Box", ["top_left", "top_right", "bottom_left", "bottom_right"])
 
