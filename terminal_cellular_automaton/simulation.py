@@ -1,6 +1,6 @@
 import time
 from copy import copy
-from typing import Optional, Union
+from typing import Optional, Union, Generic, TypeVar, Type
 
 from rich.console import Console, ConsoleOptions, RenderResult
 from rich.live import Live
@@ -8,28 +8,37 @@ from rich.segment import Segment
 from rich.style import Style
 
 from .cell import Cell
+from .states import CellState
 from .coordinate import Coordinate
 from .matrix import Matrix2D
+from rich.console import Console
+
+C = TypeVar("C", bound=Cell)
+S = TypeVar("S", bound=CellState)
 
 
-class Simulation:
+class Simulation(Generic[S]):
     """A class to run a simulation from the terminal
 
     Attributes:
         1. matrix (CellMatrix): The underlying cell matrix
     """
 
-    def __init__(self, xmax: Optional[int] = None, ymax: Optional[int] = None) -> None:
+    def __init__(self, cell_type: Type[Cell], initial_state: S) -> None:
         """Initializes an instance of the Simulation class"""
 
-        if xmax is None or ymax is None:
-            console = Console()
-            if xmax is None:
-                xmax = console.width
-            if ymax is None:
-                ymax = console.height * 2
+        console = Console()
+        xmax = console.width
+        ymax = console.height * 2
 
         self.matrix = Matrix2D(xmax, ymax)
+        for y in range(self.ymax + 1):
+            for x in range(self.xmax + 1):
+                coord = Coordinate(x, y)
+                c = cell_type(Coordinate(x, y))
+                neighbors = c.get_neighbors(self.matrix.max_coord)
+                state = initial_state
+                self.matrix[coord] = [neighbors, state]
 
     @property
     def xmax(self):
@@ -43,14 +52,14 @@ class Simulation:
     def max_coord(self):
         return self.matrix.max_coord
 
-    def spawn(self, cell: Cell) -> None:
+    def spawn(self, coord: Coordinate, state: S) -> None:
         """Spawns a cell at a given x/y coordinate
 
         Args:
             cell (Cell): An object which conforms to the Cell protocol
         """
 
-        self.matrix[cell.coord] = cell
+        self.matrix[coord][1] = state
 
     def start(
         self,
@@ -123,13 +132,14 @@ class Simulation:
         ref = copy(self.matrix)
         for y in range(self.matrix.max_coord.y + 1):
             for x in range(self.matrix.max_coord.x + 1):
-                cell = ref[Coordinate(x, y)]
-                neighbors = []
-                for nc in cell.neighbors:
-                    neighbor_state = ref[nc].state
-                    neighbors.append(neighbor_state)
-                new = cell.state.change_state(neighbors)
-                self.matrix[cell.coord].state = new
+                coord = Coordinate(x, y)
+                neighbors, state = ref[coord]
+                neighbor_states = []
+                for nc in neighbors:
+                    neighbor_state = ref[nc][1]
+                    neighbor_states.append(neighbor_state)
+                new = state.change_state(neighbor_states)
+                self.matrix[coord][1] = new
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
@@ -145,7 +155,7 @@ class Simulation:
         """
         for y in range(self.matrix.max_coord.y)[::2]:
             for x in range(self.matrix.max_coord.x + 1):
-                bg = self.matrix[Coordinate(x, y)].state.color
-                fg = self.matrix[Coordinate(x, y + 1)].state.color
+                bg = self.matrix[Coordinate(x, y)][1].color
+                fg = self.matrix[Coordinate(x, y + 1)][1].color
                 yield Segment("▄", Style(color=fg, bgcolor=bg))
             yield Segment.line()
