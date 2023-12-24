@@ -12,8 +12,15 @@ from .states import CellState
 from .coordinate import Coordinate
 from .matrix import Matrix2D
 from rich.console import Console
+from dataclasses import dataclass
 
 S = TypeVar("S", bound=CellState)
+
+
+@dataclass
+class StateData:
+    neighbors: list[Coordinate]
+    state: CellState
 
 
 class Simulation(Generic[S]):
@@ -37,7 +44,7 @@ class Simulation(Generic[S]):
                 c = cell_type(Coordinate(x, y))
                 neighbors = c.get_neighbors(self.matrix.max_coord)
                 state = initial_state
-                self.matrix[coord] = [neighbors, state]
+                self.matrix[coord] = StateData(neighbors, state)
 
     @property
     def xmax(self):
@@ -58,7 +65,7 @@ class Simulation(Generic[S]):
             cell (Cell): An object which conforms to the Cell protocol
         """
 
-        self.matrix[coord][1] = state
+        self.matrix[coord].state = state
 
     def start(
         self,
@@ -132,13 +139,13 @@ class Simulation(Generic[S]):
         for y in range(self.matrix.max_coord.y + 1):
             for x in range(self.matrix.max_coord.x + 1):
                 coord = Coordinate(x, y)
-                neighbors, state = ref[coord]
+                data = ref[coord]
                 neighbor_states = []
-                for nc in neighbors:
-                    neighbor_state = ref[nc][1]
+                for nc in data.neighbors:
+                    neighbor_state = ref[nc].state
                     neighbor_states.append(neighbor_state)
-                new = state.change_state(neighbor_states)
-                self.matrix[coord][1] = new
+                new = data.state.change_state(neighbor_states)
+                self.matrix[coord].state = new
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
@@ -154,7 +161,7 @@ class Simulation(Generic[S]):
         """
         for y in range(self.matrix.max_coord.y)[::2]:
             for x in range(self.matrix.max_coord.x + 1):
-                bg = self.matrix[Coordinate(x, y)][1].color
-                fg = self.matrix[Coordinate(x, y + 1)][1].color
+                bg = self.matrix[Coordinate(x, y)].state.color
+                fg = self.matrix[Coordinate(x, y + 1)].state.color
                 yield Segment("▄", Style(color=fg, bgcolor=bg))
             yield Segment.line()
