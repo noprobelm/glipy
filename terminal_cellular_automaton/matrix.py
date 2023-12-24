@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from copy import copy
-from typing import Any, List
+from typing import Any, List, Optional
 
 from .coordinate import Coordinate
 
@@ -19,7 +19,11 @@ class Matrix2D:
 
     """
 
-    def __init__(self, xmax: int, ymax: int) -> None:
+    def __init__(
+        self,
+        xmax: int,
+        ymax: int,
+    ) -> None:
         """Initializes a Matrix2D instance
 
         Generates a new grid filled with type 'NoneType'
