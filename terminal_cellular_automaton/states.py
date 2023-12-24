@@ -1,22 +1,19 @@
 from __future__ import annotations
 
-from typing import List, Self, Tuple
+from typing import List, Self, Tuple, Protocol
+from .coordinate import Coordinate
 
 
-class CellState:
-    """Top level class for a CellState
-
-    All cell state subclasses should derive themselves from this one.
-
-    Methods:
-        change_state: Method signature for CellState subclasses. Should return a new instance of Self
-    """
+class CellState(Protocol):
+    @property
+    def color(self) -> str:
+        ...
 
     def change_state(self, neighbors: list[Self]) -> CellState:
-        return self
+        ...
 
 
-class ConwayState(CellState):
+class ConwayState:
     """A ConwayState
 
     This will emulate the classic rules to "Conway's Game of Life"
@@ -30,7 +27,9 @@ class ConwayState(CellState):
         alive (bool): Flag for whether the cell is ALIVE (True) or DEAD (False)
     """
 
-    def __init__(self, colors: Tuple[str, str], alive: bool):
+    _colors = ("green", "red")
+
+    def __init__(self, alive: bool = False):
         """Initializes an instance of the ConwayState class
 
         Args
@@ -38,7 +37,6 @@ class ConwayState(CellState):
                                       The first index is the color for ALIVE states. 2nd is DEAD
             alive (bool): Flag for whether the cell is ALIVE (True) or DEAD (False)
         """
-        self.colors = colors
         self.alive = alive
 
     @property
@@ -46,6 +44,14 @@ class ConwayState(CellState):
         if self.alive is True:
             return self.colors[0]
         return self.colors[1]
+
+    @property
+    def colors(self):
+        return ConwayState._colors
+
+    @colors.setter
+    def colors(self, colors: Tuple[str, str]) -> None:
+        ConwayState._colors = colors
 
     def change_state(self, neighbors: List[ConwayState]) -> ConwayState:
         """Changes the state of the cell
@@ -64,12 +70,12 @@ class ConwayState(CellState):
         match self.alive:
             case True:
                 if alive_count == 2 or alive_count == 3:
-                    return ConwayState(self.colors, True)
+                    return ConwayState(True)
                 else:
-                    return ConwayState(self.colors, False)
+                    return ConwayState(False)
 
             case False:
                 if alive_count == 3:
-                    return ConwayState(self.colors, True)
+                    return ConwayState(True)
                 else:
-                    return ConwayState(self.colors, False)
+                    return ConwayState(False)
