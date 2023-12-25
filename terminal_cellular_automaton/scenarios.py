@@ -85,8 +85,18 @@ def pulsar() -> Simulation:
 
 def glider() -> Simulation:
     sim = Simulation(MooreCell, ConwayState(False))
+    x_coords = [[2], [0, 2], [1, 2]]
+    coords = []
+    for y in range(3):
+        for x in x_coords[y]:
+            coords.append(Coordinate(x, y))
+    for coord in coords:
+        sim.spawn(coord, ConwayState(True))
+
+    return sim
 
 
 CONWAY_1 = conway_1()
 CONWAY_2 = conway_2()
 PULSAR = pulsar()
+GLIDER = glider()
