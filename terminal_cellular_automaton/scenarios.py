@@ -39,11 +39,6 @@ def conway_2() -> Simulation:
 
 def pulsar() -> Simulation:
     sim = Simulation(MooreCell, ConwayState(False))
-    for y in range(sim.ymax + 1):
-        for x in range(sim.xmax + 1):
-            coord = Coordinate(x, y)
-            s = ConwayState(alive=False)
-            sim.spawn(coord, s)
 
     midpoint = Coordinate(sim.xmax // 2, sim.ymax // 2)
     top_left = Coordinate(midpoint.x - 7, midpoint.y - 7)
@@ -86,6 +81,10 @@ def pulsar() -> Simulation:
                 sim.spawn(coord, state)
 
     return sim
+
+
+def glider() -> Simulation:
+    sim = Simulation(MooreCell, ConwayState(False))
 
 
 CONWAY_1 = conway_1()
