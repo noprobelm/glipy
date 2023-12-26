@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from copy import copy
-from typing import Any, List
+from typing import Any, List, Optional, Union
 
 from .coordinate import Coordinate
 
@@ -23,6 +23,7 @@ class Matrix2D:
         self,
         xmax: int,
         ymax: int,
+        fill_with: Optional[Union[Any, List[List[Any]]]] = None,
     ) -> None:
         """Initializes a Matrix2D instance
 
@@ -37,11 +38,14 @@ class Matrix2D:
         self.ymax = ymax
         self.midpoint = Coordinate(self.xmax // 2, self.ymax // 2)
         self.max_coord = Coordinate(self.xmax, self.ymax)
-        self.matrix: List[List[Any]] = []
-        for y in range(self.ymax + 1):
-            self.matrix.append([])
-            for _ in range(self.xmax + 1):
-                self.matrix[y].append(None)
+        if isinstance(fill_with, list):
+            self.matrix: List[List[Any]] = fill_with
+        else:
+            self.matrix: List[List[Any]] = []
+            for y in range(self.ymax + 1):
+                self.matrix.append([])
+                for _ in range(self.xmax + 1):
+                    self.matrix[y].append(fill_with)
 
     def __contains__(self, coord: Coordinate):
         """Checks if a given coordinate is within range of the matrix
