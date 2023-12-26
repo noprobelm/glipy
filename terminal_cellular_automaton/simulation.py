@@ -34,7 +34,7 @@ class Simulation:
         1. matrix (CellMatrix): The underlying cell matrix
     """
 
-    def __init__(self, cell_type: Type[Cell], initial_state: CellState) -> None:
+    def __init__(self, cell_type: Type[Cell], fill_with: CellState) -> None:
         """Initializes an instance of the Simulation class
 
         Args:
@@ -52,7 +52,7 @@ class Simulation:
                 coord = Coordinate(x, y)
                 c = cell_type(Coordinate(x, y))
                 neighbors = c.get_neighbors(self.matrix.max_coord)
-                state = initial_state
+                state = fill_with
                 self.matrix[coord] = StateData(neighbors, state)
 
     @property
