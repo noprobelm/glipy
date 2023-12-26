@@ -1,7 +1,6 @@
 """A module for storing commonly used scenarios"""
 
 import random
-from collections import namedtuple
 
 from . import patterns
 from .cell import MooreCell
