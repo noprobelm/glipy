@@ -34,7 +34,7 @@ class Simulation:
         1. matrix (CellMatrix): The underlying cell matrix
     """
 
-    def __init__(self, cell_type: Type[Cell], fill_with: CellState) -> None:
+    def __init__(self, cell_type: Type[Cell], initial_state: CellState) -> None:
         """Initializes an instance of the Simulation class
 
         Args:
@@ -45,15 +45,18 @@ class Simulation:
         console = Console()
         xmax = console.width
         ymax = console.height * 2
+        max_coord = Coordinate(xmax, ymax)
 
-        self.matrix = Matrix2D(xmax, ymax)
-        for y in range(self.ymax + 1):
-            for x in range(self.xmax + 1):
+        fill_with = []
+        for y in range(ymax + 1):
+            fill_with.append([])
+            for x in range(xmax + 1):
                 coord = Coordinate(x, y)
-                c = cell_type(Coordinate(x, y))
-                neighbors = c.get_neighbors(self.matrix.max_coord)
-                state = fill_with
-                self.matrix[coord] = StateData(neighbors, state)
+                c = cell_type(coord)
+                neighbors = c.get_neighbors(max_coord)
+                state = initial_state
+                fill_with[y].append(StateData(neighbors, state))
+        self.matrix = Matrix2D(xmax, ymax, fill_with)
 
     @property
     def xmax(self) -> int:
