@@ -3,6 +3,7 @@
 from .coordinate import Coordinate
 from .matrix import Matrix2D
 from .state import ConwayState
+import re
 
 
 class Pattern(Matrix2D):
@@ -30,6 +31,40 @@ class Pattern(Matrix2D):
         ymax = max(c.y for c in coords)
 
         return cls(xmax, ymax, coords)
+
+    @classmethod
+    def from_rle(cls, path: str):
+        with open(path, "r") as f:
+            lines = f.readlines()
+        coords = []
+        for row, line in enumerate(lines):
+            if line.strip().startswith("#"):
+                continue
+            if "=" in line:
+                data = re.search(r"(x = \d+).*(y = \d+)", line).groups()
+                x = int(re.search(r"\d+", data[0]).group())
+                y = int(re.search(r"\d+", data[1]).group())
+            else:
+                cells = "".join(line.strip() for line in lines[row:])
+                nums = []
+                n = 1
+                x = 0
+                y = 0
+                for c in cells:
+                    if c == "!":
+                        return cls(x, y, coords)
+                    elif c == "$":
+                        x = 0
+                        y += 1
+                    elif c.isdigit():
+                        nums.append(c)
+                    elif c == "o":
+                        n = int("".join(nums))
+                        for _ in range(n):
+                            coords.append(Coordinate(x, y))
+                            x += 1
+
+        return cls(x, y, coords)
 
 
 class Glider(Pattern):
