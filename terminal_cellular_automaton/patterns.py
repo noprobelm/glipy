@@ -20,7 +20,7 @@ class Pattern(Matrix2D):
 class Glider(Pattern):
     def __init__(self):
         coords = []
-        for x, y in [[2, 0], [0, 1], [2, 1], [1, 2], [2, 2]]:
+        for x, y in [[0, 2], [1, 0], [2, 1], [1, 2], [2, 2]]:
             coords.append(Coordinate(x, y))
         super().__init__(2, 2, coords)
 
