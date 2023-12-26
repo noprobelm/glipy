@@ -1,15 +1,12 @@
 """A module for storing commonly used scenarios"""
 
 import random
-from collections import namedtuple
 
 from .cell import MooreCell
 from .coordinate import Coordinate
 from .simulation import Simulation
 from .state import ConwayState
-from .patterns import Glider
-
-Box = namedtuple("Box", ["top_left", "top_right", "bottom_left", "bottom_right"])
+from . import patterns
 
 
 def conway_1() -> Simulation:
@@ -40,54 +37,15 @@ def conway_2() -> Simulation:
 
 def pulsar() -> Simulation:
     sim = Simulation(MooreCell, ConwayState(False))
-
-    midpoint = Coordinate(sim.xmax // 2, sim.ymax // 2)
-    top_left = Coordinate(midpoint.x - 7, midpoint.y - 7)
-    state = ConwayState(alive=True)
-    row = top_left + Coordinate(0, 3)
-    for x in range(4, 7):
-        coord = row + Coordinate(x, 0)
-        sim.set_state(coord, state)
-
-        coord = row + Coordinate(x + 6, 0)
-        sim.set_state(coord, state)
-
-    row = top_left + Coordinate(0, 8)
-    for x in range(4, 7):
-        coord = row + Coordinate(x, 0)
-        sim.set_state(coord, state)
-
-        coord = row + Coordinate(x + 6, 0)
-        sim.set_state(coord, state)
-
-    row = top_left + Coordinate(0, 10)
-    for x in range(4, 7):
-        coord = row + Coordinate(x, 0)
-        sim.set_state(coord, state)
-        coord = row + Coordinate(x + 6, 0)
-        sim.set_state(coord, state)
-
-    row = top_left + Coordinate(0, 15)
-    for x in range(4, 7):
-        coord = row + Coordinate(x, 0)
-        sim.set_state(coord, state)
-
-        coord = row + Coordinate(x + 6, 0)
-        sim.set_state(coord, state)
-
-    for y in [5, 6, 7, 11, 12, 13]:
-        for x in (2, 7, 9, 14):
-            for _ in range(4):
-                coord = top_left + Coordinate(x, y)
-                sim.set_state(coord, state)
-
+    pulsar = patterns.Pulsar()
+    sim.spawn(sim.midpoint, pulsar)
     return sim
 
 
 def glider() -> Simulation:
     sim = Simulation(MooreCell, ConwayState(False))
-    glider = Glider()
-    sim.spawn(glider.midpoint, Glider())
+    glider = patterns.Glider()
+    sim.spawn(glider.midpoint, patterns.Glider())
     return sim
 
 
