@@ -2,12 +2,15 @@
 
 from .coordinate import Coordinate
 from .matrix import Matrix2D
-from .state import ConwayState
+from .state import ConwayState, CellState
 import re
+from typing import List, Tuple
 
 
 class Pattern(Matrix2D):
-    def __init__(self, xmax: int, ymax: int, coords: list[Coordinate]):
+    def __init__(
+        self, xmax: int, ymax: int, coords: List[Tuple[Coordinate, CellState]]
+    ):
         super().__init__(xmax, ymax)
         for x in range(xmax + 1):
             for y in range(ymax + 1):
@@ -42,29 +45,41 @@ class Pattern(Matrix2D):
                 continue
             if "=" in line:
                 data = re.search(r"(x = \d+).*(y = \d+)", line).groups()
-                x = int(re.search(r"\d+", data[0]).group())
-                y = int(re.search(r"\d+", data[1]).group())
+                width = int(re.search(r"\d+", data[0]).group())
+                height = int(re.search(r"\d+", data[1]).group())
             else:
                 cells = "".join(line.strip() for line in lines[row:])
                 nums = []
-                n = 1
                 x = 0
                 y = 0
                 for c in cells:
                     if c == "!":
-                        return cls(x, y, coords)
+                        return cls(width, height, coords)
                     elif c == "$":
+                        if len(nums) == 0:
+                            n = 1
+                        else:
+                            n = int("".join(nums))
+                        for _ in range(n):
+                            y += 1
                         x = 0
-                        y += 1
+                        nums = []
                     elif c.isdigit():
                         nums.append(c)
-                    elif c == "o":
-                        n = int("".join(nums))
+                    elif c == "o" or c == "b":
+                        if len(nums) == 0:
+                            n = 1
+                        else:
+                            n = int("".join(nums))
                         for _ in range(n):
-                            coords.append(Coordinate(x, y))
+                            if c == "o":
+                                coords.append(Coordinate(x, y))
+
                             x += 1
 
-        return cls(x, y, coords)
+                        nums = []
+
+        return cls(width, height, coords)
 
 
 class Glider(Pattern):
