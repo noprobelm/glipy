@@ -3,11 +3,11 @@
 import random
 from collections import namedtuple
 
+from . import patterns
 from .cell import MooreCell
 from .coordinate import Coordinate
 from .simulation import Simulation
 from .state import ConwayState
-from . import patterns
 
 Box = namedtuple("Box", ["top_left", "top_right", "bottom_left", "bottom_right"])
 

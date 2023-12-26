@@ -1,7 +1,8 @@
 """Use this module to create commonly accessed patterns"""
-from .state import ConwayState
+
 from .coordinate import Coordinate
 from .matrix import Matrix2D
+from .state import ConwayState
 
 
 class HorizontalLine(Matrix2D):
