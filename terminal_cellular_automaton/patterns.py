@@ -16,6 +16,21 @@ class Pattern(Matrix2D):
                 else:
                     self[coord] = ConwayState(False)
 
+    @classmethod
+    def from_file(cls, path: str):
+        with open(path, "r") as f:
+            lines = f.readlines()
+
+        coords = []
+        for line in lines[1:]:
+            line = line.split(" ")
+            coords.append(Coordinate(int(line[0]), int(line[1])))
+
+        xmax = max(c.x for c in coords)
+        ymax = max(c.y for c in coords)
+
+        return cls(xmax, ymax, coords)
+
 
 class Glider(Pattern):
     def __init__(self):
