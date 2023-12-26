@@ -88,7 +88,21 @@ class MooreCell:
         neighbors = []
         for nc in self.neighbors:
             n = nc + self.coord
-            if n in max_coord:
-                neighbors.append(n)
+            if n.x < 0 and n.y < 0:
+                n = Coordinate(max_coord.x, max_coord.y)
+            elif n.x > max_coord.x and n.y > max_coord.y:
+                n = Coordinate(0, 0)
+            elif n.x < 0 and n.y > max_coord.y:
+                n = Coordinate(max_coord.x, 0)
+            elif n.y < 0 and n.x > max_coord.x:
+                n = Coordinate(0, max_coord.y)
+            elif n.x > max_coord.x:
+                n = Coordinate(0, n.y)
+            elif n.y < 0:
+                n = Coordinate(n.x, max_coord.y)
+            elif n.y > max_coord.y:
+                n = Coordinate(n.x, 0)
+
+            neighbors.append(n)
 
         return neighbors
