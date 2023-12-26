@@ -33,6 +33,9 @@ class Matrix2D:
             ymax (int): The maximum y value in the grid
 
         """
+        self.xmax = xmax
+        self.ymax = ymax
+        self.midpoint = Coordinate(self.xmax // 2, self.ymax // 2)
         self.max_coord = Coordinate(xmax - 1, ymax - 1)
         self.matrix: List[List[Any]] = []
         for y in range(ymax):
