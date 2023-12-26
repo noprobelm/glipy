@@ -102,7 +102,6 @@ class Simulation:
             for x in range(pattern.xmax):
                 coord = Coordinate(x, y)
                 offset = Coordinate(x, y) + midpoint
-                print(offset)
                 self.set_state(offset, pattern[coord])
 
     def start(
