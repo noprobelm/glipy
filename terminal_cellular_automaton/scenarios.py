@@ -52,7 +52,15 @@ def glider() -> Simulation:
     return sim
 
 
+def clover_leaf() -> Simulation:
+    sim = Simulation(MooreCell, ConwayState(False))
+    leaf = patterns.CloverLeaf()
+    sim.spawn(sim.midpoint - leaf.midpoint, leaf)
+    return sim
+
+
 CONWAY_1 = conway_1()
 CONWAY_2 = conway_2()
 PULSAR = pulsar()
 GLIDER = glider()
+CLOVER_LEAF = clover_leaf()
