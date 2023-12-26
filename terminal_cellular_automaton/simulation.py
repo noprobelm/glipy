@@ -83,7 +83,11 @@ class Simulation:
 
         return self.matrix.max_coord
 
-    def spawn(self, coord: Coordinate, state: CellState) -> None:
+    @property
+    def midpoint(self) -> Coordinate:
+        return self.matrix.midpoint
+
+    def set_state(self, coord: Coordinate, state: CellState) -> None:
         """Spawns a CellState instance at a given x/y coordinate
 
         Args:
@@ -92,6 +96,14 @@ class Simulation:
         """
 
         self.matrix[coord].state = state
+
+    def spawn(self, midpoint: Coordinate, pattern: Matrix2D):
+        for y in range(pattern.ymax):
+            for x in range(pattern.xmax):
+                coord = Coordinate(x, y)
+                offset = Coordinate(x, y) + midpoint
+                print(offset)
+                self.set_state(offset, pattern[coord])
 
     def start(
         self,
