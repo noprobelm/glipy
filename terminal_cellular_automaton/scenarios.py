@@ -9,8 +9,6 @@ from .coordinate import Coordinate
 from .simulation import Simulation
 from .state import ConwayState
 
-Box = namedtuple("Box", ["top_left", "top_right", "bottom_left", "bottom_right"])
-
 
 def conway_1() -> Simulation:
     sim = Simulation(MooreCell, ConwayState(False))
