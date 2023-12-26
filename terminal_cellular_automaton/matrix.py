@@ -36,11 +36,11 @@ class Matrix2D:
         self.xmax = xmax
         self.ymax = ymax
         self.midpoint = Coordinate(self.xmax // 2, self.ymax // 2)
-        self.max_coord = Coordinate(xmax - 1, ymax - 1)
+        self.max_coord = Coordinate(self.xmax, self.ymax)
         self.matrix: List[List[Any]] = []
-        for y in range(ymax):
+        for y in range(self.ymax + 1):
             self.matrix.append([])
-            for _ in range(xmax):
+            for _ in range(self.xmax + 1):
                 self.matrix[y].append(None)
 
     def __contains__(self, coord: Coordinate):
@@ -75,8 +75,8 @@ class Matrix2D:
         Returns:
             A shallow copy of a Matrix2D instance
         """
-        matrix = Matrix2D(self.max_coord.x + 1, self.max_coord.y + 1)
-        for y in range(self.max_coord.y + 1):
-            for x in range(self.max_coord.x + 1):
+        matrix = Matrix2D(self.xmax, self.ymax)
+        for y in range(self.ymax + 1):
+            for x in range(self.xmax + 1):
                 matrix[Coordinate(x, y)] = copy(self[Coordinate(x, y)])
         return matrix

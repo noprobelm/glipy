@@ -1,15 +1,15 @@
 """Use this module to create commonly accessed patterns"""
 
+from .state import ConwayState
 from .coordinate import Coordinate
 from .matrix import Matrix2D
-from .state import ConwayState
 
 
 class Pattern(Matrix2D):
     def __init__(self, xmax: int, ymax: int, coords: list[Coordinate]):
         super().__init__(xmax, ymax)
-        for x in range(xmax):
-            for y in range(ymax):
+        for x in range(xmax + 1):
+            for y in range(ymax + 1):
                 coord = Coordinate(x, y)
                 if coord in coords:
                     self[coord] = ConwayState(True)
@@ -22,7 +22,7 @@ class Glider(Pattern):
         coords = []
         for x, y in [[2, 0], [0, 1], [2, 1], [1, 2], [2, 2]]:
             coords.append(Coordinate(x, y))
-        super().__init__(3, 3, coords)
+        super().__init__(2, 2, coords)
 
 
 class Pulsar(Pattern):
@@ -79,7 +79,7 @@ class Pulsar(Pattern):
             [12, 10],
         ]:
             coords.append(Coordinate(x, y))
-        super().__init__(13, 13, coords)
+        super().__init__(12, 12, coords)
 
 
 class CloverLeaf(Pattern):
@@ -129,7 +129,7 @@ class CloverLeaf(Pattern):
         ]:
             coords.append(Coordinate(x, y))
 
-        super().__init__(9, 11, coords)
+        super().__init__(8, 10, coords)
 
 
 class CloverLeafInterchange(Pattern):
@@ -194,4 +194,4 @@ class CloverLeafInterchange(Pattern):
             [8, 12],
         ]:
             coords.append(Coordinate(x, y))
-        super().__init__(13, 13, coords)
+        super().__init__(12, 12, coords)

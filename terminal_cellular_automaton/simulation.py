@@ -62,7 +62,7 @@ class Simulation:
         Returns
             The max y coordinate of the underlying matrix
         """
-        return self.matrix.max_coord.x
+        return self.matrix.xmax
 
     @property
     def ymax(self) -> int:
@@ -71,7 +71,7 @@ class Simulation:
         Returns
             The max y coordinate of the underlying matrix
         """
-        return self.matrix.max_coord.y
+        return self.matrix.ymax
 
     @property
     def max_coord(self) -> Coordinate:
@@ -98,8 +98,8 @@ class Simulation:
         self.matrix[coord].state = state
 
     def spawn(self, midpoint: Coordinate, pattern: Matrix2D):
-        for y in range(pattern.ymax):
-            for x in range(pattern.xmax):
+        for y in range(pattern.ymax + 1):
+            for x in range(pattern.xmax + 1):
                 coord = Coordinate(x, y)
                 offset = Coordinate(x, y) + midpoint
                 self.set_state(offset, pattern[coord])
@@ -174,8 +174,8 @@ class Simulation:
         method.
         """
         ref = copy(self.matrix)
-        for y in range(self.matrix.max_coord.y + 1):
-            for x in range(self.matrix.max_coord.x + 1):
+        for y in range(self.matrix.ymax + 1):
+            for x in range(self.matrix.xmax + 1):
                 coord = Coordinate(x, y)
                 data = ref[coord]
                 neighbor_states = []
