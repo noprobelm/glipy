@@ -1,12 +1,15 @@
 """A module for storing commonly used scenarios"""
 
 import random
+from collections import namedtuple
 
 from .cell import MooreCell
 from .coordinate import Coordinate
 from .simulation import Simulation
 from .state import ConwayState
 from . import patterns
+
+Box = namedtuple("Box", ["top_left", "top_right", "bottom_left", "bottom_right"])
 
 
 def conway_1() -> Simulation:
@@ -38,14 +41,14 @@ def conway_2() -> Simulation:
 def pulsar() -> Simulation:
     sim = Simulation(MooreCell, ConwayState(False))
     pulsar = patterns.Pulsar()
-    sim.spawn(sim.midpoint, pulsar)
+    sim.spawn(sim.midpoint - pulsar.midpoint, pulsar)
     return sim
 
 
 def glider() -> Simulation:
     sim = Simulation(MooreCell, ConwayState(False))
     glider = patterns.Glider()
-    sim.spawn(glider.midpoint, patterns.Glider())
+    sim.spawn(glider.midpoint, glider)
     return sim
 
 
