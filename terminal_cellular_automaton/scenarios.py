@@ -7,6 +7,7 @@ from .cell import MooreCell
 from .coordinate import Coordinate
 from .simulation import Simulation
 from .state import ConwayState
+from .patterns import Glider
 
 Box = namedtuple("Box", ["top_left", "top_right", "bottom_left", "bottom_right"])
 
@@ -18,7 +19,7 @@ def conway_1() -> Simulation:
             alive = bool(random.randint(0, 1))
             coord = Coordinate(x, y)
             s = ConwayState(alive)
-            sim.spawn(coord, s)
+            sim.set_state(coord, s)
     return sim
 
 
@@ -33,7 +34,7 @@ def conway_2() -> Simulation:
             else:
                 alive = False
             s = ConwayState(alive)
-            sim.spawn(coord, s)
+            sim.set_state(coord, s)
     return sim
 
 
@@ -46,53 +47,47 @@ def pulsar() -> Simulation:
     row = top_left + Coordinate(0, 3)
     for x in range(4, 7):
         coord = row + Coordinate(x, 0)
-        sim.spawn(coord, state)
+        sim.set_state(coord, state)
 
         coord = row + Coordinate(x + 6, 0)
-        sim.spawn(coord, state)
+        sim.set_state(coord, state)
 
     row = top_left + Coordinate(0, 8)
     for x in range(4, 7):
         coord = row + Coordinate(x, 0)
-        sim.spawn(coord, state)
+        sim.set_state(coord, state)
 
         coord = row + Coordinate(x + 6, 0)
-        sim.spawn(coord, state)
+        sim.set_state(coord, state)
 
     row = top_left + Coordinate(0, 10)
     for x in range(4, 7):
         coord = row + Coordinate(x, 0)
-        sim.spawn(coord, state)
+        sim.set_state(coord, state)
         coord = row + Coordinate(x + 6, 0)
-        sim.spawn(coord, state)
+        sim.set_state(coord, state)
 
     row = top_left + Coordinate(0, 15)
     for x in range(4, 7):
         coord = row + Coordinate(x, 0)
-        sim.spawn(coord, state)
+        sim.set_state(coord, state)
 
         coord = row + Coordinate(x + 6, 0)
-        sim.spawn(coord, state)
+        sim.set_state(coord, state)
 
     for y in [5, 6, 7, 11, 12, 13]:
         for x in (2, 7, 9, 14):
             for _ in range(4):
                 coord = top_left + Coordinate(x, y)
-                sim.spawn(coord, state)
+                sim.set_state(coord, state)
 
     return sim
 
 
 def glider() -> Simulation:
     sim = Simulation(MooreCell, ConwayState(False))
-    x_coords = [[2], [0, 2], [1, 2]]
-    coords = []
-    for y in range(3):
-        for x in x_coords[y]:
-            coords.append(Coordinate(x, y))
-    for coord in coords:
-        sim.spawn(coord, ConwayState(True))
-
+    glider = Glider()
+    sim.spawn(glider.midpoint, Glider())
     return sim
 
 
