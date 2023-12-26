@@ -34,9 +34,59 @@ class Glider(Matrix2D):
 class Pulsar(Matrix2D):
     def __init__(self):
         super().__init__(13, 13)
-        for y in [0, 5, 7, 12]:
-            for x in [2, 3, 4, 8, 9, 10]:
-                self[Coordinate(x, y)] = ConwayState(True)
-        for x in [0, 5, 7, 12]:
-            for y in [2, 3, 4, 8, 9, 10]:
-                self[Coordinate(x, y)] = ConwayState(True)
+        coords = [
+            [2, 0],
+            [3, 0],
+            [4, 0],
+            [8, 0],
+            [9, 0],
+            [10, 0],
+            [2, 5],
+            [3, 5],
+            [4, 5],
+            [8, 5],
+            [9, 5],
+            [10, 5],
+            [2, 7],
+            [3, 7],
+            [4, 7],
+            [8, 7],
+            [9, 7],
+            [10, 7],
+            [2, 12],
+            [3, 12],
+            [4, 12],
+            [8, 12],
+            [9, 12],
+            [10, 12],
+            [0, 2],
+            [0, 3],
+            [0, 4],
+            [0, 8],
+            [0, 9],
+            [0, 10],
+            [5, 2],
+            [5, 3],
+            [5, 4],
+            [5, 8],
+            [5, 9],
+            [5, 10],
+            [7, 2],
+            [7, 3],
+            [7, 4],
+            [7, 8],
+            [7, 9],
+            [7, 10],
+            [12, 2],
+            [12, 3],
+            [12, 4],
+            [12, 8],
+            [12, 9],
+            [12, 10],
+        ]
+        for x in range(13):
+            for y in range(13):
+                if [x, y] in coords:
+                    self[Coordinate(x, y)] = ConwayState(True)
+                else:
+                    self[Coordinate(x, y)] = ConwayState(False)
