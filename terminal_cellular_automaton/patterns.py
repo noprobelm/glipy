@@ -8,11 +8,19 @@ from .coordinate import Coordinate
 
 
 class Pattern(Matrix2D):
+    """A boilerplate Pattern class. All patterns should derive from this class.
+
+    A pattern is simply a subclass of a Matrix2D. The intent is that the user will build their own patterns using this
+    interface, then pass them into an existing simulation using the Simulation.spawn() method
+    """
+
     def __init__(self, xmax: int, ymax: int, states: Sequence[Sequence[CellState]]):
         super().__init__(xmax, ymax, states)
 
 
 class ConwayPattern(Pattern):
+    """A boilerplate Pattern class for Conway patterns"""
+
     def __init__(self, xmax: int, ymax: int, states: Sequence[Sequence[ConwayState]]):
         super().__init__(xmax, ymax, states)
 
@@ -20,6 +28,17 @@ class ConwayPattern(Pattern):
     def fill_dead(
         xmax: int, ymax: int, alive: Sequence[Coordinate]
     ) -> List[List[ConwayState]]:
+        """Convenience method for filling in dead cell states based on coordinates of staes known to ba alive
+
+        Args:
+            xmax (int): The maximum x coordinate of a pattern
+            ymax (int): The maximum y coordinate of a pattern
+            alive (Sequence[Coordinate]): A sequence of coordinates of cells known to be alive
+
+        Returns:
+            List[List[ConwayState]]: A list representative of a cellular automaton matrix
+        """
+
         states: List[List[ConwayState]] = []
         for y in range(ymax + 1):
             states.append([])
@@ -33,16 +52,34 @@ class ConwayPattern(Pattern):
 
     @classmethod
     def from_life(cls, path: str):
+        """Builds a pattern from 'life' data compliant with life version 1.06 read from a file
+
+        Args:
+            path (str): The path of the file to read
+
+        Returns:
+            A ConwayPattern based on 'life' data
+        """
         data = reader.life(path)
         return cls(*data)
 
     @classmethod
     def from_rle(cls, path: str):
+        """Builds a pattern from compliant Run Length Encoded (RLE) data read from a file.
+
+        Args:
+            path (str): The path of the file to read
+
+        Returns:
+            A ConwayPattern based on 'rle' data
+        """
         data = reader.rle(path)
         return cls(data.xmax, data.ymax, data.states)
 
 
 class Glider(ConwayPattern):
+    """A glider pattern"""
+
     def __init__(self):
         xmax = 2
         ymax = 2
@@ -60,10 +97,11 @@ class Glider(ConwayPattern):
 
 
 class Pulsar(ConwayPattern):
+    """A pulsar pattern"""
+
     def __init__(self):
         xmax = 12
         ymax = 12
-        states = []
         alive = [
             Coordinate(x, y)
             for x, y in (
@@ -118,15 +156,15 @@ class Pulsar(ConwayPattern):
             )
         ]
         states = self.fill_dead(xmax, ymax, alive)
-
         super().__init__(xmax, ymax, states)
 
 
 class CloverLeaf(ConwayPattern):
+    """A CloverLeaf pattern"""
+
     def __init__(self):
         xmax = 8
         ymax = 10
-        states = []
         alive = [
             Coordinate(x, y)
             for x, y in (
@@ -174,5 +212,4 @@ class CloverLeaf(ConwayPattern):
         ]
 
         states = self.fill_dead(xmax, ymax, alive)
-
         super().__init__(xmax, ymax, states)
