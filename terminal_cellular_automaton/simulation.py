@@ -123,7 +123,7 @@ class Simulation:
 
     def start(
         self,
-        refresh_rate: int = 0,
+        refresh_rate: int = 30,
         duration: Union[float, int] = 0,
         render: Optional[bool] = True,
         debug=False,
