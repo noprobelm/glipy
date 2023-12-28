@@ -15,12 +15,12 @@ def life(path: str) -> PatternData:
     xmax = 0
     ymax = 0
     alive = []
-    states = []
+    states: List[List[ConwayState]] = []
     for line in lines:
         if line.startswith("#"):
             continue
-        line = line.split(" ")
-        coord = Coordinate(int(line[0]), int(line[1]))
+        split = line.split(" ")
+        coord = Coordinate(int(split[0]), int(split[1]))
         alive.append(coord)
         if coord.x > xmax:
             xmax = coord.x
@@ -43,19 +43,32 @@ def rle(path: str) -> PatternData:
         data = re.search(r"(x = \d+).*(y = \d+)", line)
         if data is None:
             raise ValueError(
-                f"File {path} missing header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
+                f"File {path} has malformatted header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
             )
 
-        width = int(re.search(r"\d+", data[1]).group(0))
-        height = int(re.search(r"\d+", data[2]).group(0))
+        width_match = re.search(r"\d+", data[1])
+        height_match = re.search(r"\d+", data[2])
+        if width_match is None or height_match is None:
+            raise ValueError(
+                f"File {path} has malformatted header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
+            )
+        width = int(width_match.group(0))
+        height = int(height_match.group(0))
 
         rules = re.search(r"rule = .*", line)
         if rules is None:
             birth_rules = None
             survival_rules = None
         else:
-            birth_rules = [int(n) for n in (re.search(r"B\d+", line).group(0)[1:])]
-            survival_rules = [int(n) for n in (re.search(r"S\d+", line).group(0)[1:])]
+            birth_match = re.search(r"B\d+", line)
+            survival_match = re.search(r"S\d+", line)
+            if birth_match is None or survival_match is None:
+                raise ValueError(
+                    f"File {path} has malformatted header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
+                )
+
+            birth_rules = [int(n) for n in birth_match.group(0)[1:]]
+            survival_rules = [int(n) for n in survival_match.group(0)[1:]]
 
         return Header(width, height, birth_rules, survival_rules)
 
@@ -64,8 +77,8 @@ def rle(path: str) -> PatternData:
         ConwayState.survival_rules = header.survival_rules or ConwayState.survival_rules
 
     def parse_states(xmax: int, ymax: int, data: str) -> List[List[ConwayState]]:
-        nums = []
-        states = [[]]
+        nums: List[str] = []
+        states: List[List[ConwayState]] = [[]]
         y = 0
         for c in data:
             if c == "!":
