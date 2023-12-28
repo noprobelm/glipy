@@ -38,7 +38,7 @@ class Matrix2D:
         self.ymax = ymax
         self.midpoint = Coordinate(self.xmax // 2, self.ymax // 2)
         self.max_coord = Coordinate(self.xmax, self.ymax)
-        if isinstance(fill_with, list):
+        if fill_with is not None:
             self.matrix: List[List[Any]] = fill_with
         else:
             self.matrix: List[List[Any]] = []
