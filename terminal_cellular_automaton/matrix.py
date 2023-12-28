@@ -14,7 +14,10 @@ class Matrix2D:
     The matrix is filled with "None" by default. It is up to the user to fill out the matrix with compatible objects.
 
     Attributes:
+        xmax (int): The maximum x coordinate
+        ymax (int): The maximum y coordinate
         max_coord (Coordinate): The maximum valid coordinate found in the grid
+        midpoint (Coordinate): The midpoint of the matrix
         matrix (List[List[Any]]): The underlying 2d matrix
 
     """
@@ -36,8 +39,8 @@ class Matrix2D:
         """
         self.xmax = xmax
         self.ymax = ymax
-        self.midpoint = Coordinate(self.xmax // 2, self.ymax // 2)
         self.max_coord = Coordinate(self.xmax, self.ymax)
+        self.midpoint = Coordinate(self.xmax // 2, self.ymax // 2)
         if isinstance(fill_with, list):
             matrix = fill_with
         else:
