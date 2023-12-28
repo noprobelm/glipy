@@ -27,7 +27,7 @@ class Matrix2D:
     ) -> None:
         """Initializes a Matrix2D instance
 
-        Generates a new grid filled with type 'NoneType'
+        Generates a new grid filled with specified type
 
         Args:
             xmax (int): The maximum x value in the grid
@@ -38,14 +38,16 @@ class Matrix2D:
         self.ymax = ymax
         self.midpoint = Coordinate(self.xmax // 2, self.ymax // 2)
         self.max_coord = Coordinate(self.xmax, self.ymax)
-        if fill_with is not None:
-            self.matrix: List[List[Any]] = fill_with
+        if isinstance(fill_with, list):
+            matrix = fill_with
         else:
-            self.matrix: List[List[Any]] = []
+            matrix = []
             for y in range(self.ymax + 1):
-                self.matrix.append([])
+                matrix.append([])
                 for _ in range(self.xmax + 1):
-                    self.matrix[y].append(fill_with)
+                    matrix[y].append(fill_with)
+
+        self.matrix = matrix
 
     def __contains__(self, coord: Coordinate):
         """Checks if a given coordinate is within range of the matrix
