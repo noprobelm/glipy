@@ -15,7 +15,7 @@ class CellState(Protocol):
         """
         ...
 
-    def change_state(self, neighbors: list[Self]) -> CellState:
+    def change_state(self, neighbors: List[Self]) -> CellState:
         """Retrieves a new state based on its neighbors
 
         Returns:
@@ -39,8 +39,13 @@ class ConwayState:
     """
 
     _colors = ("green", "red")
+    birth_rules = [3]
+    survival_rules = [2, 3]
 
-    def __init__(self, alive: bool = False):
+    def __init__(
+        self,
+        alive: bool = False,
+    ):
         """Initializes an instance of the ConwayState class
 
         Args
@@ -80,13 +85,13 @@ class ConwayState:
 
         match self.alive:
             case True:
-                if alive_count == 2 or alive_count == 3:
+                if any(alive_count == r for r in self.survival_rules):
                     return ConwayState(True)
                 else:
                     return ConwayState(False)
 
             case False:
-                if alive_count == 3:
+                if any(alive_count == r for r in self.birth_rules):
                     return ConwayState(True)
                 else:
                     return ConwayState(False)
