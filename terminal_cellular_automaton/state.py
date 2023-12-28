@@ -25,16 +25,13 @@ class CellState(Protocol):
 
 
 class ConwayState:
-    """A ConwayState
-
-    This will emulate the classic rules to "Conway's Game of Life"
-
-    - If a cell is ALIVE and is adjacent to 2 or 3 other cells that are also ALIVE, the cell will become DEAD
-    - If a cell is DEAD and is adjacent to exactly 3 other cells that are ALIVE, the cell will become ALIVE
+    """A state that follows the rules for Conway's Game of Life
 
     Attributes:
-        colors (Tuple[str, str]): A tuple of colors (see Textualize's documentation for 'rich' for accepted values).
+        _colors (Tuple[str, str]): A tuple of colors (see Textualize's documentation for 'rich' for accepted values).
                                       The first index is the color for ALIVE states. 2nd is DEAD
+        birth_rules (List[int]): A list of integers representing the rules for a cell to become "resurrect"
+        survival_rules (List[int]): A list of integers representing the rules for a cell to stay alive
         alive (bool): Flag for whether the cell is ALIVE (True) or DEAD (False)
     """
 
@@ -57,27 +54,34 @@ class ConwayState:
 
     @property
     def color(self) -> str:
+        """Returns the first index of self.colors if alive, else the second"""
         if self.alive is True:
             return self.colors[0]
         return self.colors[1]
 
     @property
     def colors(self):
+        """Interface for accessing the underlying ConwayState._colors class attr"""
         return ConwayState._colors
 
     @colors.setter
     def colors(self, colors: Tuple[str, str]) -> None:
+        """Interface for setting the underlying ConwayState._colors class attr"""
         ConwayState._colors = colors
 
     def change_state(self, neighbors: List[ConwayState]) -> ConwayState:
         """Changes the state of the cell
 
-        - If a cell is ALIVE and is adjacent to 2 or 3 other cells that are also ALIVE, the cell will become DEAD
-        - If a cell is DEAD and is adjacent to exactly 3 other cells that are ALIVE, the cell will become ALIVE
+        An instance of this class will follow birth/survival rules according to the ConwayState.birth_rules and
+        ConwayState.survival_rules class attributes. Default rules are B3/S23 in accordance with the common standard
 
         Args:
             neighbors (List[ConwayState]): A list of neighbor's states
+
+        Returns:
+            The cell's new state
         """
+
         alive_count = 0
         for n in neighbors:
             if n.alive is True:
