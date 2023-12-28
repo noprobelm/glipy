@@ -10,7 +10,7 @@ parser.add_argument(
     "-r",
     "--refresh-rate",
     type=int,
-    default=60,
+    default=30,
     help="The refresh rate of the simulation",
 )
 
