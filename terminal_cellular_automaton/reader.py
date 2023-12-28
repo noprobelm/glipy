@@ -1,16 +1,27 @@
+"""A module containing functions to read standard cellular automaton data from I/O"""
+
 from collections import namedtuple
 import re
 from typing import List
 from .state import ConwayState
 from .coordinate import Coordinate
 
-Header = namedtuple("Header", ["width", "height", "birth_rules", "survival_rules"])
+# Stores header data from  properly formatted RLE I/O
+RLEHeader = namedtuple("Header", ["width", "height", "birth_rules", "survival_rules"])
+
+# Stores data needed to build a life pattern
 PatternData = namedtuple("PatternData", ["xmax", "ymax", "states"])
 
 
-def life(path: str) -> PatternData:
-    with open(path, "r") as f:
-        lines = f.readlines()
+def life(lines: List[str]) -> PatternData:
+    """Reads I/O compliant with life version 1.06
+
+    Args:
+        lines (List[str]): The lines from a life 1.06 I/O stream
+
+    Returns:
+        PatternData
+    """
 
     xmax = 0
     ymax = 0
@@ -38,19 +49,42 @@ def life(path: str) -> PatternData:
     return PatternData(xmax, ymax, states)
 
 
-def rle(path: str) -> PatternData:
-    def parse_header(line: str) -> Header:
+def rle(lines: List[str]) -> PatternData:
+    """Reads I/O compliant with Run Length Encoded (RLE)
+
+    Args:
+        lines (List[str]): The lines from a RLE I/O stream
+
+    Raises:
+        ValueError: A malformatted RLE stream was detected.
+
+    Returns:
+        PatternData
+    """
+
+    def parse_header(line: str) -> RLEHeader:
+        """Parses header data
+
+        Args:
+            line (str): The header line from an RLE I/O stream
+
+        Raises:
+            ValueError: A malformatted RLE stream was detected
+
+        Returns
+            RLEHeader
+        """
         data = re.search(r"(x = \d+).*(y = \d+)", line)
         if data is None:
             raise ValueError(
-                f"File {path} has malformatted header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
+                f"I/O has malformatted header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
             )
 
         width_match = re.search(r"\d+", data[1])
         height_match = re.search(r"\d+", data[2])
         if width_match is None or height_match is None:
             raise ValueError(
-                f"File {path} has malformatted header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
+                f"I/O has malformatted header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
             )
         width = int(width_match.group(0))
         height = int(height_match.group(0))
@@ -64,19 +98,43 @@ def rle(path: str) -> PatternData:
             survival_match = re.search(r"S\d+", line)
             if birth_match is None or survival_match is None:
                 raise ValueError(
-                    f"File {path} has malformatted header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
+                    f"I/O has malformatted header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
                 )
 
             birth_rules = [int(n) for n in birth_match.group(0)[1:]]
             survival_rules = [int(n) for n in survival_match.group(0)[1:]]
 
-        return Header(width, height, birth_rules, survival_rules)
+        return RLEHeader(width, height, birth_rules, survival_rules)
 
-    def set_birth_rules(header: Header):
+    def set_birth_rules(header: RLEHeader):
+        """Sets the birth and survival rules (if detected in the header data)
+
+        Args:
+            header (RLEHeader): The header data
+        """
         ConwayState.birth_rules = header.birth_rules or ConwayState.birth_rules
         ConwayState.survival_rules = header.survival_rules or ConwayState.survival_rules
 
     def parse_states(xmax: int, ymax: int, data: str) -> List[List[ConwayState]]:
+        """Parses state data based on RLE I/O stream content
+
+        TODO: This is perfectly functional, but quite messy. We need to come back and do some cleanup
+
+        This function searches for characters and spawns cells based on various criteria defined in the RLE standard.
+
+        - If a row is not filled before reaching a "$" (new row) delimiter, fill it with dead cells
+        - If multiple "$" (new row) characters are detected, fill the previous one with dead cells
+        - If "!" is detected, fill in the row(s) if they don't meet the RLE header width/height specs
+        - If no "!" is detected and we've reached the end, return our state data
+
+        Args:
+            xmax (int): The maximum x value of a cell state
+            ymax (int): The maximum y value of a cell state
+            data (str): Concatenated cell data from the rle file
+
+        Returns:
+            A list of conway states resembling a 2d matrix
+        """
         nums: List[str] = []
         states: List[List[ConwayState]] = [[]]
         y = 0
@@ -128,9 +186,6 @@ def rle(path: str) -> PatternData:
 
         return states
 
-    with open(path, "r") as f:
-        lines = f.readlines()
-
     header = None
     row = None
     for row, line in enumerate(lines):
@@ -141,7 +196,7 @@ def rle(path: str) -> PatternData:
             break
     if header is None or row is None:
         raise ValueError(
-            f"No valid RLE header found in file '{path}'. See formatting standards at https://conwaylife.com/wiki/Run_Length_Encoded"
+            f"I/O missing header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
         )
 
     set_birth_rules(header)

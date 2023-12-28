@@ -64,6 +64,8 @@ def clover_leaf() -> Simulation:
 def domino_sparker() -> Simulation:
     """A domino sparker generated from an rle file"""
     sim = Simulation(MooreCell, ConwayState(False))
-    gun = patterns.ConwayPattern.from_rle("p11dominosparkeron56p27.rle")
+    with open("p11dominosparkeron56p27.rle", "r") as f:
+        lines = f.readlines()
+    gun = patterns.ConwayPattern.from_rle(lines)
     sim.spawn(sim.midpoint - gun.midpoint, gun)
     return sim
