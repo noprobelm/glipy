@@ -7,21 +7,29 @@ from . import reader
 from .coordinate import Coordinate
 
 
-def fill_dead(xmax: int, ymax: int, alive: Sequence[Coordinate]):
-    states = []
-    for y in range(ymax + 1):
-        states.append([])
-        for x in range(xmax + 1):
-            if Coordinate(x, y) in alive:
-                states[y].append(ConwayState(True))
-            else:
-                states[y].append(ConwayState(False))
-    return states
-
-
 class Pattern(Matrix2D):
-    def __init__(self, xmax: int, ymax: int, states: List[List[CellState]]):
+    def __init__(self, xmax: int, ymax: int, states: Sequence[Sequence[CellState]]):
         super().__init__(xmax, ymax, states)
+
+
+class ConwayPattern(Pattern):
+    def __init__(self, xmax: int, ymax: int, states: Sequence[Sequence[ConwayState]]):
+        super().__init__(xmax, ymax, states)
+
+    @staticmethod
+    def fill_dead(
+        xmax: int, ymax: int, alive: Sequence[Coordinate]
+    ) -> List[List[ConwayState]]:
+        states: List[List[ConwayState]] = []
+        for y in range(ymax + 1):
+            states.append([])
+            for x in range(xmax + 1):
+                if Coordinate(x, y) in alive:
+                    states[y].append(ConwayState(True))
+                else:
+                    states[y].append(ConwayState(False))
+
+        return states
 
     @classmethod
     def from_life(cls, path: str):
@@ -34,7 +42,7 @@ class Pattern(Matrix2D):
         return cls(data.xmax, data.ymax, data.states)
 
 
-class Glider(Pattern):
+class Glider(ConwayPattern):
     def __init__(self):
         xmax = 2
         ymax = 2
@@ -47,11 +55,11 @@ class Glider(Pattern):
             Coordinate(2, 2),
         )
 
-        states = fill_dead(xmax, ymax, alive)
+        states = self.fill_dead(xmax, ymax, alive)
         super().__init__(xmax, ymax, states)
 
 
-class Pulsar(Pattern):
+class Pulsar(ConwayPattern):
     def __init__(self):
         xmax = 12
         ymax = 12
@@ -109,12 +117,12 @@ class Pulsar(Pattern):
                 (12, 10),
             )
         ]
-        states = fill_dead(xmax, ymax, alive)
+        states = self.fill_dead(xmax, ymax, alive)
 
         super().__init__(xmax, ymax, states)
 
 
-class CloverLeaf(Pattern):
+class CloverLeaf(ConwayPattern):
     def __init__(self):
         xmax = 8
         ymax = 10
@@ -165,6 +173,6 @@ class CloverLeaf(Pattern):
             )
         ]
 
-        states = fill_dead(xmax, ymax, alive)
+        states = self.fill_dead(xmax, ymax, alive)
 
         super().__init__(xmax, ymax, states)
