@@ -67,11 +67,3 @@ def domino_sparker() -> Simulation:
     gun = patterns.ConwayPattern.from_rle("p11dominosparkeron56p27.rle")
     sim.spawn(sim.midpoint - gun.midpoint, gun)
     return sim
-
-
-CONWAY_1 = conway_1()
-CONWAY_2 = conway_2()
-PULSAR = pulsar()
-GLIDER = glider()
-CLOVER_LEAF = clover_leaf()
-DOMINO_SPARKER = domino_sparker()
