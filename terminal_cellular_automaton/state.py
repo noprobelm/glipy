@@ -4,7 +4,7 @@ from typing import List, Protocol, Self, Tuple
 
 
 class CellState(Protocol):
-    """A protocol to reference when creating a new type of cell"""
+    """A protocol to reference when creating a new type of cell state"""
 
     @property
     def color(self) -> str:
