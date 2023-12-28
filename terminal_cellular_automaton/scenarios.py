@@ -10,6 +10,7 @@ from .state import ConwayState
 
 
 def conway_1() -> Simulation:
+    """A random game, where each cell has a 1 in 2 chance of spawning as alive"""
     sim = Simulation(MooreCell, ConwayState(False))
     for y in range(sim.ymax + 1):
         for x in range(sim.xmax + 1):
@@ -21,6 +22,7 @@ def conway_1() -> Simulation:
 
 
 def conway_2() -> Simulation:
+    """A random game, where each cell has a 1 in 10 chance of spawning as alive"""
     sim = Simulation(MooreCell, ConwayState(False))
     for y in range(sim.ymax + 1):
         for x in range(sim.xmax + 1):
@@ -36,6 +38,7 @@ def conway_2() -> Simulation:
 
 
 def pulsar() -> Simulation:
+    """A pulsar life generated from the patterns module"""
     sim = Simulation(MooreCell, ConwayState(False))
     pulsar = patterns.Pulsar()
     sim.spawn(sim.midpoint - pulsar.midpoint, pulsar)
@@ -43,6 +46,7 @@ def pulsar() -> Simulation:
 
 
 def glider() -> Simulation:
+    """A glider life generated from the patterns module"""
     sim = Simulation(MooreCell, ConwayState(False))
     glider = patterns.Glider()
     sim.spawn(glider.midpoint, glider)
@@ -50,6 +54,7 @@ def glider() -> Simulation:
 
 
 def clover_leaf() -> Simulation:
+    """A clover leaf generated from the patterns module"""
     sim = Simulation(MooreCell, ConwayState(False))
     leaf = patterns.CloverLeaf()
     sim.spawn(sim.midpoint - leaf.midpoint, leaf)
@@ -57,8 +62,9 @@ def clover_leaf() -> Simulation:
 
 
 def domino_sparker() -> Simulation:
+    """A domino sparker generated from an rle file"""
     sim = Simulation(MooreCell, ConwayState(False))
-    gun = patterns.Pattern.from_rle("p11dominosparkeron56p27.rle")
+    gun = patterns.ConwayPattern.from_rle("p11dominosparkeron56p27.rle")
     sim.spawn(sim.midpoint - gun.midpoint, gun)
     return sim
 
