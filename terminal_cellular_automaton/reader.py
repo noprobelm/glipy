@@ -63,7 +63,7 @@ def rle(path: str) -> PatternData:
         ConwayState.birth_rules = header.birth_rules or ConwayState.birth_rules
         ConwayState.survival_rules = header.survival_rules or ConwayState.survival_rules
 
-    def parse_states(xmax: int, data: str) -> List[List[ConwayState]]:
+    def parse_states(xmax: int, ymax: int, data: str) -> List[List[ConwayState]]:
         nums = []
         states = [[]]
         y = 0
@@ -72,6 +72,10 @@ def rle(path: str) -> PatternData:
                 if len(states[y]) < xmax:
                     for _ in range(xmax - len(states[y]) + 1):
                         states[y].append(ConwayState(alive=False))
+                if len(states) < ymax:
+                    for _ in range(ymax - len(states) + 1):
+                        states.append([ConwayState(False) for s in range(xmax + 1)])
+                return states
             elif c == "o" or c == "b":
                 if len(nums) == 0:
                     n = 1
@@ -129,5 +133,5 @@ def rle(path: str) -> PatternData:
 
     set_birth_rules(header)
     data = "".join(line.strip() for line in lines[row + 1 :])
-    states = parse_states(header.width - 1, data)
+    states = parse_states(header.width - 1, header.height - 1, data)
     return PatternData(header.width - 1, header.height - 1, states)
