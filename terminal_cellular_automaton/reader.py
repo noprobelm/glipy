@@ -3,7 +3,6 @@ import re
 from typing import List
 from .state import ConwayState
 from .coordinate import Coordinate
-from .cell import MooreCell
 
 Header = namedtuple("Header", ["width", "height", "birth_rules", "survival_rules"])
 PatternData = namedtuple("PatternData", ["xmax", "ymax", "states"])
