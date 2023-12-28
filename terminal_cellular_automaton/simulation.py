@@ -34,7 +34,11 @@ class Simulation:
         1. matrix (CellMatrix): The underlying cell matrix
     """
 
-    def __init__(self, cell_type: Type[Cell], initial_state: CellState) -> None:
+    def __init__(
+        self,
+        cell_type: Type[Cell],
+        initial_state: Union[CellState, List[List[CellState]]],
+    ) -> None:
         """Initializes an instance of the Simulation class
 
         Args:
@@ -47,15 +51,25 @@ class Simulation:
         ymax = console.height * 2
         max_coord = Coordinate(xmax, ymax)
 
-        fill_with = []
-        for y in range(ymax + 1):
-            fill_with.append([])
-            for x in range(xmax + 1):
-                coord = Coordinate(x, y)
-                c = cell_type(coord)
-                neighbors = c.get_neighbors(max_coord)
-                state = initial_state
-                fill_with[y].append(StateData(neighbors, state))
+        fill_with: List[List[StateData]] = []
+
+        if isinstance(initial_state, list):
+            for y in range(ymax + 1):
+                for x in range(xmax + 1):
+                    coord = Coordinate(x, y)
+                    c = cell_type(coord)
+                    neighbors = c.get_neighbors(max_coord)
+                    state = initial_state[y][x]
+                    fill_with[y].append(StateData(neighbors, state))
+        else:
+            for y in range(ymax + 1):
+                fill_with.append([])
+                for x in range(xmax + 1):
+                    coord = Coordinate(x, y)
+                    c = cell_type(coord)
+                    neighbors = c.get_neighbors(max_coord)
+                    fill_with[y].append(StateData(neighbors, initial_state))
+
         self.matrix = Matrix2D(xmax, ymax, fill_with)
 
     @property
