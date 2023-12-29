@@ -30,6 +30,7 @@ While `tca` can read most `rle` (URL or local path) and `life` (local path) comp
 - `pulsar`: A pulsar life
 - `glider`: A glider life
 - `clover_leaf` A clover leaf life
+- `domino_sparker` A domino sparker life
 
 ## Creating your own game
 - Select a `Cell` type from the `cell` module (or make your own; it must adhere to the `Cell` protocol)
