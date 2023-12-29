@@ -1,7 +1,8 @@
+from __future__ import annotations
 import time
 from copy import copy
 from dataclasses import dataclass
-from typing import List, Optional, Type, Union
+from typing import List, Optional, Type, Union, Any
 
 from rich.console import Console, ConsoleOptions, RenderResult
 from rich.live import Live
@@ -16,7 +17,7 @@ from .state import CellState
 
 @dataclass
 class StateData:
-    """Used to simplify access of neighbors and state data in the Simulation class
+    """Used to simplify access of neighbors and state data in an Automaton instance
 
     Args:
         neighbors (List[Coordinate]): A list of the neighbor's coordinates to access
@@ -28,10 +29,14 @@ class StateData:
 
 
 class Automaton:
-    """A class to run a simulation from the terminal
+    """Hosts the data and methods to store/evolve an automaton
 
     Attributes:
-        1. matrix (CellMatrix): The underlying cell matrix
+        xmax (int): The maximum x coordinate
+        ymax (int): The maximum y coordinate
+        max_coord (Coordinate): The maximum valid coordinate found in the grid
+        midpoint (Coordinate): The midpoint of the matrix
+        matrix (CellMatrix): The underlying cell matrix
     """
 
     def __init__(
@@ -48,6 +53,7 @@ class Automaton:
             initial_state (CellState): The initial state of a cell the matrix should be filled with
         """
 
+        self._cell_type = cell_type
         if xmax is None or ymax is None:
             console = Console()
             if xmax is None:
@@ -59,28 +65,26 @@ class Automaton:
             self.ymax = ymax
 
         self.max_coord = Coordinate(self.xmax, self.ymax)
-        self.midpoint = (self.xmax // 2, self.ymax // 2)
+        self.midpoint = Coordinate(self.xmax // 2, self.ymax // 2)
 
-        fill_with: List[List[StateData]] = []
+        self.matrix: List[List[StateData]] = []
 
         if isinstance(initial_state, list):
             for y in range(self.ymax + 1):
                 for x in range(self.xmax + 1):
                     coord = Coordinate(x, y)
-                    c = cell_type(coord)
+                    c = self._cell_type(coord)
                     neighbors = c.get_neighbors(self.max_coord)
                     state = initial_state[y][x]
-                    fill_with[y].append(StateData(neighbors, state))
+                    self.matrix[y].append(StateData(neighbors, state))
         else:
             for y in range(self.ymax + 1):
-                fill_with.append([])
+                self.matrix.append([])
                 for x in range(self.xmax + 1):
                     coord = Coordinate(x, y)
-                    c = cell_type(coord)
+                    c = self._cell_type(coord)
                     neighbors = c.get_neighbors(self.max_coord)
-                    fill_with[y].append(StateData(neighbors, initial_state))
-
-        self.matrix = Matrix2D(self.xmax, self.ymax, fill_with)
+                    self.matrix[y].append(StateData(neighbors, initial_state))
 
     def set_state(self, coord: Coordinate, state: CellState) -> None:
         """Spawns a CellState instance at a given x/y coordinate
@@ -90,7 +94,7 @@ class Automaton:
             cell (Cell): An object which conforms to the Cell protocol
         """
 
-        self.matrix[coord].state = state
+        self.matrix[coord.y][coord.x].state = state
 
     def spawn(self, midpoint: Coordinate, pattern: Matrix2D):
         for y in range(pattern.ymax + 1):
@@ -168,17 +172,33 @@ class Automaton:
         Visits each cell in the 2d matrix and retrieves its new state by passing its neighbor states to the change_state
         method.
         """
-        ref = copy(self.matrix)
-        for y in range(self.matrix.ymax + 1):
-            for x in range(self.matrix.xmax + 1):
+        ref = copy(self)
+        for y in range(self.ymax + 1):
+            for x in range(self.xmax + 1):
                 coord = Coordinate(x, y)
-                data = ref[coord]
+                data = ref.matrix[coord.y][coord.x]
                 neighbor_states = []
                 for nc in data.neighbors:
-                    neighbor_state = ref[nc].state
+                    neighbor_state = ref.matrix[nc.y][nc.x].state
                     neighbor_states.append(neighbor_state)
                 new = data.state.change_state(neighbor_states)
-                self.matrix[coord].state = new
+                self.matrix[coord.y][coord.x].state = new
+
+    def __copy__(self) -> Automaton:
+        """Returns a shallow copy of an instance
+
+        Returns:
+            A shallow copy of a Matrix2D instance
+        """
+        matrix = []
+        for y in range(self.ymax + 1):
+            matrix.append([])
+            for x in range(self.xmax + 1):
+                matrix[y].append(copy(self.matrix[y][x]))
+        cls = self.__class__
+        result = cls.__new__(cls)
+        result.__dict__.update({"matrix": matrix})
+        return result
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
@@ -192,9 +212,9 @@ class Automaton:
         Yields:
             2 cells in the simulation, row by row, until all cell states have been rendered.
         """
-        for y in range(self.matrix.max_coord.y)[::2]:
-            for x in range(self.matrix.max_coord.x + 1):
-                bg = self.matrix[Coordinate(x, y)].state.color
-                fg = self.matrix[Coordinate(x, y + 1)].state.color
+        for y in range(self.max_coord.y)[::2]:
+            for x in range(self.max_coord.x + 1):
+                bg = self.matrix[y][x].state.color
+                fg = self.matrix[y + 1][x].state.color
                 yield Segment("▄", Style(color=fg, bgcolor=bg))
             yield Segment.line()
