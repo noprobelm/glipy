@@ -6,7 +6,7 @@ from typing import List, Protocol, Self, Sequence
 class CellState(Protocol):
     """A protocol to reference when creating a new type of cell state"""
 
-    # _colors should be a tuple of colors equivalent to the number of possible states in a CellState class
+    # colors should be a tuple of colors equivalent to the number of possible states in a CellState class
     colors: Sequence[str]
 
     @property
