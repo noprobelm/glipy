@@ -39,5 +39,17 @@ While `tca` can read most `rle` (URL or local path) and `life` (local path) comp
 - Run the sim!
 
 ## Examples
+`tca https://conwaylife.com/patterns/p12cloverleafhassler.rle`
+![Cloverleaf Hassler](cloverleaf-interchange.gif)
+
+`tca domino-sparker`
+![Domino Sparker](domino-sparker.gif)
+
+`tca pulsar`
+![Pulsar](pulsar.gif)
+
+`tca conway_2`
+![Conway 2](conway-2.gif)
+
 ### Conway's Game of Life
 ![Conway's Game of Life](conway.gif)
