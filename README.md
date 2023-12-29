@@ -44,6 +44,9 @@ While `tca` can read most `rle` (URL or local path) and `life` (local path) comp
 `tca https://conwaylife.com/patterns/p12cloverleafhassler.rle`
 ![Cloverleaf Hassler](cloverleaf-interchange.gif)
 
+`tca https://conwaylife.com/patterns/387p132pattern.rle --colors blue black`
+![387p132](p387p132.gif)
+
 `tca domino-sparker`
 ![Domino Sparker](domino-sparker.gif)
 
