@@ -4,7 +4,8 @@ import os
 import random
 from pathlib import Path
 
-import requests
+# mypy is unable to find library stubs for this module
+import requests  # type: ignore
 
 from . import patterns
 from .cell import MooreCell
