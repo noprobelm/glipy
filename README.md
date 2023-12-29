@@ -19,6 +19,8 @@ options:
 
   `-x`, `--debug`           Flag to make the simluation run in debug mode (default: `False`)
 
+  `-c COLORS [COLORS ...]`, `--colors COLORS [COLORS ...]`
+
   `-n`, `--no-render`       Disables simulation rendering to the terminal (default: `False`)
 
 
@@ -50,6 +52,3 @@ While `tca` can read most `rle` (URL or local path) and `life` (local path) comp
 
 `tca conway_2`
 ![Conway 2](conway-2.gif)
-
-### Conway's Game of Life
-![Conway's Game of Life](conway.gif)
