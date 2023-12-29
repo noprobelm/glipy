@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser(
     description="A cellular automaton simulator with support for terminal rendering"
 )
 
-parser.add_argument("target")
+parser.add_argument("target", nargs="?", default="domino_sparker")
 
 parser.add_argument(
     "-r",
