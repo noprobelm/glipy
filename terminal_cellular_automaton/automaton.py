@@ -2,7 +2,7 @@ from __future__ import annotations
 import time
 from copy import copy
 from dataclasses import dataclass
-from typing import List, Optional, Type, Union
+from typing import List, Optional, Type, Union, Sequence
 
 from rich.console import Console, ConsoleOptions, RenderResult
 from rich.live import Live
@@ -42,7 +42,7 @@ class Automaton:
     def __init__(
         self,
         cell_type: Type[Cell],
-        initial_state: Union[CellState, List[List[CellState]]],
+        initial_state: Union[CellState, Sequence[Sequence[CellState]]],
         xmax: Optional[int] = None,
         ymax: Optional[int] = None,
     ) -> None:
