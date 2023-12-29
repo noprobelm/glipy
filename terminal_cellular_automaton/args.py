@@ -39,6 +39,10 @@ parser.add_argument(
     help="Disables simulation rendering to the terminal",
 )
 
-parser.add_argument("-s", "--scenario", default="pulsar")
+group = parser.add_mutually_exclusive_group()
+group.add_argument("--scenario")
+group.add_argument("--rle")
+group.add_argument("--url")
+group.add_argument("--random", action="store_true", default=None)
 
 args = vars(parser.parse_args())

@@ -2,7 +2,7 @@ Simulate cellular automaton directly to the terminal
 
 ## Usage
 
-usage: `tca [-r REFRESH_RATE] [-d DURATION] [-x] [-n] [-s SCENARIO]`
+usage: `tca [-h] [-r REFRESH_RATE] [-d DURATION] [-x] [-n] [--scenario SCENARIO | --rle RLE | --url URL]`
 
 | Option           | Default Value                                                 |
 |------------------|---------------------------------------------------------------|
@@ -10,7 +10,9 @@ usage: `tca [-r REFRESH_RATE] [-d DURATION] [-x] [-n] [-s SCENARIO]`
 | `--duration`     | `0` (infinitely run the simulation)                           |
 | `--debug`        | `False` (Disabled rendering and captures performance metrics) |
 | `--no-render`    | `False`                                                       |
-| `--scenario`     | `conway_2`                                                    |
+| `--scenario`     | Runs a specified scenario from the `scenarios` module         |
+| `--rle`          | Runs a specified `.rle` file                                  |
+| `--url`          | Runs a specified `.rle` a remote URL                          |
 
 ## Available scenarios
 - `conway_1`: A simple game of life simulation where each cell has an equal chance to 'spawn' as 'alive' 'dead'

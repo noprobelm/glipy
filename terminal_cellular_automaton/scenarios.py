@@ -7,6 +7,7 @@ from .cell import MooreCell
 from .coordinate import Coordinate
 from .simulation import Simulation
 from .state import ConwayState
+import requests
 
 
 def conway_1() -> Simulation:
@@ -68,4 +69,27 @@ def domino_sparker() -> Simulation:
         lines = f.readlines()
     gun = patterns.ConwayPattern.from_rle(lines)
     sim.spawn(sim.midpoint - gun.midpoint, gun)
+    return sim
+
+
+def from_rle(path: str) -> Simulation:
+    sim = Simulation(MooreCell, ConwayState(False))
+    with open(path, "r") as f:
+        lines = f.readlines()
+    pattern = patterns.ConwayPattern.from_rle(lines)
+    sim.spawn(sim.midpoint - pattern.midpoint, pattern)
+    return sim
+
+
+def from_url(url: str) -> Simulation:
+    sim = Simulation(MooreCell, ConwayState(False))
+    response = requests.get(url)
+    if response.status_code != 200:
+        raise ValueError(f"Error {response.status_code}: {response.reason}")
+    data = response.content.decode()
+    lines = data.strip().split("\n")
+    pattern = patterns.ConwayPattern.from_rle(lines)
+    sim.spawn(sim.midpoint - pattern.midpoint, pattern)
+    print(pattern)
+
     return sim
