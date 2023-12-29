@@ -1,0 +1,10 @@
+#N 34p7on56p27.rle
+#C https://conwaylife.com/wiki/34P7
+#C https://www.conwaylife.com/patterns/34p7on56p27.rle
+x = 45, y = 68, rule = B3/S23
+15$21b2o$21bo2bo3$19bo4bo$19bo2b2o$19b2o$15b2o$15b3o6bobo$14bo3bo8b2o
+$17b3o2b2o3b2o$7bo2bo3bo3bo4bobobo$11bo4b2o6b3o$6bo4bo4bo8bo3b3o$6b2o
+21bo$12bo21b2o$10b3o3bo8bo4bo4bo$15b3o6b2o4bo$14bobobo4bo3bo3bo2bo$13b
+2o3b2o2b3o$13b2o8bo3bo$15bobo6b3o$25b2o$21b2o$18b2o2bo$17bo4bo2$7bo4b
+2o$5bobo4bobo2bo2bo$3bo2bo6b3o3b2o$2b3obobo5b2o$b2o3b4o3b2o$2o5bobob3o
+$3o6bo2bo$bobo4bobo$2b2o4bo!

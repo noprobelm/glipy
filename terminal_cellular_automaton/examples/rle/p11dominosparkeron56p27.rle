@@ -1,0 +1,10 @@
+#N p11dominosparkeron56p27.rle
+#C https://conwaylife.com/wiki/56P27
+#C https://www.conwaylife.com/patterns/p11dominosparkeron56p27.rle
+x = 30, y = 40, rule = B3/S23
+16b2o4b2o$16bo5b2o$17bo$16b2o2b4o$14bo2bobo4bo$14b2o3bob4o$18bo2bo3b2o
+$18bo2bob2o2bo$22bobob2o$20bobobo$15b2o3bo3bo$15bo2bo3b2o3$13bo4bo$13b
+o2b2o$13b2o$9b2o$9b3o6bobo$8bo3bo8b2o$11b3o2b2o3b2o$bo2bo3bo3bo4bobobo
+$5bo4b2o6b3o$o4bo4bo8bo3b3o$2o21bo$6bo21b2o$4b3o3bo8bo4bo4bo$9b3o6b2o
+4bo$8bobobo4bo3bo3bo2bo$7b2o3b2o2b3o$7b2o8bo3bo$9bobo6b3o$19b2o$15b2o$
+12b2o2bo$11bo4bo3$11bo2bo$13b2o!

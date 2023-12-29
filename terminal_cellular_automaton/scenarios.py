@@ -8,6 +8,8 @@ from .coordinate import Coordinate
 from .simulation import Simulation
 from .state import ConwayState
 import requests
+from pathlib import Path
+import os
 
 
 def conway_1() -> Simulation:
@@ -65,10 +67,13 @@ def clover_leaf() -> Simulation:
 def domino_sparker() -> Simulation:
     """A domino sparker generated from an rle file"""
     sim = Simulation(MooreCell, ConwayState(False))
-    with open("p11dominosparkeron56p27.rle", "r") as f:
+    rle = os.path.join(
+        Path(__file__).parent, "examples/rle/p11dominosparkeron56p27.rle"
+    )
+    with open(rle, "r") as f:
         lines = f.readlines()
-    gun = patterns.ConwayPattern.from_rle(lines)
-    sim.spawn(sim.midpoint - gun.midpoint, gun)
+    sparker = patterns.ConwayPattern.from_rle(lines)
+    sim.spawn(sim.midpoint - sparker.midpoint, sparker)
     return sim
 
 
