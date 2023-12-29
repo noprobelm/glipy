@@ -1,29 +1,36 @@
 """Use this module to create commonly accessed patterns"""
 
-from typing import List, Sequence
+from typing import List, Sequence, Type
 
 from . import reader
 from .coordinate import Coordinate
-from .matrix import Matrix2D
 from .state import CellState, ConwayState
+from .automaton import Automaton
+from .cell import Cell, MooreCell
 
 
-class Pattern(Matrix2D):
+class Pattern(Automaton):
     """A boilerplate Pattern class. All patterns should derive from this class.
 
     A pattern is simply a subclass of a Matrix2D. The intent is that the user will build their own patterns using this
     interface, then pass them into an existing simulation using the Simulation.spawn() method
     """
 
-    def __init__(self, xmax: int, ymax: int, states: Sequence[Sequence[CellState]]):
-        super().__init__(xmax, ymax, states)
+    def __init__(
+        self,
+        cell_type: Type[Cell],
+        states: Sequence[Sequence[CellState]],
+        xmax: int,
+        ymax: int,
+    ):
+        super().__init__(cell_type, states, xmax, ymax)
 
 
 class ConwayPattern(Pattern):
     """A boilerplate Pattern class for Conway patterns"""
 
-    def __init__(self, xmax: int, ymax: int, states: Sequence[Sequence[ConwayState]]):
-        super().__init__(xmax, ymax, states)
+    def __init__(self, states: Sequence[Sequence[ConwayState]], xmax: int, ymax: int):
+        super().__init__(MooreCell, states, xmax, ymax)
 
     @staticmethod
     def fill_dead(
@@ -62,7 +69,7 @@ class ConwayPattern(Pattern):
             A ConwayPattern based on 'life' data
         """
         data = reader.life(lines)
-        return cls(*data)
+        return cls(data.xmax, data.ymax, data.states)
 
     @classmethod
     def from_rle(cls, lines: List[str]):
@@ -94,7 +101,7 @@ class Glider(ConwayPattern):
         )
 
         states = self.fill_dead(xmax, ymax, alive)
-        super().__init__(xmax, ymax, states)
+        super().__init__(states, xmax, ymax)
 
 
 class Pulsar(ConwayPattern):
@@ -157,7 +164,7 @@ class Pulsar(ConwayPattern):
             )
         ]
         states = self.fill_dead(xmax, ymax, alive)
-        super().__init__(xmax, ymax, states)
+        super().__init__(states, xmax, ymax)
 
 
 class CloverLeaf(ConwayPattern):
@@ -213,4 +220,4 @@ class CloverLeaf(ConwayPattern):
         ]
 
         states = self.fill_dead(xmax, ymax, alive)
-        super().__init__(xmax, ymax, states)
+        super().__init__(states, xmax, ymax)

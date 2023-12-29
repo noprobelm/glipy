@@ -13,7 +13,7 @@ RLEHeader = namedtuple(
 )
 
 # Stores data needed to build a life pattern
-PatternData = namedtuple("PatternData", ["xmax", "ymax", "states"])
+PatternData = namedtuple("PatternData", ["states", "xmax", "ymax"])
 
 
 def life(lines: List[str]) -> PatternData:
@@ -49,7 +49,7 @@ def life(lines: List[str]) -> PatternData:
             else:
                 states[y].append(ConwayState(False))
 
-    return PatternData(xmax, ymax, states)
+    return PatternData(states, xmax, ymax)
 
 
 def rle(lines: List[str]) -> PatternData:
@@ -205,4 +205,4 @@ def rle(lines: List[str]) -> PatternData:
     set_birth_rules(header)
     data = "".join(line.strip() for line in lines[row + 1 :])
     states = parse_states(header.width - 1, header.height - 1, data)
-    return PatternData(header.width - 1, header.height - 1, states)
+    return PatternData(states, header.width - 1, header.height - 1)
