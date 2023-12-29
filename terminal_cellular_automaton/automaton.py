@@ -147,7 +147,7 @@ class Automaton:
 
     def run(
         self,
-        num_generations: Union[float, int],
+        generations: Union[float, int],
         sleep: Union[float, int],
         render: bool,
     ) -> None:
@@ -161,13 +161,13 @@ class Automaton:
         elapsed = 0
         if render is True:
             with Live(self, screen=True, auto_refresh=False) as live:
-                while elapsed < num_generations:
+                while elapsed < generations:
                     self.evolve()
                     live.update(self, refresh=True)
                     time.sleep(sleep)
                     elapsed += 1
         else:
-            while elapsed < num_generations:
+            while elapsed < generations:
                 self.evolve()
                 time.sleep(sleep)
                 elapsed += 1
