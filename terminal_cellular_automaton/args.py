@@ -19,11 +19,11 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "-d",
-    "--duration",
+    "-g",
+    "--generations",
     type=int,
     default=0,
-    help="The duration the simulation should run for",
+    help="The number of generations the simulation should run for",
 )
 
 parser.add_argument(

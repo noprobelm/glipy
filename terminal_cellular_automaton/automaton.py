@@ -106,14 +106,14 @@ class Automaton:
     def start(
         self,
         refresh_rate: int = 30,
-        duration: Union[float, int] = 0,
+        generations: Union[float, int] = 0,
         render: Optional[bool] = True,
         debug=False,
     ) -> None:
         """Sets initial parameters for the simluation, then runs it
 
         Args:
-            duration (Union[float, int]): The duration the simulation should run for. Defaults to 0 (infinity)
+            generation (Union[float, int]): The number of generations the simulation should run for. Defaults to 0 (infinity)
             refresh_rate (int): The number of times the simluation should run before sleeping. Defaults to 0
             render (bool): Controls if the simulation renders to the terminal. Defaults to True
             debug (bool): Controls if the simulation runs in debug mode. This will run cProfile and disable rendering
@@ -123,8 +123,8 @@ class Automaton:
         else:
             sleep = 1 / refresh_rate
 
-        if duration == 0:
-            duration = float("inf")
+        if generations == 0:
+            generations = float("inf")
 
         if debug is True:
             import cProfile
@@ -134,10 +134,10 @@ class Automaton:
             )
 
         elif render is True:
-            self.run(duration, sleep, True)
+            self.run(generations, sleep, True)
 
         else:
-            self.run(duration, sleep, False)
+            self.run(generations, sleep, False)
 
     def run(
         self,
