@@ -6,6 +6,9 @@ from typing import List, Protocol, Self, Tuple
 class CellState(Protocol):
     """A protocol to reference when creating a new type of cell state"""
 
+    # _colors should be a tuple of colors equivalent to the number of possible states in a CellState class
+    _colors: Tuple[str, ...]
+
     @property
     def color(self) -> str:
         """Correlates a color with arbitrary attributes of a CellState instance
@@ -35,7 +38,7 @@ class ConwayState:
         alive (bool): Flag for whether the cell is ALIVE (True) or DEAD (False)
     """
 
-    _colors = ("green", "red")
+    _colors: Tuple[str, ...] = ("green", "red")
     birth_rules = [3]
     survival_rules = [2, 3]
 
