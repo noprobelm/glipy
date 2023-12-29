@@ -11,7 +11,7 @@ usage: `tca [-h] [-r REFRESH_RATE] [-d DURATION] [-x] [-n] [--scenario SCENARIO 
 | `--debug`        | `False` (Disabled rendering and captures performance metrics) |
 | `--no-render`    | `False`                                                       |
 | `--scenario`     | Runs a specified scenario from the `scenarios` module         |
-| `--rle`          | Runs a specified `.rle` file                                  |
+| `--rle`          | Runs a specified `.rle` from a local path                     |
 | `--url`          | Runs a specified `.rle` a remote URL                          |
 
 ## Available scenarios
