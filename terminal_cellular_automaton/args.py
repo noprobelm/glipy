@@ -5,7 +5,7 @@ from . import scenarios
 import sys
 
 parser = argparse.ArgumentParser(
-    description="A pixel physics simulator with terminal rendering"
+    description="A pixel physics simulator with support for terminal rendering"
 )
 
 parser.add_argument("target")
