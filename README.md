@@ -26,7 +26,7 @@ options:
 | `--no-render`    | `False`                                                       |
 
 ## Built in scenarios
-While `tca` can read most `rle` (URL or local path) and `life` (local path) compliant inputs, there are a few prebuilt scenarios available:
+While `tca` can read most `rle` (URL or local path) and `life` (local path) compliant inputs, there are a few prebuilt scenarios available that can be observed by running `tca <SCENARIO>`
 
 - `conway_1`: A simple game of life automaton where each cell has an equal chance to 'spawn' as 'alive' 'dead'
 - `conway_2`: Each cell has a 10% chance of spawning as alive
