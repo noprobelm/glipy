@@ -2,7 +2,7 @@ from __future__ import annotations
 import time
 from copy import copy
 from dataclasses import dataclass
-from typing import List, Optional, Type, Union, Sequence
+from typing import List, Optional, Type, Union, Sequence, cast
 
 from rich.console import Console, ConsoleOptions, RenderResult
 from rich.live import Live
@@ -78,6 +78,12 @@ class Automaton:
                     state = initial_state[y][x]
                     self.matrix[y].append(StateData(neighbors, state))
         else:
+            # I don't like this [cast] solution very much, but mypy and our code analysis tools should catch improper arg
+            # usage upstream from here. If we don't use cast here, 'initial_state' is considered to be ambiguous in its
+            # type (Union[CellState, Sequence[Sequence[CellState]]]), which is incompatable with the StateData 'state'
+            # attribute. We've already verified 'initial_state' is not a sequence from our conditional logic above, so
+            # if we're here it must be CellState compliant.
+            initial_state = cast(CellState, initial_state)
             for y in range(self.ymax + 1):
                 self.matrix.append([])
                 for x in range(self.xmax + 1):
@@ -167,7 +173,7 @@ class Automaton:
                 elapsed += 1
 
     def evolve(self) -> None:
-        """Steps the simulation forward once
+        """Evolves the simulation once
 
         Visits each cell in the 2d matrix and retrieves its new state by passing its neighbor states to the change_state
         method.
