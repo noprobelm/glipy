@@ -31,7 +31,7 @@ class ConwayState:
     """A state that follows the rules for Conway's Game of Life
 
     Attributes:
-        _colors (Tuple[str, str]): A tuple of colors (see Textualize's documentation for 'rich' for accepted values).
+        colors (Tuple[str, str]): A tuple of colors (see Textualize's documentation for 'rich' for accepted values).
                                       The first index is the color for ALIVE states. 2nd is DEAD
         birth_rules (List[int]): A list of integers representing the rules for a cell to become "resurrect"
         survival_rules (List[int]): A list of integers representing the rules for a cell to stay alive
