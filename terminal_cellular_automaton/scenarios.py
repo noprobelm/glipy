@@ -79,6 +79,16 @@ def domino_sparker() -> Simulation:
     return sim
 
 
+def from_life(path: str) -> Simulation:
+    """Runs a .life from a local path"""
+    sim = Simulation(MooreCell, ConwayState(False))
+    with open(path, "r") as f:
+        lines = f.readlines()
+    pattern = patterns.ConwayPattern.from_life(lines)
+    sim.spawn(sim.midpoint - pattern.midpoint, pattern)
+    return sim
+
+
 def from_rle(path: str) -> Simulation:
     """Runs a .rle from a local path"""
     sim = Simulation(MooreCell, ConwayState(False))
