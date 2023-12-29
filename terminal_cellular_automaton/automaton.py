@@ -27,7 +27,7 @@ class StateData:
     state: CellState
 
 
-class Simulation:
+class Automaton:
     """A class to run a simulation from the terminal
 
     Attributes:

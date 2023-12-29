@@ -10,13 +10,13 @@ import requests  # type: ignore
 from . import patterns
 from .cell import MooreCell
 from .coordinate import Coordinate
-from .automaton import Simulation
+from .automaton import Automaton
 from .state import ConwayState
 
 
-def conway_1() -> Simulation:
+def conway_1() -> Automaton:
     """A random game, where each cell has a 1 in 2 chance of spawning as alive"""
-    sim = Simulation(MooreCell, ConwayState(False))
+    sim = Automaton(MooreCell, ConwayState(False))
     for y in range(sim.ymax + 1):
         for x in range(sim.xmax + 1):
             alive = bool(random.randint(0, 1))
@@ -26,9 +26,9 @@ def conway_1() -> Simulation:
     return sim
 
 
-def conway_2() -> Simulation:
+def conway_2() -> Automaton:
     """A random game, where each cell has a 1 in 10 chance of spawning as alive"""
-    sim = Simulation(MooreCell, ConwayState(False))
+    sim = Automaton(MooreCell, ConwayState(False))
     for y in range(sim.ymax + 1):
         for x in range(sim.xmax + 1):
             coord = Coordinate(x, y)
@@ -42,33 +42,33 @@ def conway_2() -> Simulation:
     return sim
 
 
-def pulsar() -> Simulation:
+def pulsar() -> Automaton:
     """A pulsar life generated from the patterns module"""
-    sim = Simulation(MooreCell, ConwayState(False))
+    sim = Automaton(MooreCell, ConwayState(False))
     pulsar = patterns.Pulsar()
     sim.spawn(sim.midpoint - pulsar.midpoint, pulsar)
     return sim
 
 
-def glider() -> Simulation:
+def glider() -> Automaton:
     """A glider life generated from the patterns module"""
-    sim = Simulation(MooreCell, ConwayState(False))
+    sim = Automaton(MooreCell, ConwayState(False))
     glider = patterns.Glider()
     sim.spawn(glider.midpoint, glider)
     return sim
 
 
-def clover_leaf() -> Simulation:
+def clover_leaf() -> Automaton:
     """A clover leaf generated from the patterns module"""
-    sim = Simulation(MooreCell, ConwayState(False))
+    sim = Automaton(MooreCell, ConwayState(False))
     leaf = patterns.CloverLeaf()
     sim.spawn(sim.midpoint - leaf.midpoint, leaf)
     return sim
 
 
-def domino_sparker() -> Simulation:
+def domino_sparker() -> Automaton:
     """A domino sparker generated from an rle file"""
-    sim = Simulation(MooreCell, ConwayState(False))
+    sim = Automaton(MooreCell, ConwayState(False))
     rle = os.path.join(
         Path(__file__).parent, "examples/rle/p11dominosparkeron56p27.rle"
     )
@@ -79,9 +79,9 @@ def domino_sparker() -> Simulation:
     return sim
 
 
-def from_life(path: str) -> Simulation:
+def from_life(path: str) -> Automaton:
     """Runs a .life from a local path"""
-    sim = Simulation(MooreCell, ConwayState(False))
+    sim = Automaton(MooreCell, ConwayState(False))
     with open(path, "r") as f:
         lines = f.readlines()
     pattern = patterns.ConwayPattern.from_life(lines)
@@ -89,9 +89,9 @@ def from_life(path: str) -> Simulation:
     return sim
 
 
-def from_rle(path: str) -> Simulation:
+def from_rle(path: str) -> Automaton:
     """Runs a .rle from a local path"""
-    sim = Simulation(MooreCell, ConwayState(False))
+    sim = Automaton(MooreCell, ConwayState(False))
     with open(path, "r") as f:
         lines = f.readlines()
     pattern = patterns.ConwayPattern.from_rle(lines)
@@ -99,9 +99,9 @@ def from_rle(path: str) -> Simulation:
     return sim
 
 
-def from_url(url: str) -> Simulation:
+def from_url(url: str) -> Automaton:
     """Runs a .rle from a remote URL"""
-    sim = Simulation(MooreCell, ConwayState(False))
+    sim = Automaton(MooreCell, ConwayState(False))
     response = requests.get(url)
     if response.status_code != 200:
         raise ValueError(f"Error {response.status_code}: {response.reason}")
@@ -109,6 +109,5 @@ def from_url(url: str) -> Simulation:
     lines = data.strip().split("\n")
     pattern = patterns.ConwayPattern.from_rle(lines)
     sim.spawn(sim.midpoint - pattern.midpoint, pattern)
-    print(pattern)
 
     return sim
