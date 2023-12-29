@@ -60,6 +60,7 @@ else:
         sys.exit(1)
 
 if args["colors"] is not None:
+    # Pyright doesn't think colors is a valid attr for the CellState protoype. Mypy knows better
     if len(args["colors"]) < len(sim._state_type.colors):  # type: ignore
         args["colors"].extend(sim._state_type.colors[len(args["colors"]) - 1 :])  # type: ignore
     elif len(args["colors"]) > len(sim._state_type.colors):  # type: ignore
