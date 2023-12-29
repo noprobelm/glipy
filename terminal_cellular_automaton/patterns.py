@@ -3,10 +3,10 @@
 from typing import List, Sequence, Type
 
 from . import reader
-from .coordinate import Coordinate
-from .state import CellState, ConwayState
 from .automaton import Automaton
 from .cell import Cell, MooreCell
+from .coordinate import Coordinate
+from .state import CellState, ConwayState
 
 
 class Pattern(Automaton):

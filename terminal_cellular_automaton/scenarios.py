@@ -8,9 +8,9 @@ from pathlib import Path
 import requests  # type: ignore
 
 from . import patterns
+from .automaton import Automaton
 from .cell import MooreCell
 from .coordinate import Coordinate
-from .automaton import Automaton
 from .state import ConwayState
 
 

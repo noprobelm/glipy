@@ -1,6 +1,6 @@
 """Main entrypoint for running a simulation"""
 
-from .args import sim, args
+from .args import args, sim
 
 
 def main() -> None:

@@ -1,8 +1,9 @@
 """Manages command line arguments and returns an instance of a Simulator"""
 
 import argparse
-from . import scenarios
 import sys
+
+from . import scenarios
 
 parser = argparse.ArgumentParser(
     description="A cellular automaton simulator with support for terminal rendering"
