@@ -7,7 +7,7 @@ class CellState(Protocol):
     """A protocol to reference when creating a new type of cell state"""
 
     # _colors should be a tuple of colors equivalent to the number of possible states in a CellState class
-    _colors: Tuple[str, ...]
+    colors: Tuple[str, ...]
 
     @property
     def color(self) -> str:
@@ -38,7 +38,7 @@ class ConwayState:
         alive (bool): Flag for whether the cell is ALIVE (True) or DEAD (False)
     """
 
-    _colors: Tuple[str, ...] = ("green", "red")
+    colors: Tuple[str, ...] = ("green", "red")
     birth_rules = [3]
     survival_rules = [2, 3]
 
@@ -61,16 +61,6 @@ class ConwayState:
         if self.alive is True:
             return self.colors[0]
         return self.colors[1]
-
-    @property
-    def colors(self):
-        """Interface for accessing the underlying ConwayState._colors class attr"""
-        return ConwayState._colors
-
-    @colors.setter
-    def colors(self, colors: Tuple[str, str]) -> None:
-        """Interface for setting the underlying ConwayState._colors class attr"""
-        ConwayState._colors = colors
 
     def change_state(self, neighbors: List[ConwayState]) -> ConwayState:
         """Changes the state of the cell
