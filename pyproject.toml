@@ -1,10 +1,11 @@
 [tool.poetry]
-name = "terminal-cellular-automaton"
+name = "tca"
 version = "0.1.0"
 description = ""
 authors = ["noprobelm <noprobelm@protonmail.com>"]
 readme = "README.md"
 include = ["examples/"]
+packages = [ {include = "terminal_cellular_automaton"} ]
 
 [tool.poetry.dependencies]
 python = "^3.11"
