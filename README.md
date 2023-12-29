@@ -2,12 +2,12 @@ Simulate cellular automaton directly to the terminal
 
 ## Usage
 
-usage: tca [-h] [-r REFRESH_RATE] [-g GENERATIONS] [-x] [-n] target
+usage: `tca [-h] [-r REFRESH_RATE] [-g GENERATIONS] [-x] [-n] target`
 
 A cellular automaton simulator with support for terminal rendering
 
 positional arguments:
-  target <SCENARIO NAME; FILE NAME; RLE AT REMOTE URL>
+  `target (SCENARIO NAME; FILE NAME; RLE AT REMOTE URL)`
 
 options:
 
