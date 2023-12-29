@@ -59,6 +59,7 @@ class Simulation:
             self.ymax = ymax
 
         self.max_coord = Coordinate(self.xmax, self.ymax)
+        self.midpoint = (self.xmax // 2, self.ymax // 2)
 
         fill_with: List[List[StateData]] = []
 
@@ -80,10 +81,6 @@ class Simulation:
                     fill_with[y].append(StateData(neighbors, initial_state))
 
         self.matrix = Matrix2D(self.xmax, self.ymax, fill_with)
-
-    @property
-    def midpoint(self) -> Coordinate:
-        return self.matrix.midpoint
 
     def set_state(self, coord: Coordinate, state: CellState) -> None:
         """Spawns a CellState instance at a given x/y coordinate
