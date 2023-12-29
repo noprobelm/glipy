@@ -11,7 +11,6 @@ from rich.style import Style
 
 from .cell import Cell
 from .coordinate import Coordinate
-from .matrix import Matrix2D
 from .state import CellState
 
 
@@ -71,6 +70,7 @@ class Automaton:
 
         if isinstance(initial_state, list):
             for y in range(self.ymax + 1):
+                self.matrix.append([])
                 for x in range(self.xmax + 1):
                     coord = Coordinate(x, y)
                     c = self._cell_type(coord)
@@ -96,12 +96,12 @@ class Automaton:
 
         self.matrix[coord.y][coord.x].state = state
 
-    def spawn(self, midpoint: Coordinate, pattern: Matrix2D):
+    def spawn(self, midpoint: Coordinate, pattern: Automaton):
         for y in range(pattern.ymax + 1):
             for x in range(pattern.xmax + 1):
                 coord = Coordinate(x, y)
                 offset = Coordinate(x, y) + midpoint
-                self.set_state(offset, pattern[coord])
+                self.set_state(offset, pattern.matrix[coord.y][coord.x].state)
 
     def start(
         self,
