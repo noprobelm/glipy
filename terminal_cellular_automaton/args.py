@@ -52,7 +52,7 @@ elif ".life" in args["target"]:
     sim = scenarios.from_life(args["target"])
 else:
     try:
-        getattr(scenarios, args["target"])
+        sim = getattr(scenarios, args["target"])()
     except AttributeError:
         parser.print_help()
         sys.exit(1)

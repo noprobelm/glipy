@@ -38,6 +38,8 @@ class Simulation:
         self,
         cell_type: Type[Cell],
         initial_state: Union[CellState, List[List[CellState]]],
+        xmax: Optional[int] = None,
+        ymax: Optional[int] = None,
     ) -> None:
         """Initializes an instance of the Simulation class
 
@@ -46,59 +48,38 @@ class Simulation:
             initial_state (CellState): The initial state of a cell the matrix should be filled with
         """
 
-        console = Console()
-        xmax = console.width
-        ymax = console.height * 2
-        max_coord = Coordinate(xmax, ymax)
+        if xmax is None or ymax is None:
+            console = Console()
+            if xmax is None:
+                self.xmax = console.width
+            if ymax is None:
+                self.ymax = console.height * 2
+        else:
+            self.xmax = xmax
+            self.ymax = ymax
+
+        self.max_coord = Coordinate(self.xmax, self.ymax)
 
         fill_with: List[List[StateData]] = []
 
         if isinstance(initial_state, list):
-            for y in range(ymax + 1):
-                for x in range(xmax + 1):
+            for y in range(self.ymax + 1):
+                for x in range(self.xmax + 1):
                     coord = Coordinate(x, y)
                     c = cell_type(coord)
-                    neighbors = c.get_neighbors(max_coord)
+                    neighbors = c.get_neighbors(self.max_coord)
                     state = initial_state[y][x]
                     fill_with[y].append(StateData(neighbors, state))
         else:
-            for y in range(ymax + 1):
+            for y in range(self.ymax + 1):
                 fill_with.append([])
-                for x in range(xmax + 1):
+                for x in range(self.xmax + 1):
                     coord = Coordinate(x, y)
                     c = cell_type(coord)
-                    neighbors = c.get_neighbors(max_coord)
+                    neighbors = c.get_neighbors(self.max_coord)
                     fill_with[y].append(StateData(neighbors, initial_state))
 
-        self.matrix = Matrix2D(xmax, ymax, fill_with)
-
-    @property
-    def xmax(self) -> int:
-        """Interface to access the max x coordinate of the underlying matrix
-
-        Returns
-            The max y coordinate of the underlying matrix
-        """
-        return self.matrix.xmax
-
-    @property
-    def ymax(self) -> int:
-        """Interface to access the max y coordinate of the underlying matrix
-
-        Returns
-            The max y coordinate of the underlying matrix
-        """
-        return self.matrix.ymax
-
-    @property
-    def max_coord(self) -> Coordinate:
-        """Interface to access the max coordinate of the underlying matrix
-
-        Returns
-            The max coordinate of the underlying matrix
-        """
-
-        return self.matrix.max_coord
+        self.matrix = Matrix2D(self.xmax, self.ymax, fill_with)
 
     @property
     def midpoint(self) -> Coordinate:
