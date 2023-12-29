@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from typing import List, Protocol, Self, Tuple
+from typing import List, Protocol, Self, Sequence
 
 
 class CellState(Protocol):
     """A protocol to reference when creating a new type of cell state"""
 
     # _colors should be a tuple of colors equivalent to the number of possible states in a CellState class
-    colors: Tuple[str, ...]
+    colors: Sequence[str]
 
     @property
     def color(self) -> str:
@@ -38,7 +38,7 @@ class ConwayState:
         alive (bool): Flag for whether the cell is ALIVE (True) or DEAD (False)
     """
 
-    colors: Tuple[str, ...] = ("green", "red")
+    colors: Sequence[str] = ["green", "red"]
     birth_rules = [3]
     survival_rules = [2, 3]
 
