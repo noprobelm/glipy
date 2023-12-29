@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tca"
-version = "1.0.0"
+version = "1.0.1"
 description = ""
 authors = ["noprobelm <noprobelm@protonmail.com>"]
 readme = "README.md"
