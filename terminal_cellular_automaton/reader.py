@@ -94,8 +94,8 @@ def rle(lines: List[str]) -> PatternData:
             birth_rules = None
             survival_rules = None
         else:
-            birth_match = re.search(r"B\d+", line)
-            survival_match = re.search(r"S\d+", line)
+            birth_match = re.search(r"[bB]\d+", line)
+            survival_match = re.search(r"[sS]\d+", line)
             if birth_match is None or survival_match is None:
                 raise ValueError(
                     f"I/O has malformatted header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
