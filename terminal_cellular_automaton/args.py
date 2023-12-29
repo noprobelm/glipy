@@ -26,6 +26,8 @@ parser.add_argument(
     help="The number of generations the simulation should run for",
 )
 
+parser.add_argument("-c", "--colors", nargs="+")
+
 parser.add_argument(
     "-x",
     "--debug",
@@ -57,4 +59,12 @@ else:
         parser.print_help()
         sys.exit(1)
 
+if args["colors"] is not None:
+    if len(args["colors"]) < len(sim._state_type.colors):  # type: ignore
+        args["colors"].extend(sim._state_type.colors[len(args["colors"]) - 1 :])  # type: ignore
+    elif len(args["colors"]) > len(sim._state_type.colors):  # type: ignore
+        sim._state_type.colors = args["colors"][: len(sim._state_type.colors)]  # type: ignore
+    sim._state_type.colors = args["colors"]  # type: ignore
+
 del args["target"]
+del args["colors"]
