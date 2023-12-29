@@ -31,7 +31,7 @@ parser.add_argument(
     "--debug",
     action="store_true",
     default=False,
-    help="Controls if the simluation runs in debug mode",
+    help="Sets the simluation to run in debug mode",
 )
 
 parser.add_argument(
