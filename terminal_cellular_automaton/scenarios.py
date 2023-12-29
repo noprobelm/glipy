@@ -10,7 +10,7 @@ import requests  # type: ignore
 from . import patterns
 from .cell import MooreCell
 from .coordinate import Coordinate
-from .simulation import Simulation
+from .automaton import Simulation
 from .state import ConwayState
 
 
