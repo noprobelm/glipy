@@ -196,7 +196,7 @@ class Automaton:
         Returns:
             A shallow copy of a Matrix2D instance
         """
-        matrix = []
+        matrix: List[List[StateData]] = []
         for y in range(self.ymax + 1):
             matrix.append([])
             for x in range(self.xmax + 1):
