@@ -69,7 +69,7 @@ class ConwayPattern(Pattern):
             A ConwayPattern based on 'life' data
         """
         data = reader.life(lines)
-        return cls(data.xmax, data.ymax, data.states)
+        return cls(data.states, data.xmax, data.ymax)
 
     @classmethod
     def from_rle(cls, lines: List[str]):
@@ -82,7 +82,7 @@ class ConwayPattern(Pattern):
             A ConwayPattern based on 'rle' data
         """
         data = reader.rle(lines)
-        return cls(data.xmax, data.ymax, data.states)
+        return cls(data.states, data.xmax, data.ymax)
 
 
 class Glider(ConwayPattern):
