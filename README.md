@@ -10,20 +10,19 @@ positional arguments:
   target <SCENARIO NAME; FILE NAME; RLE AT REMOTE URL>
 
 options:
+
   `-h`, `--help`            show this help message and exit
+
   `-r REFRESH_RATE`, `--refresh-rate REFRESH_RATE`
                             The refresh rate of the simulation (default: 30)
+
   `-g GENERATIONS`, --generations GENERATIONS
                             The number of generations the simulation should run for (default: `0` (infinity))
+
   `-x`, `--debug`           Flag to make the simluation run in debug mode (default: `False`)
+
   `-n`, `--no-render`       Disables simulation rendering to the terminal (default: `False`)
 
-| Option           | Default Value                                                 |
-|------------------|---------------------------------------------------------------|
-| `--refresh-rate` | `60`                                                          |
-| `--duration`     | `0` (infinitely run the simulation)                           |
-| `--debug`        | `False` (Disabled rendering and captures performance metrics) |
-| `--no-render`    | `False`                                                       |
 
 ## Built in scenarios
 While `tca` can read most `rle` (URL or local path) and `life` (local path) compliant inputs, there are a few prebuilt scenarios available that can be observed by running `tca <SCENARIO>`
