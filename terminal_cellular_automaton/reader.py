@@ -8,7 +8,9 @@ from .coordinate import Coordinate
 from .state import ConwayState
 
 # Stores header data from  properly formatted RLE I/O
-RLEHeader = namedtuple("Header", ["width", "height", "birth_rules", "survival_rules"])
+RLEHeader = namedtuple(
+    "RLEHeader", ["width", "height", "birth_rules", "survival_rules"]
+)
 
 # Stores data needed to build a life pattern
 PatternData = namedtuple("PatternData", ["xmax", "ymax", "states"])
