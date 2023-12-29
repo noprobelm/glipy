@@ -1,15 +1,16 @@
 """A module for storing commonly used scenarios"""
 
+import os
 import random
+from pathlib import Path
+
+import requests
 
 from . import patterns
 from .cell import MooreCell
 from .coordinate import Coordinate
 from .simulation import Simulation
 from .state import ConwayState
-import requests
-from pathlib import Path
-import os
 
 
 def conway_1() -> Simulation:

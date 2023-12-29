@@ -1,10 +1,11 @@
 """Use this module to create commonly accessed patterns"""
 
-from .matrix import Matrix2D
-from .state import ConwayState, CellState
 from typing import List, Sequence
+
 from . import reader
 from .coordinate import Coordinate
+from .matrix import Matrix2D
+from .state import CellState, ConwayState
 
 
 class Pattern(Matrix2D):

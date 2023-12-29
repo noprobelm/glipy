@@ -1,10 +1,11 @@
 """A module containing functions to read standard cellular automaton data from I/O"""
 
-from collections import namedtuple
 import re
+from collections import namedtuple
 from typing import List
-from .state import ConwayState
+
 from .coordinate import Coordinate
+from .state import ConwayState
 
 # Stores header data from  properly formatted RLE I/O
 RLEHeader = namedtuple("Header", ["width", "height", "birth_rules", "survival_rules"])
