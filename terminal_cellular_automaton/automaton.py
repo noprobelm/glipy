@@ -156,17 +156,17 @@ class Automaton:
         if render is True:
             with Live(self, screen=True, auto_refresh=False) as live:
                 while elapsed < duration:
-                    self.step()
+                    self.evolve()
                     live.update(self, refresh=True)
                     time.sleep(sleep)
                     elapsed += 1
         else:
             while elapsed < duration:
-                self.step()
+                self.evolve()
                 time.sleep(sleep)
                 elapsed += 1
 
-    def step(self) -> None:
+    def evolve(self) -> None:
         """Steps the simulation forward once
 
         Visits each cell in the 2d matrix and retrieves its new state by passing its neighbor states to the change_state
