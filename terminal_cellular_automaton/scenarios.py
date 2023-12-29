@@ -73,6 +73,7 @@ def domino_sparker() -> Simulation:
 
 
 def from_rle(path: str) -> Simulation:
+    """Runs a .rle from a local path"""
     sim = Simulation(MooreCell, ConwayState(False))
     with open(path, "r") as f:
         lines = f.readlines()
@@ -82,6 +83,7 @@ def from_rle(path: str) -> Simulation:
 
 
 def from_url(url: str) -> Simulation:
+    """Runs a .rle from a remote URL"""
     sim = Simulation(MooreCell, ConwayState(False))
     response = requests.get(url)
     if response.status_code != 200:
