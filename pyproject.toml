@@ -19,3 +19,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 'tca' = 'terminal_cellular_automaton.__main__:main'
+
+[tool.poetry.include]
+extra-files = ["files/*"]
