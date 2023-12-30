@@ -77,13 +77,13 @@ class MooreCell:
     def get_neighbors(self, max_coord: Coordinate) -> list[Coordinate]:
         """Gets neighbors based on the max coord.
 
-        Neighbors will usually be the eight surrounding cells in a matrix, but for cells living along the min/max
+        Neighbors will usually be the eight surrounding cells in an automaton, but for cells living along the min/max
         coords, neighbors will wrap around to the other side of this grid. This ensures continuity and enables
-        a life to wrap around the other side of the simulation once it reaches a boundary.
+        a life to wrap around the other side of the simulation once it reaches a boundary, emulating a pseudo-infinite
+        space.
 
         Args:
-            max_coord (Coordinate): The maximum possible coordinate of a neighbor (usually the max coord of the
-                underlying matrix).
+            max_coord (Coordinate): The maximum coordinate found in the underlying Automaton
 
         Returns:
             A list of the cell's neighbors
