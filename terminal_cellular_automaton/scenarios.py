@@ -69,9 +69,7 @@ def clover_leaf() -> Automaton:
 def domino_sparker() -> Automaton:
     """A domino sparker generated from an rle file"""
     sim = Automaton(MooreCell, ConwayState(False))
-    rle = os.path.join(
-        Path(__file__).parent, "examples/rle/p11dominosparkeron56p27.rle"
-    )
+    rle = os.path.join(Path(__file__).parent, "data/rle/p11dominosparkeron56p27.rle")
     with open(rle, "r") as f:
         lines = f.readlines()
     sparker = patterns.ConwayPattern.from_rle(lines)
