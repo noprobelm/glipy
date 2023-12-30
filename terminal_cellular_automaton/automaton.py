@@ -201,7 +201,7 @@ class Automaton:
         """Returns a shallow copy of an instance
 
         Returns:
-            A shallow copy of a Matrix2D instance
+            A shallow copy of the Automaton instance
         """
         matrix: List[List[StateData]] = []
         for y in range(self.ymax + 1):
