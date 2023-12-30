@@ -4,7 +4,7 @@ from .args import parse_args
 
 
 def main() -> None:
-    """Main entrypoint for running a simulation from command line args"""
+    """Main entrypoint for running an automaton from command line args"""
     result = parse_args()
     result.automaton.start(**result.start_kwargs)
 
