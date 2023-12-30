@@ -2,8 +2,42 @@
 
 import argparse
 import sys
+from typing import List
 
 from . import scenarios
+from rich.color import ANSI_COLOR_NAMES
+
+
+def validate_hex(h: str) -> bool:
+    """Validates a provided hex code"""
+    if len(h) > 6:
+        return False
+    for c in h:
+        if not c.isdigit() and not c.isalpha():
+            return False
+        if c.isalpha() and c.lower() > "f":
+            return False
+
+    return True
+
+
+def parse_colors(colors: List[str]) -> List[str]:
+    for i, c in enumerate(colors):
+        if c in ANSI_COLOR_NAMES:
+            continue
+        elif c.startswith("#"):
+            if validate_hex(c[1:]) is False:
+                print(f"Invalid hex code: {c}")
+                sys.exit(1)
+        else:
+            if validate_hex(c) is False:
+                print(f"Invalid hex code: {c}")
+                sys.exit(1)
+            c = f"#{c}"
+        colors[i] = c
+
+    return colors
+
 
 parser = argparse.ArgumentParser(
     description="A cellular automaton simulator with support for terminal rendering"
@@ -27,7 +61,7 @@ parser.add_argument(
     help="The number of generations the simulation should run for",
 )
 
-parser.add_argument("-c", "--colors", nargs="+")
+parser.add_argument("-c", "--colors", nargs="?")
 
 parser.add_argument(
     "-x",
@@ -61,12 +95,17 @@ else:
         sys.exit(1)
 
 if args["colors"] is not None:
+    colors = args["colors"].split(" ")
+    colors = parse_colors(colors)
+
     # Pyright doesn't think colors is a valid attr for the CellState protoype. Mypy knows better
-    if len(args["colors"]) < len(sim._state_type.colors):  # type: ignore
-        args["colors"].extend(sim._state_type.colors[len(args["colors"]) - 1 :])  # type: ignore
-    elif len(args["colors"]) > len(sim._state_type.colors):  # type: ignore
-        sim._state_type.colors = args["colors"][: len(sim._state_type.colors)]  # type: ignore
-    sim._state_type.colors = args["colors"]  # type: ignore
+    if len(colors) < len(sim._state_type.colors):  # type: ignore
+        args["colors"].extend(sim._state_type.colors[len(colors) - 1 :])  # type: ignore
+    elif len(colors) > len(sim._state_type.colors):  # type: ignore
+        sim._state_type.colors = colors[: len(sim._state_type.colors)]  # type: ignore
+
+    else:
+        sim._state_type.colors = colors  # type: ignore
 
 del args["target"]
 del args["colors"]
