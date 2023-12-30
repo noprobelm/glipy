@@ -1,4 +1,4 @@
-"""The coordinate system used by the Matrix2D class"""
+"""The coordinate system used by the Automaton class"""
 
 from __future__ import annotations
 
