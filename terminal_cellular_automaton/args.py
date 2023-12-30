@@ -4,8 +4,9 @@ import argparse
 import sys
 from typing import List
 
-from . import scenarios
 from rich.color import ANSI_COLOR_NAMES
+
+from . import scenarios
 
 
 def validate_hex(h: str) -> bool:
