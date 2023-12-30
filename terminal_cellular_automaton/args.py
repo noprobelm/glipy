@@ -62,7 +62,13 @@ def parse_colors(colors: List[str]) -> List[str]:
     return colors
 
 
-def parse_args():
+def parse_args() -> ArgResult:
+    """Parses user args into an automaton and the kwargs necessary to start a simulation.
+
+    Returns:
+        ArgResult (namedtuple): Contains the 'automaton' and 'start_kwargs' attrs, which are used to run the sim
+    """
+
     parser = argparse.ArgumentParser(
         description="A cellular automaton simulator with support for terminal rendering"
     )
