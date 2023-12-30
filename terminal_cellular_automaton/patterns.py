@@ -12,8 +12,11 @@ from .state import CellState, ConwayState
 class Pattern(Automaton):
     """A boilerplate Pattern class. All patterns should derive from this class.
 
-    A pattern is simply a subclass of a Matrix2D. The intent is that the user will build their own patterns using this
-    interface, then pass them into an existing simulation using the Simulation.spawn() method
+    A pattern is itself simply an Automaton. The Automaton.spawn() method can be used to spawn other Automaton objects
+    at a specified position.
+
+    Like the Automaton class, this class is agnostic to the cell/state types it works with. Additional subclasses
+    should be created for dealing with specific cell/state types
     """
 
     def __init__(
@@ -44,7 +47,7 @@ class ConwayPattern(Pattern):
             alive (Sequence[Coordinate]): A sequence of coordinates of cells known to be alive
 
         Returns:
-            List[List[ConwayState]]: A list representative of a cellular automaton matrix
+            List[List[ConwayState]]: A 2d list representative of a cellular automaton
         """
 
         states: List[List[ConwayState]] = []
@@ -63,7 +66,7 @@ class ConwayPattern(Pattern):
         """Builds a pattern from 'life' data compliant with life version 1.06 read from a file
 
         Args:
-            data (List[str]): The lines from file I/O compliant with life 1.06 standards
+            data (List[str]): The lines from a file compliant with life 1.06 standards
 
         Returns:
             A ConwayPattern based on 'life' data
@@ -76,7 +79,7 @@ class ConwayPattern(Pattern):
         """Builds a pattern from compliant Run Length Encoded (RLE) data read from a file.
 
         Args:
-            data (List[str]): The lines from file I/O compliant with RLE standards
+            data (List[str]): The lines from a file compliant with RLE standards
 
         Returns:
             A ConwayPattern based on 'rle' data
