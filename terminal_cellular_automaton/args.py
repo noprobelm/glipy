@@ -145,7 +145,8 @@ def parse_args(unparsed: Optional[List[str]] = None) -> ArgResult:
 
         # Pyright doesn't think colors is a valid attr for the CellState protoype. Mypy knows better
         if len(colors) < len(automaton._state_type.colors):  # type: ignore
-            args["colors"].extend(automaton._state_type.colors[len(colors) - 1 :])  # type: ignore
+            colors.extend(automaton._state_type.colors[len(colors) :])  # type: ignore
+            automaton._state_type.colors = colors  # type: ignore
         elif len(colors) > len(automaton._state_type.colors):  # type: ignore
             automaton._state_type.colors = colors[: len(automaton._state_type.colors)]  # type: ignore
 
