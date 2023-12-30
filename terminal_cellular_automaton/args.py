@@ -3,10 +3,13 @@
 import argparse
 import sys
 from typing import List
+from collections import namedtuple
 
 from rich.color import ANSI_COLOR_NAMES
 
 from . import scenarios
+
+ArgResult = namedtuple("ArgResult", ["automaton", "start_kwargs"])
 
 
 def validate_hex(h: str) -> bool:
@@ -59,73 +62,76 @@ def parse_colors(colors: List[str]) -> List[str]:
     return colors
 
 
-parser = argparse.ArgumentParser(
-    description="A cellular automaton simulator with support for terminal rendering"
-)
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="A cellular automaton simulator with support for terminal rendering"
+    )
 
-parser.add_argument("target", nargs="?", default="domino_sparker")
+    parser.add_argument("target", nargs="?", default="domino_sparker")
 
-parser.add_argument(
-    "-r",
-    "--refresh-rate",
-    type=int,
-    default=30,
-    help="The refresh rate of the simulation",
-)
+    parser.add_argument(
+        "-r",
+        "--refresh-rate",
+        type=int,
+        default=30,
+        help="The refresh rate of the simulation",
+    )
 
-parser.add_argument(
-    "-g",
-    "--generations",
-    type=int,
-    default=0,
-    help="The number of generations the simulation should run for",
-)
+    parser.add_argument(
+        "-g",
+        "--generations",
+        type=int,
+        default=0,
+        help="The number of generations the simulation should run for",
+    )
 
-parser.add_argument("-c", "--colors", nargs="?")
+    parser.add_argument("-c", "--colors", nargs="?")
 
-parser.add_argument(
-    "-x",
-    "--debug",
-    action="store_true",
-    default=False,
-    help="Sets the simluation to run in debug mode",
-)
+    parser.add_argument(
+        "-x",
+        "--debug",
+        action="store_true",
+        default=False,
+        help="Sets the simluation to run in debug mode",
+    )
 
-parser.add_argument(
-    "-n",
-    "--no-render",
-    dest="render",
-    action="store_false",
-    default=True,
-    help="Disables simulation rendering to the terminal",
-)
+    parser.add_argument(
+        "-n",
+        "--no-render",
+        dest="render",
+        action="store_false",
+        default=True,
+        help="Disables simulation rendering to the terminal",
+    )
 
-args = vars(parser.parse_args())
-if "http" in args["target"]:
-    sim = scenarios.from_url(args["target"])
-elif ".rle" in args["target"]:
-    sim = scenarios.from_rle(args["target"])
-elif ".life" in args["target"]:
-    sim = scenarios.from_life(args["target"])
-else:
-    try:
-        sim = getattr(scenarios, args["target"])()
-    except AttributeError:
-        parser.print_help()
-        sys.exit(1)
-
-if args["colors"] is not None:
-    colors = args["colors"].split(" ")
-    colors = parse_colors(colors)
-
-    # Pyright doesn't think colors is a valid attr for the CellState protoype. Mypy knows better
-    if len(colors) < len(sim._state_type.colors):  # type: ignore
-        args["colors"].extend(sim._state_type.colors[len(colors) - 1 :])  # type: ignore
-    elif len(colors) > len(sim._state_type.colors):  # type: ignore
-        sim._state_type.colors = colors[: len(sim._state_type.colors)]  # type: ignore
-
+    args = vars(parser.parse_args())
+    if "http" in args["target"]:
+        automaton = scenarios.from_url(args["target"])
+    elif ".rle" in args["target"]:
+        automaton = scenarios.from_rle(args["target"])
+    elif ".life" in args["target"]:
+        automaton = scenarios.from_life(args["target"])
     else:
-        sim._state_type.colors = colors  # type: ignore
+        try:
+            automaton = getattr(scenarios, args["target"])()
+        except AttributeError:
+            parser.print_help()
+            sys.exit(1)
 
-del args["target"]
-del args["colors"]
+    if args["colors"] is not None:
+        colors = args["colors"].split(" ")
+        colors = parse_colors(colors)
+
+        # Pyright doesn't think colors is a valid attr for the CellState protoype. Mypy knows better
+        if len(colors) < len(automaton._state_type.colors):  # type: ignore
+            args["colors"].extend(automaton._state_type.colors[len(colors) - 1 :])  # type: ignore
+        elif len(colors) > len(automaton._state_type.colors):  # type: ignore
+            automaton._state_type.colors = colors[: len(automaton._state_type.colors)]  # type: ignore
+
+        else:
+            automaton._state_type.colors = colors  # type: ignore
+
+    del args["target"]
+    del args["colors"]
+
+    return ArgResult(automaton, args)
