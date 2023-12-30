@@ -17,7 +17,7 @@ PatternData = namedtuple("PatternData", ["states", "xmax", "ymax"])
 
 
 def life(lines: List[str]) -> PatternData:
-    """Reads I/O compliant with life version 1.06
+    """Reads lines of a file compliant with life version 1.06
 
     Args:
         lines (List[str]): The lines from a life 1.06 I/O stream
@@ -53,7 +53,7 @@ def life(lines: List[str]) -> PatternData:
 
 
 def rle(lines: List[str]) -> PatternData:
-    """Reads I/O compliant with Run Length Encoded (RLE)
+    """Reads lines of a file compliant with Run Length Encoded (RLE)
 
     Args:
         lines (List[str]): The lines from a RLE I/O stream
