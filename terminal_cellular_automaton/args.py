@@ -12,8 +12,8 @@ from . import scenarios
 ArgResult = namedtuple("ArgResult", ["automaton", "start_kwargs"])
 
 
-def is_hex(h: str) -> bool:
-    """Validates a provided hex code
+def is_hex(s: str) -> bool:
+    """Checks if a string is a valid hex code
 
     Args:
         h (str): The hex string to check
@@ -21,15 +21,30 @@ def is_hex(h: str) -> bool:
     Returns:
         bool: The hex is valid (True) or invalid (False)
     """
-    if len(h) > 6:
+    if len(s) > 6:
         return False
-    for c in h:
-        if not c.isdigit() and not c.isalpha():
+    for s in s:
+        if not s.isdigit() and not s.isalpha():
             return False
-        if c.isalpha() and c.lower() > "f":
+        if s.isalpha() and s.lower() > "f":
             return False
 
     return True
+
+
+def is_ansi(s: str) -> bool:
+    """Checks if a string is a valid ANSI color
+
+    Args:
+        s (str): The color to validate
+
+    Returns:
+        bool: The string is valid ANSI (True) or invalid (False)
+    """
+
+    if s in ANSI_COLOR_NAMES:
+        return True
+    return False
 
 
 def parse_colors(colors: List[str]) -> List[str]:
@@ -46,7 +61,7 @@ def parse_colors(colors: List[str]) -> List[str]:
     """
 
     for i, c in enumerate(colors):
-        if c in ANSI_COLOR_NAMES:
+        if is_ansi(c):
             continue
         elif c.startswith("#"):
             if is_hex(c[1:]) is False:
