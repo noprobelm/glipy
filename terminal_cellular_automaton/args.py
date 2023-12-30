@@ -21,7 +21,7 @@ def is_hex(s: str) -> bool:
     Returns:
         bool: The hex is valid (True) or invalid (False)
     """
-    if len(s) > 6:
+    if len(s) != 6:
         return False
     for s in s:
         if not s.isdigit() and not s.isalpha():
