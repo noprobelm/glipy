@@ -3,7 +3,7 @@ from __future__ import annotations
 import time
 from copy import copy
 from dataclasses import dataclass
-from typing import List, Optional, Sequence, Type, Union, cast
+from typing import List, Optional, Sequence, Type, Union, cast, TypeVar, Generic
 
 from rich.console import Console, ConsoleOptions, RenderResult
 from rich.live import Live
@@ -13,6 +13,9 @@ from rich.style import Style
 from .cell import Cell
 from .coordinate import Coordinate
 from .state import CellState
+
+C = TypeVar("C", bound=Cell)
+S = TypeVar("S", bound=CellState)
 
 
 @dataclass
@@ -28,8 +31,12 @@ class StateData:
     state: CellState
 
 
-class Automaton:
-    """Hosts the data and methods to store/evolve an automaton
+class Automaton(Generic[C, S]):
+    """Hosts the data and methods to store/evolve an automaton.
+
+    An automaton's cell and cell_state types must be homogenous for the duration of its existence to ensure a cell_state
+    is always aware of how it should behave with respect to its provided neighbors. The generics 'C' and 'S' in the class
+    signature enforce this.
 
     Attributes:
         _cell_type (Type[Cell]) The type of Cell the automaton is working with
