@@ -2,7 +2,7 @@
 
 import argparse
 import sys
-from typing import List
+from typing import List, Optional
 from collections import namedtuple
 
 from rich.color import ANSI_COLOR_NAMES
@@ -62,7 +62,7 @@ def parse_colors(colors: List[str]) -> List[str]:
     return colors
 
 
-def parse_args() -> ArgResult:
+def parse_args(unparsed: Optional[List[str]] = None) -> ArgResult:
     """Parses user args into an automaton and the kwargs necessary to start a simulation.
 
     Returns:
@@ -110,7 +110,7 @@ def parse_args() -> ArgResult:
         help="Disables simulation rendering to the terminal",
     )
 
-    args = vars(parser.parse_args())
+    args = vars(parser.parse_args(unparsed or sys.argv[1:]))
     if "http" in args["target"]:
         automaton = scenarios.from_url(args["target"])
     elif ".rle" in args["target"]:
