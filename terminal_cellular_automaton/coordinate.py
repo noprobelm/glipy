@@ -7,7 +7,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True, slots=True)
 class Coordinate:
-    """An x/y coordinate to reference location in a Matrix2D"""
+    """An x/y coordinate to reference location in a 2 dimensional matrix"""
 
     x: int
     y: int
