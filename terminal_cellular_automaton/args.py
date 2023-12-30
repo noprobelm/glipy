@@ -9,7 +9,14 @@ from rich.color import ANSI_COLOR_NAMES
 
 
 def validate_hex(h: str) -> bool:
-    """Validates a provided hex code"""
+    """Validates a provided hex code
+
+    Args:
+        h (str): The hex string to check
+
+    Returns:
+        bool: The hex is valid (True) or invalid (False)
+    """
     if len(h) > 6:
         return False
     for c in h:
@@ -22,6 +29,18 @@ def validate_hex(h: str) -> bool:
 
 
 def parse_colors(colors: List[str]) -> List[str]:
+    """Parses color names from parsed args
+
+    - If a color is found in the ANSI_COLOR_NAMES constant, move on
+    - Otherwise, the color is a hex. Validate it, insert a "#" if necessary
+
+    Args:
+        colors (List[str]): The list of colors to parse
+
+    Returns:
+        The parsed list of colors
+    """
+
     for i, c in enumerate(colors):
         if c in ANSI_COLOR_NAMES:
             continue
