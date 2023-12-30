@@ -12,7 +12,7 @@ from . import scenarios
 ArgResult = namedtuple("ArgResult", ["automaton", "start_kwargs"])
 
 
-def validate_hex(h: str) -> bool:
+def is_hex(h: str) -> bool:
     """Validates a provided hex code
 
     Args:
@@ -49,11 +49,11 @@ def parse_colors(colors: List[str]) -> List[str]:
         if c in ANSI_COLOR_NAMES:
             continue
         elif c.startswith("#"):
-            if validate_hex(c[1:]) is False:
+            if is_hex(c[1:]) is False:
                 print(f"Invalid hex code: {c}")
                 sys.exit(1)
         else:
-            if validate_hex(c) is False:
+            if is_hex(c) is False:
                 print(f"Invalid hex code: {c}")
                 sys.exit(1)
             c = f"#{c}"
