@@ -5,9 +5,6 @@ import sys
 
 sys.path.append("../")
 from terminal_cellular_automaton import args
-from terminal_cellular_automaton.automaton import Automaton
-from terminal_cellular_automaton.state import ConwayState
-from terminal_cellular_automaton.cell import MooreCell
 
 
 @test("is_ansi returns False for invalid ANSI colors")
