@@ -31,7 +31,7 @@ def _():
 
 
 @test(
-    "A MooreCell at the top left of a matrix will have neighbors that wrap to the other side"
+    "MooreCell: A cell located at the top left of a matrix will have neighbors that wrap to the other side"
 )
 def _():
     c = MooreCell(Coordinate(0, 0))
@@ -50,7 +50,7 @@ def _():
 
 
 @test(
-    "A MooreCell at the bottom right of a matrix will have neighbors that wrap to the other side"
+    "MooreCell: A cell located at the bottom right of a matrix will have neighbors that wrap to the other side"
 )
 def _():
     c = MooreCell(Coordinate(2, 2))
