@@ -1,4 +1,4 @@
-from typing import Protocol, Tuple
+from typing import Protocol, Tuple, List
 
 from .coordinate import Coordinate
 
@@ -22,7 +22,7 @@ class Cell(Protocol):
         """Initializes an instance of a cell. The coord attr should be set here"""
         ...
 
-    def get_neighbors(self, max_coord: Coordinate) -> list[Coordinate]:
+    def get_neighbors(self, max_coord: Coordinate) -> List[Coordinate]:
         """Accesses members of a cell's neighborhood and returns a list of valid neighbors
 
         This is usually achieved by checking coordinates against a maximum possible coordinate. The
