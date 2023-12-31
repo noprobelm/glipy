@@ -1,12 +1,10 @@
 """Tests CellState behavior"""
 
-from ward import test, fixture
+from ward import test
 import sys
 
 sys.path.append("../")
-from terminal_cellular_automaton.cell import MooreCell
 from terminal_cellular_automaton.state import ConwayState
-from terminal_cellular_automaton.coordinate import Coordinate
 
 
 @test("ConwayState: A dead cell next to exactly 3 live cells will resurrect")
