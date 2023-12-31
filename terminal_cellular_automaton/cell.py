@@ -105,6 +105,10 @@ class MooreCell:
                 n = Coordinate(n.x, max_coord.y)
             elif n.y > max_coord.y:
                 n = Coordinate(n.x, 0)
+            elif n.x < 0:
+                n = Coordinate(max_coord.x, n.y)
+            elif n.x > max_coord.x:
+                n = Coordinate(0, n.y)
 
             neighbors.append(n)
 
