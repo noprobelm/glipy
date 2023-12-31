@@ -39,13 +39,6 @@ def _():
     assert args.is_hex("GG0000") is False
 
 
-@test(
-    "is_hex returns False if the provided string contains alpha characters beyond the letter f"
-)
-def _():
-    assert args.is_hex("GG0000") is False
-
-
 @test("is_hex works with case insensitive strings")
 def _():
     assert args.is_hex("ff0000") is True
