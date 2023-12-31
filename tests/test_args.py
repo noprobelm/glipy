@@ -52,7 +52,7 @@ def _():
     assert args.is_hex("FF0000") is True
 
 
-@test("parse_colors works with a seequence of valid ansi or hex codes")
+@test("parse_colors works with a sequence of valid ansi or hex codes")
 def _():
     assert args.parse_colors(["red", "000000"]) == ["red", "#000000"]
 
