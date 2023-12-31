@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tca"
-version = "1.0.1"
+version = "1.0.2"
 description = ""
 authors = ["noprobelm <noprobelm@protonmail.com>"]
 readme = "README.md"
@@ -12,6 +12,8 @@ python = "^3.11"
 rich = "^13.7.0"
 requests = "^2.31.0"
 
+[tool.poetry.group.test.dependencies]
+ward = "^0.68.0b0"
 
 [build-system]
 requires = ["poetry-core"]
