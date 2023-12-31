@@ -3,8 +3,7 @@ from __future__ import annotations
 import time
 from copy import copy
 from dataclasses import dataclass
-from typing import (Generic, List, Optional, Sequence, Type, TypeVar, Union,
-                    cast)
+from typing import Generic, List, Optional, Sequence, Type, TypeVar, Union, cast
 
 from rich.console import Console, ConsoleOptions, RenderResult
 from rich.live import Live
@@ -136,8 +135,10 @@ class Automaton(Generic[C, S]):
             render (bool): Controls if the simulation renders to the terminal. Defaults to True
             debug (bool): Controls if the simulation runs in debug mode. This will run cProfile and disable rendering
         """
-        if refresh_rate == 0:
+        if refresh_rate == -1:
             sleep = 0.0
+        elif refresh_rate == 0:
+            sleep = float("inf")
         else:
             sleep = 1 / refresh_rate
 
@@ -173,12 +174,19 @@ class Automaton(Generic[C, S]):
         elapsed = 0
         if render is True:
             with Live(self, screen=True, auto_refresh=False) as live:
+                if sleep == float("inf"):
+                    while True:
+                        time.sleep(1)
                 while elapsed < generations:
                     self.evolve()
                     live.update(self, refresh=True)
                     time.sleep(sleep)
                     elapsed += 1
         else:
+            if sleep == float("inf"):
+                while True:
+                    time.sleep(1)
+
             while elapsed < generations:
                 self.evolve()
                 time.sleep(sleep)
