@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import time
+import sys
 from copy import copy
 from dataclasses import dataclass
 from typing import Generic, List, Optional, Sequence, Type, TypeVar, Union, cast
@@ -172,25 +173,28 @@ class Automaton(Generic[C, S]):
             render: bool: Cotnrols if the simulation renders to the terminal
         """
         elapsed = 0
-        if render is True:
-            with Live(self, screen=True, auto_refresh=False) as live:
+        try:
+            if render is True:
+                with Live(self, screen=True, auto_refresh=False) as live:
+                    if sleep == float("inf"):
+                        while True:
+                            time.sleep(1)
+                    while elapsed < generations:
+                        self.evolve()
+                        live.update(self, refresh=True)
+                        time.sleep(sleep)
+                        elapsed += 1
+            else:
                 if sleep == float("inf"):
                     while True:
                         time.sleep(1)
+
                 while elapsed < generations:
                     self.evolve()
-                    live.update(self, refresh=True)
                     time.sleep(sleep)
                     elapsed += 1
-        else:
-            if sleep == float("inf"):
-                while True:
-                    time.sleep(1)
-
-            while elapsed < generations:
-                self.evolve()
-                time.sleep(sleep)
-                elapsed += 1
+        except KeyboardInterrupt:
+            sys.exit(0)
 
     def evolve(self) -> None:
         """Evolves the simulation once
