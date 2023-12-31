@@ -3,7 +3,8 @@ from __future__ import annotations
 import time
 from copy import copy
 from dataclasses import dataclass
-from typing import Generic, List, Optional, Sequence, Type, TypeVar, Union, cast
+from typing import (Generic, List, Optional, Sequence, Type, TypeVar, Union,
+                    cast)
 
 from rich.console import Console, ConsoleOptions, RenderResult
 from rich.live import Live

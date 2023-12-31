@@ -2,8 +2,8 @@
 
 import argparse
 import sys
-from typing import List, Optional
 from collections import namedtuple
+from typing import List, Optional
 
 from rich.color import ANSI_COLOR_NAMES
 

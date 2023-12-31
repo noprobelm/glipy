@@ -1,4 +1,4 @@
-from typing import Protocol, Tuple, List
+from typing import List, Protocol, Tuple
 
 from .coordinate import Coordinate
 
