@@ -40,7 +40,6 @@ class Automaton(Generic[C, S]):
 
     Attributes:
         _cell_type (Type[Cell]) The type of Cell the automaton is working with
-        _state_type (Type[CellState]) The type of CellState the automaton is working with
         xmax (int): The maximum x coordinate
         ymax (int): The maximum y coordinate
         max_coord (Coordinate): The maximum valid coordinate found in the grid
@@ -81,7 +80,6 @@ class Automaton(Generic[C, S]):
         self.matrix: List[List[StateData]] = []
 
         if isinstance(initial_state, list):
-            self._state = initial_state[0][0].__class__
             for y in range(self.ymax + 1):
                 self.matrix.append([])
                 for x in range(self.xmax + 1):
@@ -97,7 +95,6 @@ class Automaton(Generic[C, S]):
             # attribute. We've already verified 'initial_state' is not a sequence from our conditional logic above, so
             # if we're here it must be CellState compliant.
             initial_state = cast(CellState, initial_state)
-            self._state = initial_state
             for y in range(self.ymax + 1):
                 self.matrix.append([])
                 for x in range(self.xmax + 1):
