@@ -48,7 +48,7 @@ class ConwayState:
         alive (bool): Flag for whether the cell is ALIVE (True) or DEAD (False)
     """
 
-    _colors: Sequence[str] = ["green", "red"]
+    _colors: Sequence[str] = ["#F6AE2D", "#315771"]
     birth_rules = [3]
     survival_rules = [2, 3]
 
