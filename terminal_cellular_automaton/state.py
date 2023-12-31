@@ -7,7 +7,7 @@ class CellState(Protocol):
     """A protocol to reference when creating a new type of cell state"""
 
     # colors should be a tuple of colors equivalent to the number of possible states in a CellState class
-    colors: Sequence[str]
+    _colors: Sequence[str]
 
     @property
     def color(self) -> str:
@@ -16,6 +16,14 @@ class CellState(Protocol):
         Returns:
             A valid color designator (can be 'red', hex codes, etc. See the rich documentation for details)
         """
+        ...
+
+    @property
+    def colors(self) -> Sequence[str]:
+        ...
+
+    @colors.setter
+    def colors(self, colors: List[str]) -> None:
         ...
 
     def change_state(self, neighbors: List[Self]) -> CellState:
@@ -38,7 +46,7 @@ class ConwayState:
         alive (bool): Flag for whether the cell is ALIVE (True) or DEAD (False)
     """
 
-    colors: Sequence[str] = ["green", "red"]
+    _colors: Sequence[str] = ["green", "red"]
     birth_rules = [3]
     survival_rules = [2, 3]
 
@@ -59,8 +67,22 @@ class ConwayState:
     def color(self) -> str:
         """Returns the first index of self.colors if alive, else the second"""
         if self.alive is True:
-            return self.colors[0]
-        return self.colors[1]
+            return self._colors[0]
+        return self._colors[1]
+
+    @property
+    def colors(self) -> Sequence[str]:
+        return self._colors
+
+    @colors.setter
+    def colors(self, colors: List[str]) -> None:
+        if len(colors) < len(self._colors):
+            colors.extend(self._colors[len(colors) :])
+        elif len(colors) > len(self._colors):
+            colors = colors[: len(self.colors)]
+
+        self._colors = colors
+        ConwayState._colors = colors
 
     def change_state(self, neighbors: List[ConwayState]) -> ConwayState:
         """Changes the state of the cell
