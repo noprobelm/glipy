@@ -20,10 +20,12 @@ class CellState(Protocol):
 
     @property
     def colors(self) -> Sequence[str]:
+        """Accesses the colors for the CellState"""
         ...
 
     @colors.setter
     def colors(self, colors: List[str]) -> None:
+        """Sets the colors for the CellState"""
         ...
 
     def change_state(self, neighbors: List[Self]) -> CellState:
@@ -72,10 +74,12 @@ class ConwayState:
 
     @property
     def colors(self) -> Sequence[str]:
+        """Accesses the colors for the CellState"""
         return self._colors
 
     @colors.setter
     def colors(self, colors: List[str]) -> None:
+        """Sets the colors for the CellState"""
         if len(colors) < len(self._colors):
             colors.extend(self._colors[len(colors) :])
         elif len(colors) > len(self._colors):
