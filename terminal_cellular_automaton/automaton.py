@@ -3,8 +3,7 @@ from __future__ import annotations
 import time
 from copy import copy
 from dataclasses import dataclass
-from typing import (Generic, List, Optional, Sequence, Type, TypeVar, Union,
-                    cast)
+from typing import Generic, List, Optional, Sequence, Type, TypeVar, Union, cast
 
 from rich.console import Console, ConsoleOptions, RenderResult
 from rich.live import Live
@@ -82,7 +81,7 @@ class Automaton(Generic[C, S]):
         self.matrix: List[List[StateData]] = []
 
         if isinstance(initial_state, list):
-            self._state_type = initial_state[0][0]
+            self._state = initial_state[0][0].__class__
             for y in range(self.ymax + 1):
                 self.matrix.append([])
                 for x in range(self.xmax + 1):
@@ -98,7 +97,7 @@ class Automaton(Generic[C, S]):
             # attribute. We've already verified 'initial_state' is not a sequence from our conditional logic above, so
             # if we're here it must be CellState compliant.
             initial_state = cast(CellState, initial_state)
-            self._state_type = initial_state.__class__
+            self._state = initial_state
             for y in range(self.ymax + 1):
                 self.matrix.append([])
                 for x in range(self.xmax + 1):
@@ -220,6 +219,17 @@ class Automaton(Generic[C, S]):
         result = cls.__new__(cls)
         result.__dict__.update({"matrix": matrix})
         return result
+
+    @property
+    def colors(self) -> Sequence[str]:
+        # Ignoring for pyright. Mypy has no issue with this line.
+        return self._state.colors  # type: ignore
+
+    @colors.setter
+    def colors(self, colors: List[str]):
+        for y in range(self.ymax + 1):
+            for x in range(self.xmax + 1):
+                self.matrix[y][x].state.colors = colors
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions

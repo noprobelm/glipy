@@ -126,6 +126,7 @@ def parse_args(unparsed: Optional[List[str]] = None) -> ArgResult:
     )
 
     args = vars(parser.parse_args(unparsed or sys.argv[1:]))
+
     if "http" in args["target"]:
         automaton = scenarios.from_url(args["target"])
     elif ".rle" in args["target"]:
@@ -142,16 +143,7 @@ def parse_args(unparsed: Optional[List[str]] = None) -> ArgResult:
     if args["colors"] is not None:
         colors = args["colors"].split(" ")
         colors = parse_colors(colors)
-
-        # Pyright doesn't think colors is a valid attr for the CellState protoype. Mypy knows better
-        if len(colors) < len(automaton._state_type.colors):  # type: ignore
-            colors.extend(automaton._state_type.colors[len(colors) :])  # type: ignore
-            automaton._state_type.colors = colors  # type: ignore
-        elif len(colors) > len(automaton._state_type.colors):  # type: ignore
-            automaton._state_type.colors = colors[: len(automaton._state_type.colors)]  # type: ignore
-
-        else:
-            automaton._state_type.colors = colors  # type: ignore
+        automaton.colors = colors
 
     del args["target"]
     del args["colors"]
