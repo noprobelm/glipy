@@ -16,16 +16,17 @@ RLEHeader = namedtuple(
 PatternData = namedtuple("PatternData", ["states", "xmax", "ymax"])
 
 
-def life(lines: List[str]) -> PatternData:
+def life(data: str) -> PatternData:
     """Reads lines of a file compliant with life version 1.06
 
     Args:
-        lines (List[str]): The lines from a life 1.06 I/O stream
+        data (str): The life 1.06 data
 
     Returns:
         PatternData
     """
 
+    lines = data.split("\n")
     xmax = 0
     ymax = 0
     alive = []
@@ -52,11 +53,11 @@ def life(lines: List[str]) -> PatternData:
     return PatternData(states, xmax, ymax)
 
 
-def rle(lines: List[str]) -> PatternData:
+def rle(data: str) -> PatternData:
     """Reads lines of a file compliant with Run Length Encoded (RLE)
 
     Args:
-        lines (List[str]): The lines from a RLE I/O stream
+        data (str): The RLE data
 
     Raises:
         ValueError: A malformatted RLE stream was detected.
@@ -69,7 +70,7 @@ def rle(lines: List[str]) -> PatternData:
         """Parses header data
 
         Args:
-            line (str): The header line from an RLE I/O stream
+            line (str): The header line from the RLE data
 
         Raises:
             ValueError: A malformatted RLE stream was detected
@@ -191,6 +192,7 @@ def rle(lines: List[str]) -> PatternData:
 
     header = None
     row = None
+    lines = data.split("\n")
     for row, line in enumerate(lines):
         if line.strip().startswith("#"):
             continue

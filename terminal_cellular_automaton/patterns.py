@@ -62,20 +62,20 @@ class ConwayPattern(Pattern):
         return states
 
     @classmethod
-    def from_life(cls, lines: List[str]):
+    def from_life(cls, data: str):
         """Builds a pattern from 'life' data compliant with life version 1.06 read from a file
 
         Args:
-            data (List[str]): The lines from a file compliant with life 1.06 standards
+            data (str): The lines from a file compliant with life 1.06 standards
 
         Returns:
             A ConwayPattern based on 'life' data
         """
-        data = reader.life(lines)
+        data = reader.life(data)
         return cls(data.states, data.xmax, data.ymax)
 
     @classmethod
-    def from_rle(cls, lines: List[str]):
+    def from_rle(cls, data: str):
         """Builds a pattern from compliant Run Length Encoded (RLE) data read from a file.
 
         Args:
@@ -84,7 +84,7 @@ class ConwayPattern(Pattern):
         Returns:
             A ConwayPattern based on 'rle' data
         """
-        data = reader.rle(lines)
+        data = reader.rle(data)
         return cls(data.states, data.xmax, data.ymax)
 
 
