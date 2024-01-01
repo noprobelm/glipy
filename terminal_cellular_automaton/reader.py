@@ -119,6 +119,35 @@ def rle(data: str) -> PatternData:
         ConwayState.birth_rules = header.birth_rules or ConwayState.birth_rules
         ConwayState.survival_rules = header.survival_rules or ConwayState.survival_rules
 
+    def fill_row(row: List[ConwayState], xmax: int) -> List[ConwayState]:
+        """Fills in missing values for a row with dead ConwayState cells
+
+        Args:
+            row (List[ConwayState]): The row to fill in
+            xmax (int): The intended length of the row
+
+        Returns:
+            The filled row
+        """
+        for _ in range(xmax - len(row) + 1):
+            row.append(ConwayState(False))
+
+        return row
+
+    def fill_rows(states: List[List[ConwayState]], xmax: int, ymax: int):
+        """Fills in the necessary remaining rows with dead ConwayState cells
+
+        Args:
+            states (List[List[ConwayState]]): The data to fill
+            xmax (int): The intended length of a row
+            ymax (int): The intended length of the data
+
+        """
+        for _ in range(ymax - len(states) + 1):
+            states.append([ConwayState(False) for s in range(xmax + 1)])
+
+        return states
+
     def parse_states(xmax: int, ymax: int, data: str) -> List[List[ConwayState]]:
         """Parses state data based on RLE I/O stream content
 
@@ -145,11 +174,9 @@ def rle(data: str) -> PatternData:
         for c in data:
             if c == "!":
                 if len(states[y]) < xmax:
-                    for _ in range(xmax - len(states[y]) + 1):
-                        states[y].append(ConwayState(alive=False))
+                    states[y] = fill_row(states[y], xmax)
                 if len(states) < ymax:
-                    for _ in range(ymax - len(states) + 1):
-                        states.append([ConwayState(False) for s in range(xmax + 1)])
+                    states = fill_rows(states, xmax, ymax)
                 return states
             elif c == "o" or c == "b":
                 if len(nums) == 0:
