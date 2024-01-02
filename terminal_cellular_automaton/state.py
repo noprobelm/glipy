@@ -7,7 +7,7 @@ class CellState(Protocol):
     """A protocol to reference when creating a new type of cell state"""
 
     # colors should be a tuple of colors equivalent to the number of possible states in a CellState class
-    _colors: Sequence[str]
+    colors: Sequence[str]
 
     @property
     def color(self) -> str:
@@ -18,13 +18,8 @@ class CellState(Protocol):
         """
         ...
 
-    @property
-    def colors(self) -> Sequence[str]:
-        """Accesses the colors for the CellState"""
-        ...
-
-    @colors.setter
-    def colors(self, colors: List[str]) -> None:
+    @classmethod
+    def colors_setter(cls, colors: List[str]) -> None:
         """Sets the colors for the CellState"""
         ...
 
@@ -48,7 +43,7 @@ class ConwayState:
         alive (bool): Flag for whether the cell is ALIVE (True) or DEAD (False)
     """
 
-    _colors: Sequence[str] = ["#F6AE2D", "#315771"]
+    colors: Sequence[str] = ["#F6AE2D", "#315771"]
     birth_rules = [3]
     survival_rules = [2, 3]
 
@@ -69,24 +64,18 @@ class ConwayState:
     def color(self) -> str:
         """Returns the first index of self.colors if alive, else the second"""
         if self.alive is True:
-            return self._colors[0]
-        return self._colors[1]
+            return ConwayState.colors[0]
+        return ConwayState.colors[1]
 
-    @property
-    def colors(self) -> Sequence[str]:
-        """Accesses the colors for the CellState"""
-        return self._colors
-
-    @colors.setter
-    def colors(self, colors: List[str]) -> None:
+    @classmethod
+    def colors_setter(cls, colors: List[str]) -> None:
         """Sets the colors for the CellState"""
-        if len(colors) < len(self._colors):
-            colors.extend(self._colors[len(colors) :])
-        elif len(colors) > len(self._colors):
-            colors = colors[: len(self.colors)]
+        if len(colors) < len(ConwayState.colors):
+            colors.extend(ConwayState.colors[len(colors) :])
+        elif len(colors) > len(ConwayState.colors):
+            colors = colors[: len(ConwayState.colors)]
 
-        self._colors = colors
-        ConwayState._colors = colors
+        ConwayState.colors = colors
 
     def change_state(self, neighbors: List[ConwayState]) -> ConwayState:
         """Changes the state of the cell
