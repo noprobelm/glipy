@@ -1,6 +1,6 @@
 """Use this module to create commonly accessed patterns"""
 
-from typing import List, Sequence, Type
+from typing import List, Sequence, Type, Self
 
 from . import reader
 from .automaton import Automaton
@@ -62,7 +62,7 @@ class ConwayPattern(Pattern):
         return states
 
     @classmethod
-    def from_life(cls, data: str):
+    def from_life(cls, data: str) -> Self:
         """Builds a pattern from 'life' data compliant with life version 1.06 read from a file
 
         Args:
@@ -75,7 +75,7 @@ class ConwayPattern(Pattern):
         return cls(pattern_data.states, pattern_data.xmax, pattern_data.ymax)
 
     @classmethod
-    def from_rle(cls, data: str):
+    def from_rle(cls, data: str) -> Self:
         """Builds a pattern from compliant Run Length Encoded (RLE) data read from a file.
 
         Args:
