@@ -19,7 +19,7 @@ class CellState(Protocol):
         ...
 
     @classmethod
-    def colors_setter(cls, colors: List[str]) -> None:
+    def set_colors(cls, colors: List[str]) -> None:
         """Sets the colors for the CellState"""
         ...
 
@@ -64,18 +64,18 @@ class ConwayState:
     def color(self) -> str:
         """Returns the first index of self.colors if alive, else the second"""
         if self.alive is True:
-            return ConwayState.colors[0]
-        return ConwayState.colors[1]
+            return self.colors[0]
+        return self.colors[1]
 
     @classmethod
-    def colors_setter(cls, colors: List[str]) -> None:
+    def set_colors(cls, colors: List[str]) -> None:
         """Sets the colors for the CellState"""
         if len(colors) < len(ConwayState.colors):
             colors.extend(ConwayState.colors[len(colors) :])
         elif len(colors) > len(ConwayState.colors):
             colors = colors[: len(ConwayState.colors)]
 
-        ConwayState.colors = colors
+        cls.colors = colors
 
     def change_state(self, neighbors: List[ConwayState]) -> ConwayState:
         """Changes the state of the cell

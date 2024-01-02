@@ -251,7 +251,7 @@ class Automaton(Generic[C, S]):
 
         """
         # Ignoring for pyright. Mypy has no issue with this line.
-        self._state_type.colors = colors  # type: ignore
+        self._state_type.set_colors(colors)
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
