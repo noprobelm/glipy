@@ -64,7 +64,7 @@ def _():
 def _():
     s = ConwayState(True)
     colors = ["blue", "yellow"]
-    s.colors = colors
+    ConwayState.set_colors(colors)
     assert s.colors == colors
     assert len(s.colors) == 2
 
@@ -77,7 +77,7 @@ def _():
     s = ConwayState(True)
     old = s.colors
     colors = ["blue"]
-    s.colors = colors
+    ConwayState.set_colors(colors)
     assert s.colors == ["blue", old[1]]
     assert len(s.colors) == 2
 
@@ -88,6 +88,6 @@ def _():
 def _():
     s = ConwayState(True)
     colors = ["blue", "green", "yellow"]
-    s.colors = colors
+    ConwayState.set_colors(colors)
     assert s.colors == ["blue", "green"]
     assert len(s.colors) == 2
