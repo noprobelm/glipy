@@ -81,6 +81,7 @@ class Automaton(Generic[C, S]):
         self.matrix: List[List[StateData]] = []
 
         if isinstance(initial_state, list):
+            self._state_type = type(initial_state[0][0])
             for y in range(self.ymax + 1):
                 self.matrix.append([])
                 for x in range(self.xmax + 1):
@@ -96,6 +97,7 @@ class Automaton(Generic[C, S]):
             # attribute. We've already verified 'initial_state' is not a sequence from our conditional logic above, so
             # if we're here it must be CellState compliant.
             initial_state = cast(CellState, initial_state)
+            self._state_type = type(initial_state)
             for y in range(self.ymax + 1):
                 self.matrix.append([])
                 for x in range(self.xmax + 1):
@@ -232,14 +234,24 @@ class Automaton(Generic[C, S]):
 
     @property
     def colors(self) -> Sequence[str]:
+        """Accesses the colors being used for the instance's cell state type
+
+        Returns:
+            The colors being used for the cell state
+        """
         # Ignoring for pyright. Mypy has no issue with this line.
-        return self._state.colors  # type: ignore
+        return self._state_type.colors  # type: ignore
 
     @colors.setter
-    def colors(self, colors: List[str]):
-        for y in range(self.ymax + 1):
-            for x in range(self.xmax + 1):
-                self.matrix[y][x].state.colors = colors
+    def colors(self, colors: List[str]) -> None:
+        """Sets the colors being used for htis instance's cell state type
+
+        Args:
+            colors (List[str]): The colors to use
+
+        """
+        # Ignoring for pyright. Mypy has no issue with this line.
+        self._state_type.colors = colors  # type: ignore
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
