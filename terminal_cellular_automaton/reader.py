@@ -178,37 +178,27 @@ def rle(data: str) -> PatternData:
                 if len(states) < ymax:
                     states = fill_rows(states, xmax, ymax)
                 return states
-            elif c == "o" or c == "b":
-                if len(nums) == 0:
-                    n = 1
+
+            elif c == "o" or c == "b" or c == "$":
+                n = 1 if len(nums) == 0 else int("".join(nums))
+                if c == "o" or c == "b":
+                    for _ in range(n):
+                        if c == "o":
+                            states[y].append(ConwayState(alive=True))
+                        else:
+                            states[y].append(ConwayState(alive=False))
                 else:
-                    n = int("".join(nums))
+                    if len(states[y]) <= xmax:
+                        states[y] = fill_row(states[y], xmax)
 
-                for _ in range(n):
-                    if c == "o":
-                        states[y].append(ConwayState(alive=True))
-                    else:
-                        states[y].append(ConwayState(alive=False))
-
-                nums = []
-            elif c == "$":
-                if len(states[y]) <= xmax:
-                    for _ in range(xmax - len(states[y]) + 1):
-                        states[y].append(ConwayState(alive=False))
-
-                if len(nums) == 0:
-                    n = 1
-                else:
-                    n = int("".join(nums))
-                if n > 0:
                     for _ in range(n - 1):
                         states.append(
                             [ConwayState(alive=False) for _ in range(xmax + 1)]
                         )
                         y += 1
-                    else:
-                        states.append([])
-                        y += 1
+
+                    states.append([])
+                    y += 1
 
                 nums = []
 
@@ -217,16 +207,14 @@ def rle(data: str) -> PatternData:
 
         return states
 
-    header = None
-    row = None
     lines = data.split("\n")
     for row, line in enumerate(lines):
         if line.strip().startswith("#"):
             continue
-        if "=" in line:
+        elif "=" in line:
             header = parse_header(line)
             break
-    if header is None or row is None:
+    else:
         raise ValueError(
             f"I/O missing header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
         )
