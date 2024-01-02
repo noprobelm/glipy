@@ -69,7 +69,11 @@ class ConwayState:
 
     @classmethod
     def set_colors(cls, colors: List[str]) -> None:
-        """Sets the colors for the CellState"""
+        """Sets the colors for the CellState
+
+        Args:
+            colors (List[str]): The list of colors to change to
+        """
         if len(colors) < len(ConwayState.colors):
             colors.extend(ConwayState.colors[len(colors) :])
         elif len(colors) > len(ConwayState.colors):

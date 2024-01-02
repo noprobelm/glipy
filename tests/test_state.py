@@ -1,9 +1,6 @@
 """Tests CellState behavior"""
 
 from ward import test
-import sys
-
-sys.path.append("../")
 from terminal_cellular_automaton.state import ConwayState
 
 

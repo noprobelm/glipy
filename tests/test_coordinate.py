@@ -1,9 +1,6 @@
 """Tests Coordinate behavior"""
 
 from ward import test
-import sys
-
-sys.path.append("../")
 from terminal_cellular_automaton.coordinate import Coordinate
 
 

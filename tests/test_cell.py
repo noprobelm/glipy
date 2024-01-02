@@ -1,9 +1,6 @@
 """Tests the get_neighbors method for all Cell types"""
 
 from ward import test, fixture
-import sys
-
-sys.path.append("../")
 from terminal_cellular_automaton.cell import MooreCell
 from terminal_cellular_automaton.coordinate import Coordinate
 

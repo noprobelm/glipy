@@ -1,9 +1,6 @@
 """Tests various functions within the args module"""
 
 from ward import test
-import sys
-
-sys.path.append("../")
 from terminal_cellular_automaton import args
 
 
