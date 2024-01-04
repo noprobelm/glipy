@@ -172,7 +172,7 @@ class Automaton(Generic[C, S]):
         """Runs the simulation
 
         Args:
-            duration (Union[float, int]): The duration the simulation should run for
+            generations (Union[float, int]): The number of generations the automaton should run for
             sleep (Union[float, int]): The time the simulation should sleep between each step
             render: bool: Cotnrols if the simulation renders to the terminal
         """
