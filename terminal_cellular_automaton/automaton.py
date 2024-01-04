@@ -40,6 +40,7 @@ class Automaton(Generic[C, S]):
     signature enforce this.
 
     Attributes:
+        generation (int): The generation we're at in the simulation
         _cell_type (Type[Cell]) The type of Cell the automaton is working with
         xmax (int): The maximum x coordinate
         ymax (int): The maximum y coordinate
@@ -64,6 +65,7 @@ class Automaton(Generic[C, S]):
             ymax (Optional[int]): The ymax value to use for the automaton
         """
 
+        self.generation = 0
         self._cell_type = cell_type
         if xmax is None or ymax is None:
             console = Console()
@@ -174,27 +176,24 @@ class Automaton(Generic[C, S]):
             sleep (Union[float, int]): The time the simulation should sleep between each step
             render: bool: Cotnrols if the simulation renders to the terminal
         """
-        elapsed = 0
         try:
             if render is True:
                 with Live(self, screen=True, auto_refresh=False) as live:
                     if sleep == float("inf"):
                         while True:
                             time.sleep(1)
-                    while elapsed < generations:
+                    while self.generation < generations:
                         self.evolve()
                         live.update(self, refresh=True)
                         time.sleep(sleep)
-                        elapsed += 1
             else:
                 if sleep == float("inf"):
                     while True:
                         time.sleep(1)
 
-                while elapsed < generations:
+                while self.generation < generations:
                     self.evolve()
                     time.sleep(sleep)
-                    elapsed += 1
         except KeyboardInterrupt:
             sys.exit(0)
 
@@ -215,6 +214,8 @@ class Automaton(Generic[C, S]):
                     neighbor_states.append(neighbor_state)
                 new = data.state.change_state(neighbor_states)
                 self.matrix[coord.y][coord.x].state = new
+
+        self.generation += 1
 
     def __copy__(self) -> Automaton:
         """Returns a shallow copy of an instance
