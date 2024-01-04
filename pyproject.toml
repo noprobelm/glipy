@@ -11,6 +11,7 @@ packages = [ {include = "terminal_cellular_automaton"} ]
 python = "^3.11"
 rich = "^13.7.0"
 requests = "^2.31.0"
+textual = "^0.46.0"
 
 [tool.poetry.group.test.dependencies]
 ward = "^0.68.0b0"
@@ -21,3 +22,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 'tca' = 'terminal_cellular_automaton.__main__:main'
+'app' = 'terminal_cellular_automaton.app:main'

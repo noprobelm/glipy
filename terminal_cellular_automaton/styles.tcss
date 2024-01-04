@@ -1,0 +1,17 @@
+Screen {
+    layers: below above;
+}
+
+Footer {
+    layer: above;
+}
+
+FilteredDirectoryTree {
+    align-horizontal: left;
+    width: 20%;
+    layer: above;
+}
+
+Automaton {
+    layer: below;
+}
