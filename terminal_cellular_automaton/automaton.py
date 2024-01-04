@@ -251,7 +251,6 @@ class Automaton(Generic[C, S]):
             colors (List[str]): The colors to use
 
         """
-        # Ignoring for pyright. Mypy has no issue with this line.
         self._state_type.set_colors(colors)
 
     def __rich_console__(
