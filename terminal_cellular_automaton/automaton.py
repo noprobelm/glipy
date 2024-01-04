@@ -152,7 +152,7 @@ class Automaton(Generic[C, S]):
             import cProfile
 
             cProfile.runctx(
-                "exec(self.run(duration, sleep, False))", globals(), locals()
+                "exec(self.run(generations, sleep, False))", globals(), locals()
             )
 
         elif render is True:
