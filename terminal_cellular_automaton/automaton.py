@@ -253,6 +253,11 @@ class Automaton(Generic[C, S]):
         """
         self._state_type.set_colors(colors)
 
+    def clear(self):
+        for y in range(self.ymax + 1):
+            for x in range(self.xmax + 1):
+                self.matrix[y][x].state = self._state_type()
+
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
@@ -265,8 +270,8 @@ class Automaton(Generic[C, S]):
         Yields:
             2 cells in the simulation, row by row, until all cell states have been rendered.
         """
-        for y in range(self.max_coord.y)[::2]:
-            for x in range(self.max_coord.x + 1):
+        for y in range(self.ymax)[::2]:
+            for x in range(self.xmax + 1):
                 bg = self.matrix[y][x].state.color
                 fg = self.matrix[y + 1][x].state.color
                 yield Segment("▄", Style(color=fg, bgcolor=bg))
