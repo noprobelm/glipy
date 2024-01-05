@@ -1,17 +1,21 @@
-Screen {
+WorkArea {
     layers: below above;
 }
 
 Footer {
     layer: above;
+    width: 1fr;
 }
 
 FilteredDirectoryTree {
     align-horizontal: left;
-    width: 20%;
+    width: 25%;
     layer: above;
+    height: 100%;
+    border-right: black;
 }
 
-Automaton {
+AutomatonRenderer {
     layer: below;
+    height: 100%;
 }
