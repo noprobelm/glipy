@@ -70,9 +70,7 @@ def domino_sparker() -> Automaton:
     """A domino sparker generated from an rle file"""
     automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
     rle = os.path.join(Path(__file__).parent, "data/rle/p11dominosparkeron56p27.rle")
-    with open(rle, "r") as f:
-        data = f.read()
-    sparker = patterns.ConwayPattern.from_rle(data)
+    sparker = patterns.ConwayPattern.from_rle(path)
     automaton.spawn(automaton.midpoint - sparker.midpoint, sparker)
     return automaton
 
@@ -80,9 +78,7 @@ def domino_sparker() -> Automaton:
 def from_life(path: str) -> Automaton:
     """Runs a .life from a local path"""
     automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
-    with open(path, "r") as f:
-        data = f.read()
-    pattern = patterns.ConwayPattern.from_life(data)
+    pattern = patterns.ConwayPattern.from_life(path)
     automaton.spawn(automaton.midpoint - pattern.midpoint, pattern)
     return automaton
 
@@ -90,9 +86,7 @@ def from_life(path: str) -> Automaton:
 def from_rle(path: str) -> Automaton:
     """Runs a .rle from a local path"""
     automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
-    with open(path, "r") as f:
-        data = f.read()
-    pattern = patterns.ConwayPattern.from_rle(data)
+    pattern = patterns.ConwayPattern.from_rle(path)
     automaton.spawn(automaton.midpoint - pattern.midpoint, pattern)
     return automaton
 
