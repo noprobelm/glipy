@@ -70,7 +70,7 @@ def domino_sparker() -> Automaton:
     """A domino sparker generated from an rle file"""
     automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
     rle = os.path.join(Path(__file__).parent, "data/rle/p11dominosparkeron56p27.rle")
-    sparker = patterns.ConwayPattern.from_rle(path)
+    sparker = patterns.ConwayPattern.from_rle(rle)
     automaton.spawn(automaton.midpoint - sparker.midpoint, sparker)
     return automaton
 
