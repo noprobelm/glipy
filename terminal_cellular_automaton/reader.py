@@ -35,7 +35,12 @@ def life(data: str) -> PatternData:
         if line.startswith("#"):
             continue
         split = line.split(" ")
-        coord = Coordinate(int(split[0]), int(split[1]))
+        try:
+            coord = Coordinate(int(split[0]), int(split[1]))
+        except (ValueError, IndexError):
+            raise ValueError(
+                f"Malformatted .life file format (see https://conwaylife.com/wiki/Life_1.06)"
+            )
         alive.append(coord)
         if coord.x > xmax:
             xmax = coord.x
