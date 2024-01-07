@@ -3,7 +3,6 @@ from textual.reactive import reactive
 from textual.widgets import Footer, Static
 from . import state, cell, patterns
 from .automaton import Automaton
-import sys
 
 from pathlib import Path
 from typing import Iterable
