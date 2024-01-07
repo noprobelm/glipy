@@ -6,6 +6,8 @@ from .automaton import Automaton
 
 from pathlib import Path
 from typing import Iterable
+from textual.widgets import Input
+from textual.validation import URL
 
 from textual.app import App, ComposeResult
 from textual.widgets import DirectoryTree
@@ -96,17 +98,33 @@ class AutomatonRenderer(Static, can_focus=True):
         return self.automaton
 
 
+class URLInput(Input):
+    def on_mount(self) -> None:
+        self.visible = False
+
+
 class WorkArea(Screen):
     BINDINGS = [
         Binding("h", "hide_directory_tree", "Toggle Tree"),
+        Binding("u", "toggle_url_input", "Toggle URL input", show=True),
         Binding("space", "toggle_automaton", "Play/Pause", show=True, priority=True),
         Binding("o", "evolve_automaton", "Step", show=True),
+        Binding("escape", "focus_automaton", "Focus Automaton", show=False),
     ]
 
     def compose(self) -> ComposeResult:
+        yield URLInput(validators=[URL("Invalid URL entered")])
         yield FilteredDirectoryTree(os.path.join(Path(__file__).parent, "data/rle/"))
         yield AutomatonRenderer()
         yield Footer()
+
+    def action_toggle_url_input(self) -> None:
+        url_input = self.query_one(URLInput)
+        if url_input.visible is True:
+            url_input.visible = False
+        else:
+            url_input.visible = True
+            url_input.focus()
 
     def action_toggle_automaton(self) -> None:
         automaton = self.query_one(AutomatonRenderer)
@@ -119,6 +137,12 @@ class WorkArea(Screen):
     def action_hide_directory_tree(self) -> None:
         directory_tree = self.query_one(FilteredDirectoryTree)
         directory_tree.visible = not directory_tree.visible
+
+    def action_focus_automaton(self) -> None:
+        automaton = self.query_one(AutomatonRenderer)
+        url_input = self.query_one(URLInput)
+        url_input.visible = False
+        automaton.focus()
 
     def on_directory_tree_file_selected(
         self, selected: DirectoryTree.FileSelected
