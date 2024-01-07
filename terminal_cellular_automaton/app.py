@@ -3,6 +3,7 @@ from textual.reactive import reactive
 from textual.widgets import Footer, Static
 from . import state, cell, patterns
 from .automaton import Automaton
+import sys
 
 from pathlib import Path
 from typing import Iterable
@@ -24,7 +25,7 @@ logging.basicConfig(
 )
 
 
-class FilteredDirectoryTree(DirectoryTree):
+class FilteredDirectoryTree(DirectoryTree, inherit_bindings=False):
     BINDINGS = [
         Binding("j", "cursor_down", "Cursor Down", show=False),
         Binding("k", "cursor_up", "Cursor Up", show=False),
@@ -32,26 +33,23 @@ class FilteredDirectoryTree(DirectoryTree):
         Binding("down", "cursor_down", "Cursor Down", show=False),
         Binding("0", "scroll_home", "Scroll Home", show=False),
         Binding("enter", "select_cursor", "Open file/path", show=True),
-        Binding("-", "move_up", "Path Up", show=True),
+        Binding("-", "path_up", "Path Up", show=True),
     ]
 
     def filter_paths(self, paths: Iterable[Path]) -> Iterable[Path]:
         return [path for path in paths if not path.name.startswith(".")]
 
-    def on_directory_tree_directory_selected(self, selected):
+    def on_directory_tree_directory_selected(
+        self, selected: DirectoryTree.DirectorySelected
+    ) -> None:
         self.path = selected.path
 
-    def action_move_up(self):
-        self.path = f"{self.path}/../"
+    def action_path_up(self) -> None:
+        self.path = Path(self.path).parent
 
 
 class AutomatonRenderer(Static, can_focus=True):
     """A widget to display elapsed time."""
-
-    BINDINGS = [
-        Binding("space", "toggle", "Play/Pause", show=True),
-        Binding("o", "evolve", "Step"),
-    ]
 
     automaton = Automaton(cell.MooreCell, state.ConwayState())
     generation = reactive(0)
@@ -95,41 +93,50 @@ class AutomatonRenderer(Static, can_focus=True):
         """Called when the time attribute changes."""
         self.update(self.automaton)
 
-    def render(self):
+    def render(self) -> Automaton:
         return self.automaton
 
 
 class WorkArea(Screen):
     BINDINGS = [
         Binding("h", "hide_directory_tree", "Toggle Tree"),
+        Binding("space", "toggle_automaton", "Play/Pause", show=True, priority=True),
+        Binding("o", "evolve_automaton", "Step", show=True),
     ]
 
     def compose(self) -> ComposeResult:
-        """Called to add widgets to the app."""
         yield FilteredDirectoryTree(os.path.join(Path(__file__).parent, "data/rle/"))
         yield AutomatonRenderer()
-
         yield Footer()
 
-    def action_toggle_automaton(self):
+    def action_toggle_automaton(self) -> None:
         automaton = self.query_one(AutomatonRenderer)
-        if automaton.paused is False:
-            automaton.action_stop()
-        elif automaton.paused is True:
-            automaton.action_start()
+        automaton.action_toggle()
+
+    def action_evolve_automaton(self) -> None:
+        automaton = self.query_one(AutomatonRenderer)
+        automaton.action_evolve()
 
     def action_hide_directory_tree(self) -> None:
         directory_tree = self.query_one(FilteredDirectoryTree)
         directory_tree.visible = not directory_tree.visible
 
-    def action_reduce_refresh_rate(self) -> None:
-        automaton = self.query_one(AutomatonRenderer)
-        automaton.refresh_rate -= 1
+    def on_directory_tree_file_selected(
+        self, selected: DirectoryTree.FileSelected
+    ) -> None:
+        try:
+            match selected.path.suffix:
+                case ".rle":
+                    pattern = patterns.ConwayPattern.from_rle(selected.path)
+                case ".life":
+                    pattern = patterns.ConwayPattern.from_life(selected.path)
+                case _:
+                    return
+        except ValueError:
+            return
 
-    def on_directory_tree_file_selected(self, selected):
         automaton = self.query_one(AutomatonRenderer)
         automaton.action_clear()
-        pattern = patterns.ConwayPattern.from_rle(selected.path)
         automaton.action_spawn(pattern)
         automaton.update()
 
@@ -145,6 +152,6 @@ class AutomatonApp(App):
         logging.debug("Logged via TextualHandler")
 
 
-def main():
+def main() -> None:
     app = AutomatonApp()
     app.run()
