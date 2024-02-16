@@ -1,21 +1,25 @@
 WorkArea {
-    layers: below above;
+    layers: bottom middle top;
 }
 
 Footer {
-    layer: above;
+    layer: top;
     width: 1fr;
 }
 
 FilteredDirectoryTree {
     align-horizontal: left;
     width: 25%;
-    layer: above;
+    layer: middle;
     height: 100%;
     border-right: black;
 }
 
 AutomatonRenderer {
-    layer: below;
+    layer: bottom;
     height: 100%;
+}
+
+URLInput {
+    layer: top;
 }

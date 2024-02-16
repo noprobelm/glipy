@@ -72,10 +72,7 @@ class ConwayPattern(Pattern):
         Returns:
             A ConwayPattern based on 'life' data
         """
-        with open(path, "r") as f:
-            data = f.read()
-
-        pattern_data = reader.life(data)
+        pattern_data = reader.life(path)
         return cls(pattern_data.states, pattern_data.xmax, pattern_data.ymax)
 
     @classmethod
@@ -88,9 +85,7 @@ class ConwayPattern(Pattern):
         Returns:
             A ConwayPattern based on 'rle' data
         """
-        with open(path, "r") as f:
-            data = f.read()
-        pattern_data = reader.rle(data)
+        pattern_data = reader.rle(path)
         return cls(pattern_data.states, pattern_data.xmax, pattern_data.ymax)
 
 

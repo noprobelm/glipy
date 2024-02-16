@@ -12,6 +12,7 @@ from .automaton import Automaton
 from .cell import MooreCell
 from .coordinate import Coordinate
 from .state import ConwayState
+from . import reader
 
 
 def conway_1() -> Automaton:
@@ -78,7 +79,9 @@ def domino_sparker() -> Automaton:
 def from_life(path: str) -> Automaton:
     """Runs a .life from a local path"""
     automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
-    pattern = patterns.ConwayPattern.from_life(path)
+    with open(path, "r") as f:
+        data = f.read()
+    pattern = reader.life(data)
     automaton.spawn(automaton.midpoint - pattern.midpoint, pattern)
     return automaton
 
@@ -86,7 +89,9 @@ def from_life(path: str) -> Automaton:
 def from_rle(path: str) -> Automaton:
     """Runs a .rle from a local path"""
     automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
-    pattern = patterns.ConwayPattern.from_rle(path)
+    with open(path, "r") as f:
+        data = f.read()
+    pattern = reader.rle(data)
     automaton.spawn(automaton.midpoint - pattern.midpoint, pattern)
     return automaton
 

@@ -2,10 +2,13 @@
 
 import re
 from collections import namedtuple
-from typing import List
+from typing import List, Union
 
 from .coordinate import Coordinate
 from .state import ConwayState
+from pathlib import Path
+from .automaton import Automaton
+from .cell import MooreCell
 
 # Stores header data from  properly formatted RLE I/O
 RLEHeader = namedtuple(
@@ -16,7 +19,7 @@ RLEHeader = namedtuple(
 PatternData = namedtuple("PatternData", ["states", "xmax", "ymax"])
 
 
-def life(data: str) -> PatternData:
+def life(data: str) -> Automaton:
     """Reads lines of a file compliant with life version 1.06
 
     Args:
@@ -55,10 +58,10 @@ def life(data: str) -> PatternData:
             else:
                 states[y].append(ConwayState(False))
 
-    return PatternData(states, xmax, ymax)
+    return Automaton(MooreCell, states, xmax, ymax)
 
 
-def rle(data: str) -> PatternData:
+def rle(data: str) -> Automaton:
     """Reads lines of a file compliant with Run Length Encoded (RLE)
 
     Args:
@@ -71,7 +74,7 @@ def rle(data: str) -> PatternData:
         PatternData
     """
 
-    def parse_header(line: str) -> RLEHeader:
+    def parse_header(data: str) -> RLEHeader:
         """Parses header data
 
         Args:
@@ -227,4 +230,4 @@ def rle(data: str) -> PatternData:
     set_birth_rules(header)
     data = "".join(line.strip() for line in lines[row + 1 :])
     states = parse_states(header.width - 1, header.height - 1, data)
-    return PatternData(states, header.width - 1, header.height - 1)
+    return Automaton(MooreCell, states, header.width - 1, header.height - 1)

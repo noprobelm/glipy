@@ -1,7 +1,7 @@
 from textual.app import App, ComposeResult, ComposeResult
 from textual.reactive import reactive
 from textual.widgets import Footer, Static
-from . import state, cell, patterns
+from . import state, cell
 from .automaton import Automaton
 
 from pathlib import Path
@@ -13,6 +13,8 @@ from textual.app import App, ComposeResult
 from textual.widgets import DirectoryTree
 from textual.binding import Binding
 from textual.screen import Screen
+import requests
+from . import reader
 
 import logging
 from textual.logging import TextualHandler
@@ -50,7 +52,7 @@ class FilteredDirectoryTree(DirectoryTree, inherit_bindings=False):
 
 
 class AutomatonRenderer(Static, can_focus=True):
-    """A widget to display elapsed time."""
+    """A widget Conwayplay elapsed time."""
 
     automaton = Automaton(cell.MooreCell, state.ConwayState())
     generation = reactive(0)
@@ -147,14 +149,31 @@ class WorkArea(Screen):
     def on_directory_tree_file_selected(
         self, selected: DirectoryTree.FileSelected
     ) -> None:
+        with open(selected.path, "r") as f:
+            data = f.read()
         try:
             match selected.path.suffix:
                 case ".rle":
-                    pattern = patterns.ConwayPattern.from_rle(selected.path)
+                    pattern = reader.rle(data)
                 case ".life":
-                    pattern = patterns.ConwayPattern.from_life(selected.path)
+                    pattern = reader.life(data)
                 case _:
                     return
+        except ValueError:
+            return
+
+        automaton = self.query_one(AutomatonRenderer)
+        automaton.action_clear()
+        automaton.action_spawn(pattern)
+        automaton.update()
+
+    def on_input_submitted(self, control: Input.Submitted) -> None:
+        response = requests.get(control.value)
+        if response.status_code != 200:
+            raise ValueError(f"Error {response.status_code}: {response.reason}")
+        data = response.content.decode()
+        try:
+            pattern = reader.rle(data)
         except ValueError:
             return
 
