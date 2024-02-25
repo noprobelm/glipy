@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import time
 import sys
-from copy import copy
 from dataclasses import dataclass
 from typing import Generic, List, Optional, Sequence, Type, TypeVar, Union, cast
 
@@ -223,22 +222,6 @@ class Automaton(Generic[C, S]):
         for y in range(self.ymax + 1):
             for x in range(self.xmax + 1):
                 self.matrix[y][x].state = self._state_type()
-
-    def __copy__(self) -> Automaton:
-        """Returns a shallow copy of an instance
-
-        Returns:
-            A shallow copy of the Automaton instance
-        """
-        matrix: List[List[StateData]] = []
-        for y in range(self.ymax + 1):
-            matrix.append([])
-            for x in range(self.xmax + 1):
-                matrix[y].append(copy(self.matrix[y][x]))
-        cls = self.__class__
-        result = cls.__new__(cls)
-        result.__dict__.update({"matrix": matrix})
-        return result
 
     @property
     def colors(self) -> Sequence[str]:
