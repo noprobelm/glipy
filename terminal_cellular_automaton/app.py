@@ -13,7 +13,7 @@ from textual.app import App, ComposeResult
 from textual.widgets import DirectoryTree
 from textual.binding import Binding
 from textual.screen import Screen
-import requests
+import requests  # type: ignore
 
 import logging
 from textual.logging import TextualHandler
