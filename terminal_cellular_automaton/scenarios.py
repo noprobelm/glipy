@@ -12,7 +12,7 @@ from .automaton import Automaton
 from .cell import MooreCell
 from .coordinate import Coordinate
 from .state import ConwayState
-from . import reader
+from . import from_conway_life, from_conway_rle
 
 
 def conway_1() -> Automaton:
@@ -83,7 +83,7 @@ def from_life(path: str) -> Automaton:
     automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
     with open(path, "r") as f:
         data = f.read()
-    pattern = reader.life(data)
+    pattern = from_conway_life(data)
     automaton.spawn(automaton.midpoint - pattern.midpoint, pattern)
     return automaton
 
@@ -93,7 +93,7 @@ def from_rle(path: str) -> Automaton:
     automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
     with open(path, "r") as f:
         data = f.read()
-    pattern = reader.rle(data)
+    pattern = from_conway_rle(data)
     automaton.spawn(automaton.midpoint - pattern.midpoint, pattern)
     return automaton
 

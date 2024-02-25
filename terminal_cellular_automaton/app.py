@@ -1,7 +1,7 @@
 from textual.app import App, ComposeResult, ComposeResult
 from textual.reactive import reactive
 from textual.widgets import Footer, Static
-from . import state, cell
+from . import state, cell, from_conway_life, from_conway_rle
 from .automaton import Automaton
 
 from pathlib import Path
@@ -14,7 +14,6 @@ from textual.widgets import DirectoryTree
 from textual.binding import Binding
 from textual.screen import Screen
 import requests
-from . import reader
 
 import logging
 from textual.logging import TextualHandler
@@ -154,9 +153,9 @@ class WorkArea(Screen):
         try:
             match selected.path.suffix:
                 case ".rle":
-                    pattern = reader.rle(data)
+                    pattern = from_conway_rle(data)
                 case ".life":
-                    pattern = reader.life(data)
+                    pattern = from_conway_life(data)
                 case _:
                     return
         except ValueError:
