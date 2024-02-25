@@ -2,6 +2,7 @@
 import re
 from collections import namedtuple
 from typing import List
+import random
 import requests  # type: ignore
 
 from .coordinate import Coordinate
@@ -253,4 +254,15 @@ def from_rle_url(url: str) -> Automaton:
     data = response.content.decode()
     pattern = from_conway_rle(data)
     automaton.spawn(automaton.midpoint - pattern.midpoint, pattern)
+    return automaton
+
+
+def random_conway() -> Automaton:
+    automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
+    for y in range(automaton.ymax + 1):
+        for x in range(automaton.xmax + 1):
+            alive = bool(random.randint(0, 1))
+            coord = Coordinate(x, y)
+            s = ConwayState(alive)
+            automaton.set_state(coord, s)
     return automaton

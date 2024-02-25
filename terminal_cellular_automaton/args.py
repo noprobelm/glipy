@@ -2,14 +2,12 @@
 
 import argparse
 import sys
-import os
-from pathlib import Path
 from collections import namedtuple
 from typing import List, Optional
 
 from rich.color import ANSI_COLOR_NAMES
 
-from . import from_rle_url, from_conway_rle, from_conway_life
+from . import from_rle_url, from_conway_rle, from_conway_life, random_conway
 
 ArgResult = namedtuple("ArgResult", ["automaton", "start_kwargs"])
 
@@ -90,13 +88,7 @@ def parse_args(unparsed: Optional[List[str]] = None) -> ArgResult:
         description="A cellular automaton simulator with support for terminal rendering"
     )
 
-    parser.add_argument(
-        "target",
-        nargs="?",
-        default=os.path.join(
-            Path(__file__).parent, "data/rle/p11dominosparkeron56p27.rle"
-        ),
-    )
+    parser.add_argument("target", nargs="?", default=None)
 
     parser.add_argument(
         "-r",
@@ -135,7 +127,9 @@ def parse_args(unparsed: Optional[List[str]] = None) -> ArgResult:
 
     args = vars(parser.parse_args(unparsed or sys.argv[1:]))
 
-    if "http" in args["target"]:
+    if args["target"] is None:
+        automaton = random_conway()
+    elif "http" in args["target"]:
         automaton = from_rle_url(args["target"])
     elif ".rle" in args["target"]:
         with open(args["target"], "r") as f:
