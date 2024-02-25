@@ -203,18 +203,20 @@ class Automaton(Generic[C, S]):
         Visits each cell in the 2d matrix and retrieves its new state by passing its neighbor states to the change_state
         method.
         """
-        ref = copy(self)
+        next_generation: List[List[StateData]] = []
         for y in range(self.ymax + 1):
+            next_generation.append([])
             for x in range(self.xmax + 1):
                 coord = Coordinate(x, y)
-                data = ref.matrix[coord.y][coord.x]
+                data = self.matrix[coord.y][coord.x]
                 neighbor_states = []
                 for nc in data.neighbors:
-                    neighbor_state = ref.matrix[nc.y][nc.x].state
+                    neighbor_state = self.matrix[nc.y][nc.x].state
                     neighbor_states.append(neighbor_state)
-                new = data.state.change_state(neighbor_states)
-                self.matrix[coord.y][coord.x].state = new
+                new_state = data.state.change_state(neighbor_states)
+                next_generation[y].append(StateData(data.neighbors, new_state))
 
+        self.matrix = next_generation
         self.generation += 1
 
     def __copy__(self) -> Automaton:
