@@ -3,7 +3,7 @@
 from typing import List, Sequence, Type, Self, Union
 from pathlib import Path
 
-from . import reader
+from . import from_conway_life, from_conway_rle
 from .automaton import Automaton
 from .cell import Cell, MooreCell
 from .coordinate import Coordinate
@@ -72,7 +72,7 @@ class ConwayPattern(Pattern):
         Returns:
             A ConwayPattern based on 'life' data
         """
-        pattern = reader.life(data)
+        pattern = from_conway_life(data)
         return pattern
 
     @classmethod
@@ -85,7 +85,7 @@ class ConwayPattern(Pattern):
         Returns:
             A ConwayPattern based on 'rle' data
         """
-        pattern = reader.rle(data)
+        pattern = from_conway_rle(data)
         return pattern
 
 
