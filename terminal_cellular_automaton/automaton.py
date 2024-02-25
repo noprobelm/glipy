@@ -219,6 +219,11 @@ class Automaton(Generic[C, S]):
         self.matrix = next_generation
         self.generation += 1
 
+    def clear(self):
+        for y in range(self.ymax + 1):
+            for x in range(self.xmax + 1):
+                self.matrix[y][x].state = self._state_type()
+
     def __copy__(self) -> Automaton:
         """Returns a shallow copy of an instance
 
@@ -254,11 +259,6 @@ class Automaton(Generic[C, S]):
 
         """
         self._state_type.set_colors(colors)
-
-    def clear(self):
-        for y in range(self.ymax + 1):
-            for x in range(self.xmax + 1):
-                self.matrix[y][x].state = self._state_type()
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
