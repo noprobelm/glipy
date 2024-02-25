@@ -7,7 +7,7 @@ from typing import List, Optional
 
 from rich.color import ANSI_COLOR_NAMES
 
-from . import scenarios
+from . import from_rle_url, from_conway_rle, from_conway_life
 
 ArgResult = namedtuple("ArgResult", ["automaton", "start_kwargs"])
 
@@ -88,7 +88,9 @@ def parse_args(unparsed: Optional[List[str]] = None) -> ArgResult:
         description="A cellular automaton simulator with support for terminal rendering"
     )
 
-    parser.add_argument("target", nargs="?", default="domino_sparker")
+    parser.add_argument(
+        "target", nargs="?", default="data/rle/p11dominosparkeron56p27.rle"
+    )
 
     parser.add_argument(
         "-r",
@@ -128,17 +130,15 @@ def parse_args(unparsed: Optional[List[str]] = None) -> ArgResult:
     args = vars(parser.parse_args(unparsed or sys.argv[1:]))
 
     if "http" in args["target"]:
-        automaton = scenarios.from_url(args["target"])
+        automaton = from_rle_url(args["target"])
     elif ".rle" in args["target"]:
-        automaton = scenarios.from_rle(args["target"])
+        with open(args["target"], "r") as f:
+            data = f.read()
+        automaton = from_conway_rle(data)
     elif ".life" in args["target"]:
-        automaton = scenarios.from_life(args["target"])
-    else:
-        try:
-            automaton = getattr(scenarios, args["target"])()
-        except AttributeError:
-            parser.print_help()
-            sys.exit(1)
+        with open(args["target"], "r") as f:
+            data = f.read()
+        automaton = from_conway_life(data)
 
     if args["colors"] is not None:
         colors = args["colors"].split(" ")

@@ -2,6 +2,7 @@
 import re
 from collections import namedtuple
 from typing import List
+import requests  # type: ignore
 
 from .coordinate import Coordinate
 from .state import ConwayState
@@ -27,6 +28,7 @@ def from_conway_life(data: str) -> Automaton:
         PatternData
     """
 
+    data = data.strip()
     lines = data.split("\n")
     xmax = 0
     ymax = 0
@@ -56,7 +58,11 @@ def from_conway_life(data: str) -> Automaton:
             else:
                 states[y].append(ConwayState(False))
 
-    return Automaton(MooreCell, states, xmax, ymax)
+    automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
+    pattern = Automaton[MooreCell, ConwayState](MooreCell, states, xmax, ymax)
+    automaton.spawn(automaton.midpoint - pattern.midpoint, pattern)
+
+    return automaton
 
 
 def from_conway_rle(data: str) -> Automaton:
@@ -228,4 +234,23 @@ def from_conway_rle(data: str) -> Automaton:
     set_birth_rules(header)
     data = "".join(line.strip() for line in lines[row + 1 :])
     states = parse_states(header.width - 1, header.height - 1, data)
-    return Automaton(MooreCell, states, header.width - 1, header.height - 1)
+
+    automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
+    pattern = Automaton[MooreCell, ConwayState](
+        MooreCell, states, header.width - 1, header.height - 1
+    )
+    automaton.spawn(automaton.midpoint - pattern.midpoint, pattern)
+
+    return automaton
+
+
+def from_rle_url(url: str) -> Automaton:
+    """Runs a .rle from a remote URL"""
+    automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
+    response = requests.get(url)
+    if response.status_code != 200:
+        raise ValueError(f"Error {response.status_code}: {response.reason}")
+    data = response.content.decode()
+    pattern = from_conway_rle(data)
+    automaton.spawn(automaton.midpoint - pattern.midpoint, pattern)
+    return automaton
