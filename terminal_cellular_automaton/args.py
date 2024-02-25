@@ -2,6 +2,8 @@
 
 import argparse
 import sys
+import os
+from pathlib import Path
 from collections import namedtuple
 from typing import List, Optional
 
@@ -89,7 +91,11 @@ def parse_args(unparsed: Optional[List[str]] = None) -> ArgResult:
     )
 
     parser.add_argument(
-        "target", nargs="?", default="data/rle/p11dominosparkeron56p27.rle"
+        "target",
+        nargs="?",
+        default=os.path.join(
+            Path(__file__).parent, "data/rle/p11dominosparkeron56p27.rle"
+        ),
     )
 
     parser.add_argument(
