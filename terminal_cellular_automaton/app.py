@@ -172,7 +172,7 @@ class WorkArea(Screen):
             raise ValueError(f"Error {response.status_code}: {response.reason}")
         data = response.content.decode()
         try:
-            pattern = reader.rle(data)
+            pattern = from_conway_rle(data)
         except ValueError:
             return
 
