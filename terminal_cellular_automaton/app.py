@@ -53,7 +53,7 @@ class FilteredDirectoryTree(DirectoryTree, inherit_bindings=False):
 class AutomatonRenderer(Static, can_focus=True):
     """A widget Conwayplay elapsed time."""
 
-    automaton = Automaton(cell.MooreCell, state.ConwayState())
+    automaton: Automaton = Automaton(cell.MooreCell, state.ConwayState())
     generation = reactive(0)
     paused = True
 
