@@ -71,7 +71,9 @@ def domino_sparker() -> Automaton:
     """A domino sparker generated from an rle file"""
     automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
     rle = os.path.join(Path(__file__).parent, "data/rle/p11dominosparkeron56p27.rle")
-    sparker = patterns.ConwayPattern.from_rle(rle)
+    with open(rle, "r") as f:
+        data = f.read()
+    sparker = patterns.ConwayPattern.from_rle(data)
     automaton.spawn(automaton.midpoint - sparker.midpoint, sparker)
     return automaton
 
@@ -103,8 +105,7 @@ def from_url(url: str) -> Automaton:
     if response.status_code != 200:
         raise ValueError(f"Error {response.status_code}: {response.reason}")
     data = response.content.decode()
-    lines = data.strip().split("\n")
-    pattern = patterns.ConwayPattern.from_rle(lines)
+    pattern = patterns.ConwayPattern.from_rle(data)
     automaton.spawn(automaton.midpoint - pattern.midpoint, pattern)
 
     return automaton

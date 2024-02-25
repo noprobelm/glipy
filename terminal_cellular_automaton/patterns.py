@@ -72,8 +72,8 @@ class ConwayPattern(Pattern):
         Returns:
             A ConwayPattern based on 'life' data
         """
-        pattern_data = reader.life(path)
-        return cls(pattern_data.states, pattern_data.xmax, pattern_data.ymax)
+        pattern = reader.life(path)
+        return pattern
 
     @classmethod
     def from_rle(cls, path: Union[Path, str]) -> Self:
@@ -85,8 +85,8 @@ class ConwayPattern(Pattern):
         Returns:
             A ConwayPattern based on 'rle' data
         """
-        pattern_data = reader.rle(path)
-        return cls(pattern_data.states, pattern_data.xmax, pattern_data.ymax)
+        pattern = reader.rle(path)
+        return pattern
 
 
 class Glider(ConwayPattern):
