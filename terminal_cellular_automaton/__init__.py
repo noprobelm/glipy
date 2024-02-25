@@ -78,7 +78,7 @@ def from_conway_rle(data: str) -> Automaton:
         PatternData
     """
 
-    def parse_header(data: str) -> RLEHeader:
+    def parse_header(line: str) -> RLEHeader:
         """Parses header data
 
         Args:
