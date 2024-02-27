@@ -157,12 +157,12 @@ class Automaton(Generic[C, S]):
             )
 
         elif render is True:
-            self.run(generations, sleep, True)
+            self._run(generations, sleep, True)
 
         else:
-            self.run(generations, sleep, False)
+            self._run(generations, sleep, False)
 
-    def run(
+    def _run(
         self,
         generations: Union[float, int],
         sleep: Union[float, int],
