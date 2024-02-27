@@ -1,57 +1,52 @@
-A cellular automaton with support for terminal rendering
+# GliPy
 
-## Usage
+`GliPy` is a [Cellular Automaton](https://en.wikipedia.org/wiki/Cellular_automaton) [Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) simulation library written in Python.
 
-usage: `tca [-h] [-r REFRESH_RATE] [-g GENERATIONS] [-x] [-n] target`
+## Features
+- Run simulations from `.life`, `.rle` pattern files, or from a remote URL that points to a valid `.rle` (widely available on [LifeWiki](https://conwaylife.com/wiki))
+- Create simluations from scratch using the classic rules (B3/S23), or define your own birth/survival rules
+- Build entirely new cell and state types from custom rulesets defined by you (see the protocols available in the `cell` and `state` modules)
+- Use the built-in renderer to visualize simulations in your terminal emulator
+- Import `glipy` into your own projects to connect to other front-ends or run your own simulation analysis
 
-positional arguments:
-  `target (SCENARIO NAME; FILE NAME; RLE AT REMOTE URL)`
+## Planned Features
 
-options:
+- [ ] Add support for additional algorithm types
+  - [ ] HashLife
+  - [ ] QuickLife
+- [ ] Add a simple GUI application (CLI/TUI support currently available)
 
-  `-h`, `--help`            show this help message and exit
+## glipy-cli
 
-  `-r REFRESH_RATE`, `--refresh-rate REFRESH_RATE`
-                            The refresh rate of the simulation (default: 30)
+Quickly render a random simulation by running `glipy-cli` in your terminal.
 
-  `-g GENERATIONS`, --generations GENERATIONS
-                            The number of generations the simulation should run for (default: `0` (infinity))
-
-  `-x`, `--debug`           Flag to make the simluation run in debug mode (default: `False`)
-
-  `-c COLORS [COLORS ...]`, `--colors COLORS [COLORS ...]`
-
-  `-n`, `--no-render`       Disables simulation rendering to the terminal (default: `False`)
-
-
-## Built in scenarios
-While `tca` can read most `rle` (URL or local path) and `life` (local path) compliant inputs, there are a few prebuilt scenarios available that can be observed by running `tca <SCENARIO>`
-
-- `conway_1`: A simple game of life automaton where each cell has an equal chance to 'spawn' as 'alive' 'dead'
-- `conway_2`: Each cell has a 10% chance of spawning as alive
-- `pulsar`: A pulsar life
-- `glider`: A glider life
-- `clover_leaf` A clover leaf life
-- `domino_sparker` A domino sparker life
-
-## Creating your own game
-- Select a `Cell` type from the `cell` module (or make your own; it must adhere to the `Cell` protocol)
-- Select a `CellState` type from the `states` module (or make your own; it should derive itself from the `CellState` Protocol)
-- Create a new scenario in the `scenarios` module following the existing boilerplate code
-- Run the sim!
+`glip-cli` has several command line options
+| Option                          | Description                                                                                                                         |
+|:--------------------------------|:------------------------------------------------------------------------------------------------------------------------------------|
+| \<target\> [positional; optional] | If no target is passed, render a random simulation. Accepts paths to .rle/.life, or remote URL to rle format                        |
+| -r --refresh-rate               | Specify a refresh rate (generations/second)                                                                                         |
+| -g --generations                | The number of generations a simulation should run for (default ∞)                                                                   |
+| -c --colors                     | Specify colors for dead/alive cells (accepts hex or [ANSI color codes](https://rich.readthedocs.io/en/stable/appendix/colors.html)) |
+| -x --debug                      | Enter debug mode. This will turn off terminal rendering and provide performance metrics after the simulation is terminated          |
+| -n --no-render                  | Do not render the simulation (debug will automatically trigger this)                                                                |
 
 ## Examples
-`tca https://conwaylife.com/patterns/p12cloverleafhassler.rle`
+
+Random Conway Soup: `glipy-cli`
+![Random Conway Simulation](random-conway.gif)
+
+Cloverleaf Interchange hassled by carnival shuttles: `glipy-cli https://conwaylife.com/patterns/p12cloverleafhassler.rle`
 ![Cloverleaf Hassler](cloverleaf-interchange.gif)
 
-`tca https://conwaylife.com/patterns/387p132pattern.rle --colors blue black`
+Use custom colors from ANSI/hex: `glipy-cli https://conwaylife.com/patterns/387p132pattern.rle --colors "blue black"`
 ![387p132](p387p132.gif)
 
-`tca domino-sparker`
-![Domino Sparker](domino-sparker.gif)
+## Using glipy in your project
 
-`tca pulsar`
-![Pulsar](pulsar.gif)
+If you want to create new cell/state rules, extend the existing algorithms driving an automaton's evolution, or use your own rendering tools, you might want to use `glipy` in your own project.
+a## The Cell and CellState Protocol
+The `Cell` and `CellState` classes (see the `cell` and `state` modules) inherit from `Protocol` to provide maximum flexbility. In other words, you do not need to inerit from these classes, or even import them to your project at all. Simply write your own cell or cell state classes which implement the methods defined in the respective protocol class. The `MooreCell` and `ConwayState` classes in each module should be observed as examples on how to do this properly.
 
-`tca conway_2`
-![Conway 2](conway-2.gif)
+### The Automaton class
+
+The `Automaton` class is responsible for driving a simluation. It is generic over `Cell` and `CellState`, meaning it will accept any class which implements the methods necessary to be considered `Cell` or `CellState` as described in the previous section (Of course, this is Python, so `Automaton` will technically accept anything, but if you don't want your static type checker to yell at you, you should implement properly).
