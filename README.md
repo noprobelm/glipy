@@ -35,10 +35,13 @@ Quickly render a random simulation by running `glipy-cli` in your terminal.
 Random Conway Soup: `glipy-cli`
 ![Random Conway Simulation](random-conway.gif)
 
+Gosper Glider Gun: `glipy-cli https://conwaylife.com/patterns/gosperglidergun.rle`
+![Gosper Glider Gun](gosper-gun.gif)
+
 Cloverleaf Interchange hassled by carnival shuttles: `glipy-cli https://conwaylife.com/patterns/p12cloverleafhassler.rle`
 ![Cloverleaf Hassler](cloverleaf-interchange.gif)
 
-Use custom colors from ANSI/hex: `glipy-cli https://conwaylife.com/patterns/387p132pattern.rle --colors "blue black"`
+Use custom colors from ANSI/hex codes: `glipy-cli https://conwaylife.com/patterns/387p132pattern.rle --colors "blue black"`
 ![387p132](p387p132.gif)
 
 ## Using glipy in your project
