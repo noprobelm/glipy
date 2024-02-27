@@ -1,4 +1,4 @@
-"""Main entrypoint for running a simulation"""
+"""Main entrypoint for running a simulation from the command line"""
 
 from .args import parse_args
 
