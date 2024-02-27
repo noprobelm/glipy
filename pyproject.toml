@@ -5,7 +5,7 @@ description = ""
 authors = ["noprobelm <noprobelm@protonmail.com>"]
 readme = "README.md"
 include = ["data/"]
-packages = [ {include = "glipy"} ]
+packages = [ { include = "glipy" } ]
 
 [tool.poetry.dependencies]
 python = "^3.11"
