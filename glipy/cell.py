@@ -20,7 +20,6 @@ class Cell(Protocol):
 
     def __init__(self, coord: Coordinate) -> None:
         """Initializes an instance of a cell. The coord attr should be set here"""
-        ...
 
     def get_neighbors(self, max_coord: Coordinate) -> List[Coordinate]:
         """Accesses members of a cell's neighborhood and returns a list of valid neighbors
@@ -35,7 +34,6 @@ class Cell(Protocol):
         Returns:
             A list of all valid neighbors
         """
-        ...
 
 
 class MooreCell:

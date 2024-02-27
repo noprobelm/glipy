@@ -16,12 +16,10 @@ class CellState(Protocol):
         Returns:
             A valid color designator (can be 'red', hex codes, etc. See the rich documentation for details)
         """
-        ...
 
     @classmethod
     def set_colors(cls, colors: List[str]) -> None:
         """Sets the colors for the CellState"""
-        ...
 
     def change_state(self, neighbors: List[Self]) -> CellState:
         """Retrieves a new state based on its neighbors
@@ -29,7 +27,6 @@ class CellState(Protocol):
         Returns:
             The cell's new state
         """
-        ...
 
 
 class ConwayState:
