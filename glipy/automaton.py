@@ -128,7 +128,6 @@ class Automaton(Generic[C, S]):
         self,
         refresh_rate: int = 30,
         generations: Union[float, int] = 0,
-        render: Optional[bool] = True,
         debug=False,
     ) -> None:
         """Sets initial parameters for the simluation, then runs it
@@ -136,7 +135,6 @@ class Automaton(Generic[C, S]):
         Args:
             generation (Union[float, int]): The number of generations the simulation should run for. Defaults to 0 (infinity)
             refresh_rate (int): The number of times the simluation should run before sleeping. Defaults to 0
-            render (bool): Controls if the simulation renders to the terminal. Defaults to True
             debug (bool): Controls if the simulation runs in debug mode. This will run cProfile and disable rendering
         """
         if refresh_rate == -1:
@@ -156,17 +154,10 @@ class Automaton(Generic[C, S]):
                 "exec(self.run(generations, sleep, False))", globals(), locals()
             )
 
-        elif render is True:
-            self._run(generations, sleep, True)
-
-        else:
-            self._run(generations, sleep, False)
-
     def _run(
         self,
         generations: Union[float, int],
         sleep: Union[float, int],
-        render: bool,
     ) -> None:
         """Runs the simulation. This should be interfaced with using the 'start' method
 
@@ -176,23 +167,13 @@ class Automaton(Generic[C, S]):
             render: bool: Cotnrols if the simulation renders to the terminal
         """
         try:
-            if render is True:
-                with Live(self, screen=True, auto_refresh=False) as live:
-                    if sleep == float("inf"):
-                        while True:
-                            time.sleep(1)
-                    while self.generation < generations:
-                        self.evolve()
-                        live.update(self, refresh=True)
-                        time.sleep(sleep)
-            else:
-                if sleep == float("inf"):
-                    while True:
-                        time.sleep(1)
+            if sleep == float("inf"):
+                while True:
+                    time.sleep(1)
 
-                while self.generation < generations:
-                    self.evolve()
-                    time.sleep(sleep)
+            while self.generation < generations:
+                self.evolve()
+                time.sleep(sleep)
         except KeyboardInterrupt:
             sys.exit(0)
 
