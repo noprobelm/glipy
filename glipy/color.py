@@ -1,5 +1,3 @@
-"""This module contains data validators for glipy"""
-
 ANSI_COLOR_NAMES = {
     "black": 0,
     "red": 1,
@@ -239,36 +237,43 @@ ANSI_COLOR_NAMES = {
 }
 
 
-def validate_hex(s: str) -> bool:
-    """Checks if a string is a valid hex code
-
-    Args:
-        s (str): The hex string to check
-
-    Returns:
-        bool: The hex is valid (True) or invalid (False)
-    """
-    if len(s) != 6:
-        return False
-    for s in s:
-        if not s.isdigit() and not s.isalpha():
-            return False
-        if s.isalpha() and s.lower() > "f":
-            return False
-
-    return True
+class ColorParseError(Exception):
+    """The color could not be parsed"""
 
 
-def validate_ansi(s: str) -> bool:
-    """Checks if a string is a valid ANSI color
+class Color(str):
+    """A string representing a color. Implements validating logic to ensure a valid hex code is used
 
-    Args:
-        s (str): The color to validate
+    Attributes:
+        color (str): The color string
 
-    Returns:
-        bool: The string is valid ANSI (True) or invalid (False)
+    Raises:
+        ColorParseError: The color could not be parsed
     """
 
-    if s in ANSI_COLOR_NAMES:
-        return True
-    return False
+    def __new__(cls, hex_color):
+        """Creates a new instance of the Color class"""
+
+        instance = super().__new__(cls, hex_color)
+        return instance
+
+    def __init__(self, hex_color: str):
+        """Initializes an instance of the Color class
+
+        Args:
+            color (str): The color to initialize
+        """
+        if hex_color.startswith("#"):
+            hex_color = hex_color[1:]
+            if len(hex_color) != 6:
+                raise ColorParseError(f"Invalid hex: '{hex_color}'")
+            for c in hex_color:
+                if (not c.isdigit() and not c.isalpha()) or (
+                    c.isalpha() and c.lower() > "f"
+                ):
+                    raise ColorParseError(f"Invalid hex: '{hex_color}'")
+
+        self.color = f"#{hex_color}"
+
+    def __str__(self) -> str:
+        return self.color

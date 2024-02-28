@@ -7,39 +7,9 @@ from typing import List, Optional
 
 
 from . import from_rle_url, from_conway_rle, from_conway_life, random_conway
-from .validators import validate_hex, validate_ansi
+from .color import Color
 
 ArgResult = namedtuple("ArgResult", ["automaton", "start_kwargs"])
-
-
-def parse_colors(colors: List[str]) -> List[str]:
-    """Parses color names from parsed args
-
-    - If a color is found in the ANSI_COLOR_NAMES constant, move on
-    - Otherwise, the color is a hex. Validate it, insert a "#" if necessary
-
-    Args:
-        colors (List[str]): The list of colors to parse
-
-    Returns:
-        The parsed list of colors
-    """
-
-    for i, c in enumerate(colors):
-        if validate_ansi(c):
-            continue
-        if c.startswith("#"):
-            if validate_hex(c[1:]) is False:
-                print(f"Invalid hex code: {c}")
-                sys.exit(1)
-        else:
-            if validate_hex(c) is False:
-                print(f"Invalid hex code: {c}")
-                sys.exit(1)
-            c = f"#{c}"
-        colors[i] = c
-
-    return colors
 
 
 def parse_args(unparsed: Optional[List[str]] = None) -> ArgResult:
@@ -106,8 +76,7 @@ def parse_args(unparsed: Optional[List[str]] = None) -> ArgResult:
         automaton = from_conway_life(data)
 
     if args["colors"] is not None:
-        colors = args["colors"].split(" ")
-        colors = parse_colors(colors)
+        colors = [Color(color) for color in args["colors"].split(" ")]
         automaton.colors = colors
 
     del args["target"]
