@@ -219,6 +219,7 @@ class Automaton(Generic[C, S]):
         self.generation += 1
 
     def clear(self):
+        """Sets the Automaton's underlying matrix to the default state type"""
         for y in range(self.ymax + 1):
             for x in range(self.xmax + 1):
                 self.matrix[y][x].state = self._state_type()
