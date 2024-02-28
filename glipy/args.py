@@ -5,46 +5,11 @@ import sys
 from collections import namedtuple
 from typing import List, Optional
 
-from rich.color import ANSI_COLOR_NAMES
 
 from . import from_rle_url, from_conway_rle, from_conway_life, random_conway
+from .validators import validate_hex, validate_ansi
 
 ArgResult = namedtuple("ArgResult", ["automaton", "start_kwargs"])
-
-
-def is_hex(s: str) -> bool:
-    """Checks if a string is a valid hex code
-
-    Args:
-        h (str): The hex string to check
-
-    Returns:
-        bool: The hex is valid (True) or invalid (False)
-    """
-    if len(s) != 6:
-        return False
-    for s in s:
-        if not s.isdigit() and not s.isalpha():
-            return False
-        if s.isalpha() and s.lower() > "f":
-            return False
-
-    return True
-
-
-def is_ansi(s: str) -> bool:
-    """Checks if a string is a valid ANSI color
-
-    Args:
-        s (str): The color to validate
-
-    Returns:
-        bool: The string is valid ANSI (True) or invalid (False)
-    """
-
-    if s in ANSI_COLOR_NAMES:
-        return True
-    return False
 
 
 def parse_colors(colors: List[str]) -> List[str]:
@@ -61,14 +26,14 @@ def parse_colors(colors: List[str]) -> List[str]:
     """
 
     for i, c in enumerate(colors):
-        if is_ansi(c):
+        if validate_ansi(c):
             continue
-        elif c.startswith("#"):
-            if is_hex(c[1:]) is False:
+        if c.startswith("#"):
+            if validate_hex(c[1:]) is False:
                 print(f"Invalid hex code: {c}")
                 sys.exit(1)
         else:
-            if is_hex(c) is False:
+            if validate_hex(c) is False:
                 print(f"Invalid hex code: {c}")
                 sys.exit(1)
             c = f"#{c}"
