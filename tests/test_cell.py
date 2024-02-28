@@ -1,8 +1,8 @@
 """Tests the get_neighbors method for all Cell types"""
 
 from ward import test, fixture
-from terminal_cellular_automaton.cell import MooreCell
-from terminal_cellular_automaton.coordinate import Coordinate
+from glipy.cell import MooreCell
+from glipy.coordinate import Coordinate
 
 
 @fixture

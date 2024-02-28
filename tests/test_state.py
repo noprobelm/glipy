@@ -1,7 +1,7 @@
 """Tests CellState behavior"""
 
 from ward import test
-from terminal_cellular_automaton.state import ConwayState
+from glipy.state import ConwayState
 
 
 @test("ConwayState: A dead cell next to exactly 3 live cells will resurrect")

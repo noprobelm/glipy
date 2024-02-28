@@ -1,7 +1,7 @@
 """Tests Coordinate behavior"""
 
 from ward import test
-from terminal_cellular_automaton.coordinate import Coordinate
+from glipy.coordinate import Coordinate
 
 
 @test(
