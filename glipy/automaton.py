@@ -168,7 +168,7 @@ class Automaton(Generic[C, S]):
         sleep: Union[float, int],
         render: bool,
     ) -> None:
-        """Runs the simulation
+        """Runs the simulation. This should be interfaced with using the 'start' method
 
         Args:
             generations (Union[float, int]): The number of generations the automaton should run for
