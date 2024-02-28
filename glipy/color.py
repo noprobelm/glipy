@@ -1,3 +1,6 @@
+"""This module contains the Color class, which is a string representing valid hex colors"""
+
+
 class ColorParseError(Exception):
     """The color could not be parsed"""
 
@@ -15,26 +18,17 @@ class Color(str):
     def __new__(cls, hex_color):
         """Creates a new instance of the Color class"""
 
-        instance = super().__new__(cls, hex_color)
-        return instance
-
-    def __init__(self, hex_color: str):
-        """Initializes an instance of the Color class
-
-        Args:
-            color (str): The color to initialize
-        """
         if hex_color.startswith("#"):
             hex_color = hex_color[1:]
-            if len(hex_color) != 6:
+
+        if len(hex_color) != 6:
+            raise ColorParseError(f"Invalid hex: '{hex_color}'")
+        for char in hex_color:
+            if (not char.isdigit() and not char.isalpha()) or (
+                char.isalpha() and char.lower() > "f"
+            ):
                 raise ColorParseError(f"Invalid hex: '{hex_color}'")
-            for c in hex_color:
-                if (not c.isdigit() and not c.isalpha()) or (
-                    c.isalpha() and c.lower() > "f"
-                ):
-                    raise ColorParseError(f"Invalid hex: '{hex_color}'")
 
-        self.color = f"#{hex_color}"
-
-    def __str__(self) -> str:
-        return self.color
+        hex_color = f"#{hex_color}"
+        instance = super().__new__(cls, hex_color)
+        return instance
