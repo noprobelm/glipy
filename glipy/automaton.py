@@ -225,7 +225,7 @@ class Automaton(Generic[C, S]):
 
     @property
     def colors(self) -> Sequence[str]:
-        """Accesses the colors being used for the instance's cell state type
+        """For renderers, this property can be used to retrieve a state type's colors
 
         Returns:
             The colors being used for the cell state
