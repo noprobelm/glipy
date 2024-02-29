@@ -107,23 +107,6 @@ class Automaton(Generic[C, S]):
                     neighbors = c.get_neighbors(self.max_coord)
                     self.matrix[y].append(StateData(neighbors, initial_state))
 
-    def set_state(self, coord: Coordinate, state: CellState) -> None:
-        """Spawns a CellState instance at a given x/y coordinate
-
-        Args:
-            coord (Coordinate): The coordinate to spawn a cell state at
-            cell (Cell): An object which conforms to the Cell protocol
-        """
-
-        self.matrix[coord.y][coord.x].state = state
-
-    def spawn(self, midpoint: Coordinate, pattern: Automaton):
-        for y in range(pattern.ymax + 1):
-            for x in range(pattern.xmax + 1):
-                coord = Coordinate(x, y)
-                offset = Coordinate(x, y) + midpoint
-                self.set_state(offset, pattern.matrix[coord.y][coord.x].state)
-
     def evolve(self) -> None:
         """Evolves the simulation once
 
@@ -146,11 +129,33 @@ class Automaton(Generic[C, S]):
         self.matrix = next_generation
         self.generation += 1
 
-    def start(
+    def set_state(self, coord: Coordinate, state: CellState) -> None:
+        """Spawns a CellState instance at a given x/y coordinate
+
+        Args:
+            coord (Coordinate): The coordinate to spawn a cell state at
+            cell (Cell): An object which conforms to the Cell protocol
+        """
+
+        self.matrix[coord.y][coord.x].state = state
+
+    def spawn(self, midpoint: Coordinate, pattern: Automaton):
+        for y in range(pattern.ymax + 1):
+            for x in range(pattern.xmax + 1):
+                coord = Coordinate(x, y)
+                offset = Coordinate(x, y) + midpoint
+                self.set_state(offset, pattern.matrix[coord.y][coord.x].state)
+
+    def clear(self):
+        """Sets the Automaton's underlying matrix to the default state type"""
+        for y in range(self.ymax + 1):
+            for x in range(self.xmax + 1):
+                self.matrix[y][x].state = self._state_type()
+
+    def run(
         self,
         refresh_rate: int = 30,
         generations: Union[float, int] = 0,
-        debug=False,
     ) -> None:
         """Sets initial parameters for the simluation, then runs it
 
@@ -169,25 +174,6 @@ class Automaton(Generic[C, S]):
         if generations == 0:
             generations = float("inf")
 
-        if debug is True:
-            import cProfile
-
-            cProfile.runctx(
-                "exec(self.run(generations, sleep, False))", globals(), locals()
-            )
-
-    def _run(
-        self,
-        generations: Union[float, int],
-        sleep: Union[float, int],
-    ) -> None:
-        """Runs the simulation. This should be invoked by the start method
-
-        Args:
-            generations (Union[float, int]): The number of generations the automaton should run for
-            sleep (Union[float, int]): The time the simulation should sleep between each step
-            render: bool: Cotnrols if the simulation renders to the terminal
-        """
         try:
             if sleep == float("inf"):
                 while True:
@@ -196,14 +182,9 @@ class Automaton(Generic[C, S]):
             while self.generation < generations:
                 self.evolve()
                 time.sleep(sleep)
+
         except KeyboardInterrupt:
             sys.exit(0)
-
-    def clear(self):
-        """Sets the Automaton's underlying matrix to the default state type"""
-        for y in range(self.ymax + 1):
-            for x in range(self.xmax + 1):
-                self.matrix[y][x].state = self._state_type()
 
     @property
     def colors(self) -> Sequence[str]:
