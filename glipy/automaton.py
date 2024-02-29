@@ -5,11 +5,6 @@ import sys
 from dataclasses import dataclass
 from typing import Generic, List, Optional, Sequence, Type, TypeVar, Union, cast
 
-from rich.console import Console, ConsoleOptions, RenderResult
-from rich.live import Live
-from rich.segment import Segment
-from rich.style import Style
-
 from .cell import Cell
 from .coordinate import Coordinate
 from .state import CellState
@@ -205,22 +200,3 @@ class Automaton(Generic[C, S]):
 
         """
         self._state_type.set_colors(colors)
-
-    def __rich_console__(
-        self, console: Console, options: ConsoleOptions
-    ) -> RenderResult:
-        """Renders each Cell in the simulation using the Rich Console Protocol
-
-        Due to the typical 2:1 height/width aspect ratio of a terminal, each cell rendered from the CellMatrix simulation
-        actually occupies 2 rows in the terminal. I picked up this trick from rich's __main__ module. Run
-        'python -m rich and observe the color palette at the top of stdout for another example of what this refers to.
-
-        Yields:
-            2 cells in the simulation, row by row, until all cell states have been rendered.
-        """
-        for y in range(self.ymax)[::2]:
-            for x in range(self.xmax + 1):
-                bg = self.matrix[y][x].state.color
-                fg = self.matrix[y + 1][x].state.color
-                yield Segment("▄", Style(color=fg, bgcolor=bg))
-            yield Segment.line()
