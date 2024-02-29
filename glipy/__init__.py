@@ -59,9 +59,7 @@ def from_conway_life(data: str) -> Automaton:
             else:
                 states[y].append(ConwayState(False))
 
-    automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
-    pattern = Automaton[MooreCell, ConwayState](MooreCell, states, xmax, ymax)
-    automaton.spawn(automaton.midpoint - pattern.midpoint, pattern)
+    automaton = Automaton[MooreCell, ConwayState](MooreCell, states, xmax, ymax)
 
     return automaton
 
@@ -236,24 +234,20 @@ def from_conway_rle(data: str) -> Automaton:
     data = "".join(line.strip() for line in lines[row + 1 :])
     states = parse_states(header.width - 1, header.height - 1, data)
 
-    automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
-    pattern = Automaton[MooreCell, ConwayState](
+    automaton = Automaton[MooreCell, ConwayState](
         MooreCell, states, header.width - 1, header.height - 1
     )
-    automaton.spawn(automaton.midpoint - pattern.midpoint, pattern)
 
     return automaton
 
 
 def from_rle_url(url: str) -> Automaton:
     """Runs a .rle from a remote URL"""
-    automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
     response = requests.get(url)
     if response.status_code != 200:
         raise ValueError(f"Error {response.status_code}: {response.reason}")
     data = response.content.decode()
-    pattern = from_conway_rle(data)
-    automaton.spawn(automaton.midpoint - pattern.midpoint, pattern)
+    automaton = from_conway_rle(data)
     return automaton
 
 
