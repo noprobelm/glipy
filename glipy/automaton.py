@@ -47,8 +47,8 @@ class Automaton(Generic[C, S]):
         self,
         cell_type: Type[Cell],
         initial_state: Union[CellState, Sequence[Sequence[CellState]]],
-        xmax: int
-        ymax: int
+        xmax: int,
+        ymax: int,
     ) -> None:
         """Initializes an instance of the Simulation class
 
