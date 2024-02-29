@@ -1,6 +1,6 @@
-# GliPy
+# GLiPy
 
-`GliPy` is a [Cellular Automaton](https://en.wikipedia.org/wiki/Cellular_automaton) [Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) simulation library written in Python.
+`GLiPy` is a [Cellular Automaton](https://en.wikipedia.org/wiki/Cellular_automaton) [Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) simulation library written in Python.
 
 ## Features
 - Run simulations from `.life`, `.rle` pattern files, or from a remote URL that points to a valid `.rle` (widely available on [LifeWiki](https://conwaylife.com/wiki))
@@ -20,7 +20,7 @@
 
 Quickly render a random simulation by running `glipy-cli` in your terminal.
 
-`glip-cli` has several command line options
+	`glipy-cli` has several command line options
 | Option                          | Description                                                                                                                         |
 |:--------------------------------|:------------------------------------------------------------------------------------------------------------------------------------|
 | \<target\> [positional; optional] | If no target is passed, render a random simulation. Accepts paths to .rle/.life, or remote URL to rle format                        |
