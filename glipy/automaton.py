@@ -47,8 +47,8 @@ class Automaton(Generic[C, S]):
         self,
         cell_type: Type[Cell],
         initial_state: Union[CellState, Sequence[Sequence[CellState]]],
-        xmax: Optional[int] = None,
-        ymax: Optional[int] = None,
+        xmax: int
+        ymax: int
     ) -> None:
         """Initializes an instance of the Simulation class
 
@@ -61,15 +61,8 @@ class Automaton(Generic[C, S]):
 
         self.generation = 0
         self._cell_type = cell_type
-        if xmax is None or ymax is None:
-            console = Console()
-            if xmax is None:
-                self.xmax = console.width
-            if ymax is None:
-                self.ymax = console.height * 2
-        else:
-            self.xmax = xmax
-            self.ymax = ymax
+        self.xmax = xmax
+        self.ymax = ymax
 
         self.max_coord = Coordinate(self.xmax, self.ymax)
         self.midpoint = Coordinate(self.xmax // 2, self.ymax // 2)
