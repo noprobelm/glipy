@@ -1,7 +1,7 @@
 """Provides convenience functions for building Automatons from various I/O formats"""
 import re
 from collections import namedtuple
-from typing import List
+from typing import List, Optional
 import random
 import requests  # type: ignore
 
@@ -251,8 +251,10 @@ def from_rle_url(url: str) -> Automaton:
     return automaton
 
 
-def random_conway() -> Automaton:
-    automaton = Automaton[MooreCell, ConwayState](MooreCell, ConwayState(False))
+def random_conway(xmax: Optional[int] = 100, ymax: Optional[int] = 100) -> Automaton:
+    automaton = Automaton[MooreCell, ConwayState](
+        MooreCell, ConwayState(False), xmax, ymax
+    )
     for y in range(automaton.ymax + 1):
         for x in range(automaton.xmax + 1):
             alive = bool(random.randint(0, 1))
