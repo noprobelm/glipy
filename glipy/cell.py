@@ -111,3 +111,71 @@ class MooreCell:
             neighbors.append(n)
 
         return neighbors
+
+
+class NeumannCell:
+    """A cell that references members of a Von Neumann neighborhood
+
+        +---+
+        | 2 |
+    +---+---+---+
+    | 4 | C | 5 |
+    +---+---+---+
+        | 7 |
+        +---+
+    """
+
+    neighbors: Tuple[Coordinate, ...] = (
+        # Upper
+        Coordinate(0, -1),
+        # Right
+        Coordinate(1, 0),
+        # Lower
+        Coordinate(0, 1),
+        # Left
+        Coordinate(-1, 0),
+    )
+
+    def __init__(self, coord: Coordinate) -> None:
+        """Initializes an instance of the MooreCell class"""
+        self.coord = coord
+
+    def get_neighbors(self, max_coord: Coordinate) -> list[Coordinate]:
+        """Gets neighbors based on the max coord.
+
+        Neighbors will usually be the eight surrounding cells in an automaton, but for cells living along the min/max
+        coords, neighbors will wrap around to the other side of this grid. This ensures continuity and enables
+        a life to wrap around the other side of the simulation once it reaches a boundary, emulating a pseudo-infinite
+        space.
+
+        Args:
+            max_coord (Coordinate): The maximum coordinate found in the underlying Automaton
+
+        Returns:
+            A list of the cell's neighbors
+        """
+        neighbors = []
+        for nc in self.neighbors:
+            n = nc + self.coord
+            if n.x < 0 and n.y < 0:
+                n = Coordinate(max_coord.x, max_coord.y)
+            elif n.x > max_coord.x and n.y > max_coord.y:
+                n = Coordinate(0, 0)
+            elif n.x < 0 and n.y > max_coord.y:
+                n = Coordinate(max_coord.x, 0)
+            elif n.y < 0 and n.x > max_coord.x:
+                n = Coordinate(0, max_coord.y)
+            elif n.x > max_coord.x:
+                n = Coordinate(0, n.y)
+            elif n.y < 0:
+                n = Coordinate(n.x, max_coord.y)
+            elif n.y > max_coord.y:
+                n = Coordinate(n.x, 0)
+            elif n.x < 0:
+                n = Coordinate(max_coord.x, n.y)
+            elif n.x > max_coord.x:
+                n = Coordinate(0, n.y)
+
+            neighbors.append(n)
+
+        return neighbors
