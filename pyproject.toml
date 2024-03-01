@@ -4,7 +4,6 @@ version = "0.1.0"
 description = ""
 authors = ["noprobelm <noprobelm@protonmail.com>"]
 readme = "README.md"
-include = ["data/"]
 packages = [ { include = "glipy" } ]
 
 [tool.poetry.dependencies]
