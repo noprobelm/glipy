@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import cProfile
 import time
 import sys
 from dataclasses import dataclass
@@ -144,14 +145,22 @@ class Automaton(Generic[C, S]):
         self,
         refresh_rate: int = 30,
         generations: Union[float, int] = 0,
+        debug: bool = False,
     ) -> None:
         """Sets initial parameters for the simluation, then runs it
 
         Args:
-            generation (Union[float, int]): The number of generations the simulation should run for. Defaults to 0 (infinity)
+            generations (Union[float, int]): The number of generations the simulation should run for. Defaults to 0 (infinity)
             refresh_rate (int): The number of times the simluation should run before sleeping. Defaults to 0
             debug (bool): Controls if the simulation runs in debug mode. This will run cProfile and disable rendering
         """
+        if debug is True:
+            cProfile.runctx(
+                "eval('self.run(refresh_rate, generations, False)')",
+                globals(),
+                locals(),
+            )
+
         if refresh_rate == -1:
             sleep = 0.0
         elif refresh_rate == 0:
