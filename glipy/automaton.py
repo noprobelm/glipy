@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import cProfile
-import time
 import sys
+import time
 from dataclasses import dataclass
 from typing import Generic, List, Sequence, Type, TypeVar, Union, cast
 
