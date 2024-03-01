@@ -1,3 +1,5 @@
+"""This module contains the Automaton class, which is the base class for all cellular automata in glipy"""
+
 from __future__ import annotations
 
 import cProfile
