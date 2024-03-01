@@ -4,7 +4,7 @@ import cProfile
 import time
 import sys
 from dataclasses import dataclass
-from typing import Generic, List, Optional, Sequence, Type, TypeVar, Union, cast
+from typing import Generic, List, Sequence, Type, TypeVar, Union, cast
 
 from .cell import Cell
 from .coordinate import Coordinate

@@ -43,7 +43,7 @@ def from_conway_life(data: str) -> Automaton:
             coord = Coordinate(int(split[0]), int(split[1]))
         except (ValueError, IndexError):
             raise ValueError(
-                f"Malformatted .life file format (see https://conwaylife.com/wiki/Life_1.06)"
+                "Malformatted .life file format (see https://conwaylife.com/wiki/Life_1.06)"
             )
         alive.append(coord)
         if coord.x > xmax:
@@ -227,7 +227,7 @@ def from_conway_rle(data: str) -> Automaton:
             break
     else:
         raise ValueError(
-            f"I/O missing header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
+            "I/O missing header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
         )
 
     set_birth_rules(header)
