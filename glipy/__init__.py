@@ -1,7 +1,7 @@
 """Provides convenience functions for building Automatons from various I/O formats"""
 import re
 from collections import namedtuple
-from typing import List, Optional
+from typing import List
 import random
 import requests  # type: ignore
 
