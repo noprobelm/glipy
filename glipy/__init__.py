@@ -252,6 +252,7 @@ def from_rle_url(url: str) -> Automaton:
 
 
 def random_conway(xmax: int, ymax: int) -> Automaton:
+    """Generate a random conway automaton"""
     automaton = Automaton[MooreCell, ConwayState](
         MooreCell, ConwayState(False), xmax, ymax
     )
