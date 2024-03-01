@@ -38,7 +38,7 @@ class Automaton(Generic[C, S]):
 
     Attributes:
         generation (int): The generation we're at in the simulation
-        _cell_type (Type[Cell]) The type of Cell the automaton is working with
+        cell_type (Type[Cell]) The type of Cell the automaton is working with
         xmax (int): The maximum x coordinate
         ymax (int): The maximum y coordinate
         max_coord (Coordinate): The maximum valid coordinate found in the grid
@@ -63,7 +63,7 @@ class Automaton(Generic[C, S]):
         """
 
         self.generation = 0
-        self._cell_type = cell_type
+        self.cell_type = cell_type
         self.xmax = xmax
         self.ymax = ymax
 
@@ -78,7 +78,7 @@ class Automaton(Generic[C, S]):
                 self.matrix.append([])
                 for x in range(self.xmax + 1):
                     coord = Coordinate(x, y)
-                    c = self._cell_type(coord)
+                    c = self.cell_type(coord)
                     neighbors = c.get_neighbors(self.max_coord)
                     state = initial_state[y][x]
                     self.matrix[y].append(StateData(neighbors, state))
@@ -94,7 +94,7 @@ class Automaton(Generic[C, S]):
                 self.matrix.append([])
                 for x in range(self.xmax + 1):
                     coord = Coordinate(x, y)
-                    c = self._cell_type(coord)
+                    c = self.cell_type(coord)
                     neighbors = c.get_neighbors(self.max_coord)
                     self.matrix[y].append(StateData(neighbors, initial_state))
 
