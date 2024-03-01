@@ -17,7 +17,3 @@ ward = "^0.68.0b0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-'glipy-cli' = 'glipy.__main__:main'
-'glipy' = 'glipy.app:main'
