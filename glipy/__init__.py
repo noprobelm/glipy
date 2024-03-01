@@ -2,12 +2,12 @@
 import random
 import re
 from collections import namedtuple
-from typing import List
+from typing import List, Type
 
 import requests  # type: ignore
 
 from .automaton import Automaton
-from .cell import MooreCell
+from .cell import Cell, MooreCell
 from .coordinate import Coordinate
 from .state import ConwayState
 
@@ -20,7 +20,7 @@ RLEHeader = namedtuple(
 PatternData = namedtuple("PatternData", ["states", "xmax", "ymax"])
 
 
-def from_conway_life(data: str) -> Automaton:
+def from_conway_life(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
     """Reads lines of a file compliant with life version 1.06
 
     Args:
@@ -60,12 +60,12 @@ def from_conway_life(data: str) -> Automaton:
             else:
                 states[y].append(ConwayState(False))
 
-    automaton = Automaton[MooreCell, ConwayState](MooreCell, states, xmax, ymax)
+    automaton: Automaton = Automaton(cell_type, states, xmax, ymax)
 
     return automaton
 
 
-def from_conway_rle(data: str) -> Automaton:
+def from_conway_rle(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
     """Reads lines of a file compliant with Run Length Encoded (RLE)
 
     Args:
@@ -235,28 +235,26 @@ def from_conway_rle(data: str) -> Automaton:
     data = "".join(line.strip() for line in lines[row + 1 :])
     states = parse_states(header.width - 1, header.height - 1, data)
 
-    automaton = Automaton[MooreCell, ConwayState](
-        MooreCell, states, header.width - 1, header.height - 1
+    automaton: Automaton = Automaton(
+        cell_type, states, header.width - 1, header.height - 1
     )
 
     return automaton
 
 
-def from_rle_url(url: str) -> Automaton:
+def from_rle_url(url: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
     """Runs a .rle from a remote URL"""
     response = requests.get(url)
     if response.status_code != 200:
         raise ValueError(f"Error {response.status_code}: {response.reason}")
     data = response.content.decode()
-    automaton = from_conway_rle(data)
+    automaton: Automaton = from_conway_rle(data, cell_type)
     return automaton
 
 
-def random_conway(xmax: int, ymax: int) -> Automaton:
+def random_conway(xmax: int, ymax: int, cell_type: Type[Cell] = MooreCell) -> Automaton:
     """Generate a random conway automaton"""
-    automaton = Automaton[MooreCell, ConwayState](
-        MooreCell, ConwayState(False), xmax, ymax
-    )
+    automaton: Automaton = Automaton(cell_type, ConwayState(False), xmax, ymax)
     for y in range(automaton.ymax + 1):
         for x in range(automaton.xmax + 1):
             alive = bool(random.randint(0, 1))
