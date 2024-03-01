@@ -1,7 +1,7 @@
 # GLiPy
 
 `GLiPy` is a [Cellular Automaton](https://en.wikipedia.org/wiki/Cellular_automaton) [Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) simulation library written in Python.
-
+	
 ## Features
 - Run simulations from `.life`, `.rle` pattern files, or from a remote URL that points to a valid `.rle` (widely available on [LifeWiki](https://conwaylife.com/wiki))
 - Create simluations from scratch using the classic rules (B3/S23), or define your own birth/survival rules
@@ -16,34 +16,6 @@
   - [ ] QuickLife
 - [ ] Add a simple GUI application (CLI/TUI support currently available)
 
-## glipy-cli
-
-Quickly render a random simulation by running `glipy-cli` in your terminal.
-
-	`glipy-cli` has several command line options
-| Option                          | Description                                                                                                                         |
-|:--------------------------------|:------------------------------------------------------------------------------------------------------------------------------------|
-| \<target\> [positional; optional] | If no target is passed, render a random simulation. Accepts paths to .rle/.life, or remote URL to rle format                        |
-| -r --refresh-rate               | Specify a refresh rate (generations/second)                                                                                         |
-| -g --generations                | The number of generations a simulation should run for (default ∞)                                                                   |
-| -c --colors                     | Specify colors for dead/alive cells (accepts hex or [ANSI color codes](https://rich.readthedocs.io/en/stable/appendix/colors.html)) |
-| -x --debug                      | Enter debug mode. This will turn off terminal rendering and provide performance metrics after the simulation is terminated          |
-| -n --no-render                  | Do not render the simulation (debug will automatically trigger this)                                                                |
-
-## Examples
-
-Random Conway Soup: `glipy-cli`
-![Random Conway Simulation](media/random-conway.gif)
-
-Gosper Glider Gun: `glipy-cli https://conwaylife.com/patterns/gosperglidergun.rle`
-![Gosper Glider Gun](media/gosper-gun.gif)
-
-Cloverleaf Interchange hassled by carnival shuttles: `glipy-cli https://conwaylife.com/patterns/p12cloverleafhassler.rle`
-![Cloverleaf Hassler](media/cloverleaf-interchange.gif)
-
-Use custom colors from ANSI/hex codes: `glipy-cli https://conwaylife.com/patterns/387p132pattern.rle --colors "blue black"`
-![387p132](media/p387p132.gif)
-
 ## Using glipy in your project
 
 If you want to create new cell/state rules, extend the existing algorithms driving an automaton's evolution, or use your own rendering tools, you might want to use `glipy` in your own project.
@@ -54,3 +26,6 @@ The `Cell` and `CellState` classes (see the `cell` and `state` modules) inherit 
 ### The Automaton class
 
 The `Automaton` class is responsible for driving a simluation. It is generic over `Cell` and `CellState`, meaning it will accept any class which implements the methods necessary to be considered `Cell` or `CellState` as described in the previous section (Of course, this is Python, so `Automaton` will technically accept anything, but if you don't want your static type checker to yell at you, you should implement properly).
+## See also
+
+I've implemented some rendering capabilities in a separate project, [glipy-cli](https://github.com/noprobelm/glipy-cli). `glipy-cli` will render Conway's Game of Life simulations in your terminal emulator.
