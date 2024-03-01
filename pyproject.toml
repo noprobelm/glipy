@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "glipy"
-version = "1.0.2"
+version = "0.1.0"
 description = ""
 authors = ["noprobelm <noprobelm@protonmail.com>"]
 readme = "README.md"
@@ -9,9 +9,7 @@ packages = [ { include = "glipy" } ]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-rich = "^13.7.0"
 requests = "^2.31.0"
-textual = "^0.46.0"
 
 [tool.poetry.group.test.dependencies]
 ward = "^0.68.0b0"
