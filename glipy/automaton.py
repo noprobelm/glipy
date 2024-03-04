@@ -98,6 +98,9 @@ class Automaton(Generic[C, S]):
                     neighbors = c.get_neighbors(self.max_coord)
                     self.matrix[y].append(StateData(neighbors, initial_state))
 
+        self._current_row = 0
+        self._current_col = 0
+
     def evolve(self) -> None:
         """Evolves the simulation once
 
@@ -204,3 +207,15 @@ class Automaton(Generic[C, S]):
 
         """
         self._state_type.set_colors(colors)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self._current_row < len(self.matrix):
+            result = self.matrix[self._current_row]
+            self._current_row += 1
+            return result
+        else:
+            self._current_row = 0
+            raise StopIteration
