@@ -216,6 +216,6 @@ class Automaton(Generic[C, S]):
             result = self.matrix[self._current_row]
             self._current_row += 1
             return result
-        else:
-            self._current_row = 0
-            raise StopIteration
+
+        self._current_row = 0
+        raise StopIteration
