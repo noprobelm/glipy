@@ -7,7 +7,8 @@ from glipy.coordinate import Coordinate
 
 
 @fixture
-def max_coord():
+def max_coord() -> Coordinate:
+    """Return the maximum coordinate for this test set."""
     return Coordinate(2, 2)
 
 
@@ -29,7 +30,8 @@ def _() -> None:
 
 
 @test(
-    "MooreCell: A cell located at the top left of a matrix will have neighbors that wrap to the other side",
+    "MooreCell: A cell located at the top left of a matrix will have neighbors that wrap to the \
+other side",
 )
 def _() -> None:
     c = MooreCell(Coordinate(0, 0))
