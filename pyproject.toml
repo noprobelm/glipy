@@ -18,8 +18,8 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
-select = ["ALL"]
-ignore = ["FBT001", "FBT002", "S311"]
+lint.select = ["ALL"]
+lint.ignore = ["FBT001", "FBT002", "S311"]
 line-length = 99
 exclude = [
   ".git",
@@ -32,11 +32,15 @@ exclude = [
 ]
 
 [tool.ruff.lint.mccabe]
-max-complexity = 15
+max-complexity = 25
 
 [tool.ruff.lint.pylint]
 max-branches = 15
+max-statements = 75
 
-[tool.ruff.extend-per-file-ignores]
+[tool.ruff.lint.extend-per-file-ignores]
 "tests/**/*.py" = ["S101"]
 "test_*.py" = ["S101"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"

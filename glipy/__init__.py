@@ -2,10 +2,9 @@
 
 import random
 import re
-from collections import namedtuple
-from typing import List, Type
+from typing import NamedTuple
 
-import requests  # type: ignore
+import requests
 
 from .automaton import Automaton
 from .cell import Cell, MooreCell
@@ -15,20 +14,21 @@ from .state import ConwayState
 HTTP_OK = 200
 
 # Stores header data from  properly formatted RLE I/O
-RLEHeader = namedtuple(
+RLEHeader = NamedTuple(
     "RLEHeader",
     ["width", "height", "birth_rules", "survival_rules"],
 )
 
 # Stores data needed to build a life pattern
-PatternData = namedtuple("PatternData", ["states", "xmax", "ymax"])
+PatternData = NamedTuple("PatternData", ["states", "xmax", "ymax"])
 
 
 def from_conway_life(data: str, cell_type: type[Cell] = MooreCell) -> Automaton:
-    """Reads lines of a file compliant with life version 1.06.
+    """Read lines of a file compliant with life version 1.06.
 
     Args:
         data (str): The life 1.06 data
+        cell_type (type[Cell]): The cell type to use for this automoaton.
 
     Returns:
         PatternData
@@ -50,7 +50,7 @@ def from_conway_life(data: str, cell_type: type[Cell] = MooreCell) -> Automaton:
             msg = "Malformatted .life file format (see https://conwaylife.com/wiki/Life_1.06)"
             raise ValueError(
                 msg,
-            )
+            ) from ValueError
         alive.append(coord)
         xmax = max(xmax, coord.x)
         ymax = max(ymax, coord.y)
@@ -59,9 +59,9 @@ def from_conway_life(data: str, cell_type: type[Cell] = MooreCell) -> Automaton:
         states.append([])
         for x in range(xmax + 1):
             if Coordinate(x, y) in alive:
-                states[y].append(ConwayState(True))
+                states[y].append(ConwayState(alive=True))
             else:
-                states[y].append(ConwayState(False))
+                states[y].append(ConwayState(alive=False))
 
     automaton: Automaton = Automaton(cell_type, states, xmax, ymax)
 
@@ -69,10 +69,11 @@ def from_conway_life(data: str, cell_type: type[Cell] = MooreCell) -> Automaton:
 
 
 def from_conway_rle(data: str, cell_type: type[Cell] = MooreCell) -> Automaton:
-    """Reads lines of a file compliant with Run Length Encoded (RLE).
+    """Read lines of a file compliant with Run Length Encoded (RLE).
 
     Args:
         data (str): The RLE data
+        cell_type (type[Cell]): The cell type to use for this automaton.
 
     Raises:
         ValueError: A malformatted RLE stream was detected.
@@ -151,8 +152,7 @@ def from_conway_rle(data: str, cell_type: type[Cell] = MooreCell) -> Automaton:
             The filled row
 
         """
-        for _ in range(xmax - len(row) + 1):
-            row.append(ConwayState(False))
+        row.extend(ConwayState(alive=False) for _ in range(xmax - len(row) + 1))
 
         return row
 
