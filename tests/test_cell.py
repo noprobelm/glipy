@@ -1,17 +1,19 @@
-"""Tests the get_neighbors method for all Cell types"""
+"""Tests the get_neighbors method for all Cell types."""
 
-from ward import test, fixture
+from ward import fixture, test
+
 from glipy.cell import MooreCell, NeumannCell
 from glipy.coordinate import Coordinate
 
 
 @fixture
-def max_coord():
+def max_coord() -> Coordinate:
+    """Return the maximum coordinate for this test set."""
     return Coordinate(2, 2)
 
 
 @test("A centrally located MooreCell will have 8 neighbors in its immediate area")
-def _():
+def _() -> None:
     c = MooreCell(Coordinate(1, 1))
     neighbors = c.get_neighbors(max_coord())
     for n in [
@@ -28,9 +30,10 @@ def _():
 
 
 @test(
-    "MooreCell: A cell located at the top left of a matrix will have neighbors that wrap to the other side"
+    "MooreCell: A cell located at the top left of a matrix will have neighbors that wrap to the \
+other side",
 )
-def _():
+def _() -> None:
     c = MooreCell(Coordinate(0, 0))
     neighbors = c.get_neighbors(max_coord())
     assert all(
@@ -49,9 +52,10 @@ def _():
 
 
 @test(
-    "MooreCell: A cell located at the bottom right of a matrix will have neighbors that wrap to the other side"
+    "MooreCell: A cell located at the bottom right of a matrix will have neighbors that wrap to \
+the other side",
 )
-def _():
+def _() -> None:
     c = MooreCell(Coordinate(2, 2))
     neighbors = c.get_neighbors(max_coord())
     assert all(
@@ -69,18 +73,20 @@ def _():
 
 
 @test(
-    "NeumannCell: A cell located at the top left of a matrix will have neighbors that wrap to the other side"
+    "NeumannCell: A cell located at the top left of a matrix will have neighbors that wrap to the \
+other side",
 )
-def _():
+def _() -> None:
     c = NeumannCell(Coordinate(0, 0))
     neighbors = c.get_neighbors(max_coord())
     assert all(n in neighbors for n in [Coordinate(0, 2), Coordinate(2, 0)])
 
 
 @test(
-    "NeumannCell: A cell located at the bottom right of a matrix will have neighbors that wrap to the other side"
+    "NeumannCell: A cell located at the bottom right of a matrix will have neighbors that wrap to \
+the other side",
 )
-def _():
+def _() -> None:
     c = MooreCell(Coordinate(2, 2))
     neighbors = c.get_neighbors(max_coord())
     assert all(n in neighbors for n in [Coordinate(2, 0), Coordinate(0, 2)])
