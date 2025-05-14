@@ -1,12 +1,15 @@
 """This module contains the Color class, which is a string representing valid hex colors."""
 
+from typing import Self
+
+HEX_LENGTH = 6
 
 class ColorParseError(Exception):
     """The color could not be parsed."""
 
 
 class Color(str):
-    """A string representing a color. Implements validating logic to ensure a valid hex code is used.
+    """A string representing a color. Implements validation logic to check for a valid hex code.
 
     Attributes:
         color (str): The color string
@@ -16,11 +19,13 @@ class Color(str):
 
     """
 
-    def __new__(cls, hex_color):
-        """Creates a new instance of the Color class."""
+    __slots__ = ()
+
+    def __new__(cls, hex_color: str) -> Self:
+        """Initialize a new instance of the Color class."""
         hex_color = hex_color.removeprefix("#")
 
-        if len(hex_color) != 6:
+        if len(hex_color) != HEX_LENGTH:
             msg = f"Invalid hex: '{hex_color}'"
             raise ColorParseError(msg)
         for char in hex_color:
