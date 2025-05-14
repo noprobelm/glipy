@@ -1,6 +1,7 @@
 """Tests various functions within the args module"""
 
-from ward import test, raises
+from ward import raises, test
+
 from glipy.color import Color, ColorParseError
 
 

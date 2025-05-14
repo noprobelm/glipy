@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import List, Protocol, Self, Sequence
+from collections.abc import Sequence
+from typing import List, Protocol, Self
 
 from .color import Color
 
@@ -17,6 +18,7 @@ class CellState(Protocol):
 
         Returns:
             A valid color designator (can be 'red', hex codes, etc. See the rich documentation for details)
+
         """
 
     @classmethod
@@ -28,6 +30,7 @@ class CellState(Protocol):
 
         Returns:
             The cell's new state
+
         """
 
 
@@ -40,6 +43,7 @@ class ConwayState:
         birth_rules (List[int]): A list of integers representing the rules for a cell to become "resurrect"
         survival_rules (List[int]): A list of integers representing the rules for a cell to stay alive
         alive (bool): Flag for whether the cell is ALIVE (True) or DEAD (False)
+
     """
 
     colors: Sequence[Color] = [Color("#F6AE2D"), Color("#315771")]
@@ -52,10 +56,11 @@ class ConwayState:
     ):
         """Initializes an instance of the ConwayState class
 
-        Args
+        Args:
             colors (Tuple[Color, Color]): A tuple of colors (see Textualize's documentation for 'rich' for accepted values).
                                       The first index is the color for ALIVE states. 2nd is DEAD
             alive (bool): Flag for whether the cell is ALIVE (True) or DEAD (False)
+
         """
         self.alive = alive
 
@@ -72,6 +77,7 @@ class ConwayState:
 
         Args:
             colors (List[Color]): The list of colors to change to
+
         """
         if len(colors) < len(ConwayState.colors):
             colors.extend(ConwayState.colors[len(colors) :])
@@ -91,8 +97,8 @@ class ConwayState:
 
         Returns:
             The cell's new state
-        """
 
+        """
         alive_count = 0
         for n in neighbors:
             if n.alive is True:
@@ -102,11 +108,9 @@ class ConwayState:
             case True:
                 if any(alive_count == r for r in self.survival_rules):
                     return ConwayState(True)
-                else:
-                    return ConwayState(False)
+                return ConwayState(False)
 
             case False:
                 if any(alive_count == r for r in self.birth_rules):
                     return ConwayState(True)
-                else:
-                    return ConwayState(False)
+                return ConwayState(False)

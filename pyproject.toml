@@ -4,7 +4,7 @@ version = "0.2.0"
 description = ""
 authors = ["noprobelm <noprobelm@protonmail.com>"]
 readme = "README.md"
-packages = [ { include = "glipy" } ]
+packages = [{ include = "glipy" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -16,3 +16,17 @@ ward = "^0.68.0b0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.ruff]
+select = ["ALL"]
+line-length = 99
+exclude = [
+  ".git",
+  "__pycache__",
+  "build",
+  "dist",
+  ".venv",
+  ".mypy_cache",
+  ".ruff_cache",
+]

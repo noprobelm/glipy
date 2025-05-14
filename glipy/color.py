@@ -13,13 +13,12 @@ class Color(str):
 
     Raises:
         ColorParseError: The color could not be parsed
+
     """
 
     def __new__(cls, hex_color):
         """Creates a new instance of the Color class"""
-
-        if hex_color.startswith("#"):
-            hex_color = hex_color[1:]
+        hex_color = hex_color.removeprefix("#")
 
         if len(hex_color) != 6:
             raise ColorParseError(f"Invalid hex: '{hex_color}'")

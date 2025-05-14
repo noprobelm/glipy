@@ -1,6 +1,7 @@
 """Tests the get_neighbors method for all Cell types"""
 
-from ward import test, fixture
+from ward import fixture, test
+
 from glipy.cell import MooreCell, NeumannCell
 from glipy.coordinate import Coordinate
 
@@ -28,7 +29,7 @@ def _():
 
 
 @test(
-    "MooreCell: A cell located at the top left of a matrix will have neighbors that wrap to the other side"
+    "MooreCell: A cell located at the top left of a matrix will have neighbors that wrap to the other side",
 )
 def _():
     c = MooreCell(Coordinate(0, 0))
@@ -49,7 +50,7 @@ def _():
 
 
 @test(
-    "MooreCell: A cell located at the bottom right of a matrix will have neighbors that wrap to the other side"
+    "MooreCell: A cell located at the bottom right of a matrix will have neighbors that wrap to the other side",
 )
 def _():
     c = MooreCell(Coordinate(2, 2))
@@ -69,7 +70,7 @@ def _():
 
 
 @test(
-    "NeumannCell: A cell located at the top left of a matrix will have neighbors that wrap to the other side"
+    "NeumannCell: A cell located at the top left of a matrix will have neighbors that wrap to the other side",
 )
 def _():
     c = NeumannCell(Coordinate(0, 0))
@@ -78,7 +79,7 @@ def _():
 
 
 @test(
-    "NeumannCell: A cell located at the bottom right of a matrix will have neighbors that wrap to the other side"
+    "NeumannCell: A cell located at the bottom right of a matrix will have neighbors that wrap to the other side",
 )
 def _():
     c = MooreCell(Coordinate(2, 2))

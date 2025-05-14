@@ -13,6 +13,7 @@ class Cell(Protocol):
     Attributes:
         coord (Coordinate): The coordinate of a given cell
         neighbors (Tuple[Coordinate, ...]): All valid neighbors of a cell based on the coordinate attribute
+
     """
 
     coord: Coordinate
@@ -33,6 +34,7 @@ class Cell(Protocol):
 
         Returns:
             A list of all valid neighbors
+
         """
 
 
@@ -85,6 +87,7 @@ class MooreCell:
 
         Returns:
             A list of the cell's neighbors
+
         """
         neighbors = []
         for nc in self.neighbors:
@@ -153,6 +156,7 @@ class NeumannCell:
 
         Returns:
             A list of the cell's neighbors
+
         """
         neighbors = []
         for nc in self.neighbors:

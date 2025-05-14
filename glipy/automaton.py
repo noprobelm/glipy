@@ -5,8 +5,9 @@ from __future__ import annotations
 import cProfile
 import sys
 import time
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Generic, List, Sequence, Type, TypeVar, Union, cast
+from typing import Generic, List, Type, TypeVar, Union, cast
 
 from .cell import Cell
 from .coordinate import Coordinate
@@ -23,6 +24,7 @@ class StateData:
     Args:
         neighbors (List[Coordinate]): A list of the neighbor's coordinates to access
         state (CellState): An instance of a a CellState
+
     """
 
     neighbors: List[Coordinate]
@@ -44,6 +46,7 @@ class Automaton(Generic[C, S]):
         max_coord (Coordinate): The maximum valid coordinate found in the grid
         midpoint (Coordinate): The midpoint of the matrix
         matrix (CellMatrix): The underlying cell matrix
+
     """
 
     def __init__(
@@ -60,8 +63,8 @@ class Automaton(Generic[C, S]):
             initial_state (CellState): The initial state of a cell the matrix should be filled with
             xmax (Optional[int]): The xmax value to use for the automaton
             ymax (Optional[int]): The ymax value to use for the automaton
-        """
 
+        """
         self.generation = 0
         self.cell_type = cell_type
         self.xmax = xmax
@@ -88,7 +91,7 @@ class Automaton(Generic[C, S]):
             # type (Union[CellState, Sequence[Sequence[CellState]]]), which is incompatable with the StateData 'state'
             # attribute. We've already verified 'initial_state' is not a sequence from our conditional logic above, so
             # if we're here it must be CellState compliant.
-            initial_state = cast(CellState, initial_state)
+            initial_state = cast("CellState", initial_state)
             self._state_type = type(initial_state)
             for y in range(self.ymax + 1):
                 self.matrix.append([])
@@ -129,8 +132,8 @@ class Automaton(Generic[C, S]):
         Args:
             coord (Coordinate): The coordinate to spawn a cell state at
             cell (Cell): An object which conforms to the Cell protocol
-        """
 
+        """
         self.matrix[coord.y][coord.x].state = state
 
     def spawn(self, midpoint: Coordinate, pattern: Automaton):
@@ -149,7 +152,7 @@ class Automaton(Generic[C, S]):
     def run(
         self,
         refresh_rate: int = 30,
-        generations: Union[float, int] = 0,
+        generations: float = 0,
         debug: bool = False,
     ) -> None:
         """Sets initial parameters for the simluation, then runs it
@@ -158,6 +161,7 @@ class Automaton(Generic[C, S]):
             generations (Union[float, int]): The number of generations the simulation should run for. Defaults to 0 (infinity)
             refresh_rate (int): The number of times the simluation should run before sleeping. Defaults to 0
             debug (bool): Controls if the simulation runs in debug mode. This will run cProfile and disable rendering
+
         """
         if debug is True:
             cProfile.runctx(
@@ -194,6 +198,7 @@ class Automaton(Generic[C, S]):
 
         Returns:
             The colors being used for the cell state
+
         """
         # Ignoring for pyright. Mypy has no issue with this line.
         return self._state_type.colors  # type: ignore

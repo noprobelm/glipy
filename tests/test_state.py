@@ -1,6 +1,7 @@
 """Tests CellState behavior"""
 
 from ward import test
+
 from glipy.state import ConwayState
 
 
@@ -14,7 +15,7 @@ def _():
 
 
 @test(
-    "ConwayState: A dead cell next to any number of live cells other than 3 will remain dead"
+    "ConwayState: A dead cell next to any number of live cells other than 3 will remain dead",
 )
 def _():
     s = ConwayState(False)
@@ -32,7 +33,7 @@ def _():
 
 
 @test(
-    "ConwayState: A live cell next to any number of cells other than 2 or 3 live cells will die"
+    "ConwayState: A live cell next to any number of cells other than 2 or 3 live cells will die",
 )
 def _():
     s = ConwayState(True)
@@ -40,7 +41,7 @@ def _():
 
 
 @test(
-    "ConwayState: A live cell's color will correspond to the first color in the 'colors' attribute"
+    "ConwayState: A live cell's color will correspond to the first color in the 'colors' attribute",
 )
 def _():
     s = ConwayState(True)
@@ -48,7 +49,7 @@ def _():
 
 
 @test(
-    "ConwayState: A dead cell's color will correspond to the second color in the 'colors' attribute"
+    "ConwayState: A dead cell's color will correspond to the second color in the 'colors' attribute",
 )
 def _():
     s = ConwayState(False)
@@ -56,7 +57,7 @@ def _():
 
 
 @test(
-    "Colors Interface: The default colors of a CellState will be overriden when new colors are provided to the setter"
+    "Colors Interface: The default colors of a CellState will be overriden when new colors are provided to the setter",
 )
 def _():
     s = ConwayState(True)
@@ -68,7 +69,7 @@ def _():
 
 @test(
     "Colors Interface: Providing fewer colors than the number of states will result in a CellState right padding with \
-    existing colors"
+    existing colors",
 )
 def _():
     s = ConwayState(True)
@@ -80,7 +81,7 @@ def _():
 
 
 @test(
-    "Colors Interface: Providing more colors than the number of states will result in a the extra colors being dropped"
+    "Colors Interface: Providing more colors than the number of states will result in a the extra colors being dropped",
 )
 def _():
     s = ConwayState(True)
