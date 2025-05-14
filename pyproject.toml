@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "glipy"
-version = "0.2.0"
+version = "0.2.1"
 description = ""
 authors = ["noprobelm <noprobelm@protonmail.com>"]
 readme = "README.md"
@@ -16,7 +16,6 @@ ward = "^0.68.0b0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
 
 [tool.ruff]
 select = ["ALL"]
