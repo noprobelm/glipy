@@ -42,7 +42,7 @@ def _() -> None:
 
 @test(
     "ConwayState: A live cell's color will correspond to the first color in the 'colors' \
-    attribute",
+attribute",
 )
 def _() -> None:
     s = ConwayState(alive=True)
@@ -51,7 +51,7 @@ def _() -> None:
 
 @test(
     "ConwayState: A dead cell's color will correspond to the second color in the 'colors' \
-    attribute",
+attribute",
 )
 def _() -> None:
     s = ConwayState(alive=False)
@@ -60,7 +60,7 @@ def _() -> None:
 
 @test(
     "Colors Interface: The default colors of a CellState will be overriden when new colors are \
-    provided to the setter",
+provided to the setter",
 )
 def _() -> None:
     s = ConwayState(alive=True)
@@ -71,7 +71,7 @@ def _() -> None:
 
 @test(
     "Colors Interface: Providing fewer colors than the number of states will result in a \
-    CellState right padding with existing colors",
+CellState right padding with existing colors",
 )
 def _() -> None:
     s = ConwayState(alive=True)
@@ -83,7 +83,7 @@ def _() -> None:
 
 @test(
     "Colors Interface: Providing more colors than the number of states will result in a the extra \
-    colors being dropped",
+colors being dropped",
 )
 def _() -> None:
     s = ConwayState(alive=True)

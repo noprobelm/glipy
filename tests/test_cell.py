@@ -50,7 +50,8 @@ def _() -> None:
 
 
 @test(
-    "MooreCell: A cell located at the bottom right of a matrix will have neighbors that wrap to the other side",
+    "MooreCell: A cell located at the bottom right of a matrix will have neighbors that wrap to \
+the other side",
 )
 def _() -> None:
     c = MooreCell(Coordinate(2, 2))
@@ -70,7 +71,8 @@ def _() -> None:
 
 
 @test(
-    "NeumannCell: A cell located at the top left of a matrix will have neighbors that wrap to the other side",
+    "NeumannCell: A cell located at the top left of a matrix will have neighbors that wrap to the \
+other side",
 )
 def _() -> None:
     c = NeumannCell(Coordinate(0, 0))
@@ -79,7 +81,8 @@ def _() -> None:
 
 
 @test(
-    "NeumannCell: A cell located at the bottom right of a matrix will have neighbors that wrap to the other side",
+    "NeumannCell: A cell located at the bottom right of a matrix will have neighbors that wrap to \
+the other side",
 )
 def _() -> None:
     c = MooreCell(Coordinate(2, 2))

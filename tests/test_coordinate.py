@@ -7,7 +7,7 @@ from glipy.coordinate import Coordinate
 
 @test(
     "Adding 2 coordinates will result in a new coordinate whose x/y values are the sum of the \
-    others",
+others",
 )
 def _() -> None:
     assert Coordinate(1, 1) + Coordinate(1, 1) == Coordinate(2, 2)
@@ -15,7 +15,7 @@ def _() -> None:
 
 @test(
     "Subtracting 2 coordinates will result in a new coordinate whose x/y values are the \
-    difference of the others",
+difference of the others",
 )
 def _() -> None:
     assert Coordinate(1, 1) - Coordinate(1, 1) == Coordinate(0, 0)
@@ -23,7 +23,7 @@ def _() -> None:
 
 @test(
     "A coordinate is within another coordinate if its x and y values are greater than 0 and less \
-    than the coordinte being compared against",
+than the coordinte being compared against",
 )
 def _() -> None:
     assert Coordinate(0, 0) in Coordinate(1, 1)
