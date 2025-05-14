@@ -19,7 +19,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 select = ["ALL"]
-ignore = ["FBT001", "FBT002"]
+ignore = ["FBT001", "FBT002", "S311"]
 line-length = 99
 exclude = [
   ".git",
@@ -33,6 +33,9 @@ exclude = [
 
 [tool.ruff.lint.mccabe]
 max-complexity = 15
+
+[tool.ruff.lint.pylint]
+max-branches = 15
 
 [tool.ruff.extend-per-file-ignores]
 "tests/**/*.py" = ["S101"]

@@ -1,4 +1,5 @@
 """Contains classes and functionality related to cell states."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, ClassVar, Protocol, Self

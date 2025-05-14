@@ -4,6 +4,7 @@ from typing import Self
 
 HEX_LENGTH = 6
 
+
 class ColorParseError(Exception):
     """The color could not be parsed."""
 

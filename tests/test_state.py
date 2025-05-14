@@ -8,10 +8,9 @@ from glipy.state import ConwayState
 @test("ConwayState: A dead cell next to exactly 3 live cells will resurrect")
 def _() -> None:
     s = ConwayState(alive=False)
-    assert (
-        s.change_state([ConwayState(alive=True), ConwayState(alive=True),
-                        ConwayState(alive=True)]).alive
-    )
+    assert s.change_state(
+        [ConwayState(alive=True), ConwayState(alive=True), ConwayState(alive=True)],
+    ).alive
 
 
 @test(
@@ -25,10 +24,9 @@ def _() -> None:
 @test("ConwayState: A live cell next to exactly 2 or 3 live cells will remain alive")
 def _() -> None:
     s = ConwayState(alive=True)
-    assert (
-        s.change_state([ConwayState(alive=True), ConwayState(alive=True),
-                        ConwayState(alive=True)]).alive
-    )
+    assert s.change_state(
+        [ConwayState(alive=True), ConwayState(alive=True), ConwayState(alive=True)],
+    ).alive
     assert s.change_state([ConwayState(alive=True), ConwayState(alive=True)]).alive
 
 
