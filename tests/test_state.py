@@ -9,7 +9,8 @@ from glipy.state import ConwayState
 def _() -> None:
     s = ConwayState(alive=False)
     assert (
-        s.change_state([ConwayState(alive=True), ConwayState(alive=True), ConwayState(alive=True)]).alive
+        s.change_state([ConwayState(alive=True), ConwayState(alive=True),
+                        ConwayState(alive=True)]).alive
     )
 
 
@@ -25,7 +26,8 @@ def _() -> None:
 def _() -> None:
     s = ConwayState(alive=True)
     assert (
-        s.change_state([ConwayState(alive=True), ConwayState(alive=True), ConwayState(alive=True)]).alive
+        s.change_state([ConwayState(alive=True), ConwayState(alive=True),
+                        ConwayState(alive=True)]).alive
     )
     assert s.change_state([ConwayState(alive=True), ConwayState(alive=True)]).alive
 
@@ -39,7 +41,8 @@ def _() -> None:
 
 
 @test(
-    "ConwayState: A live cell's color will correspond to the first color in the 'colors' attribute",
+    "ConwayState: A live cell's color will correspond to the first color in the 'colors' \
+    attribute",
 )
 def _() -> None:
     s = ConwayState(alive=True)
@@ -47,7 +50,8 @@ def _() -> None:
 
 
 @test(
-    "ConwayState: A dead cell's color will correspond to the second color in the 'colors' attribute",
+    "ConwayState: A dead cell's color will correspond to the second color in the 'colors' \
+    attribute",
 )
 def _() -> None:
     s = ConwayState(alive=False)
@@ -55,19 +59,19 @@ def _() -> None:
 
 
 @test(
-    "Colors Interface: The default colors of a CellState will be overriden when new colors are provided to the setter",
+    "Colors Interface: The default colors of a CellState will be overriden when new colors are \
+    provided to the setter",
 )
 def _() -> None:
     s = ConwayState(alive=True)
     colors = ["blue", "yellow"]
     ConwayState.set_colors(colors)
     assert s.colors == colors
-    assert len(s.colors) == 2
 
 
 @test(
-    "Colors Interface: Providing fewer colors than the number of states will result in a CellState right padding with \
-    existing colors",
+    "Colors Interface: Providing fewer colors than the number of states will result in a \
+    CellState right padding with existing colors",
 )
 def _() -> None:
     s = ConwayState(alive=True)
@@ -78,7 +82,8 @@ def _() -> None:
 
 
 @test(
-    "Colors Interface: Providing more colors than the number of states will result in a the extra colors being dropped",
+    "Colors Interface: Providing more colors than the number of states will result in a the extra \
+    colors being dropped",
 )
 def _() -> None:
     s = ConwayState(alive=True)
