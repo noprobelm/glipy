@@ -1,4 +1,4 @@
-"""This module contains the Color class, which is a string representing valid hex colors."""
+"""Contains the Color class, which is a string representing valid hex colors."""
 
 from typing import Self
 
