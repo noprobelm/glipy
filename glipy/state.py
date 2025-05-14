@@ -1,20 +1,22 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
-from typing import List, Protocol, Self
+from typing import TYPE_CHECKING, Protocol, Self
 
 from .color import Color
 
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
 
 class CellState(Protocol):
-    """A protocol to reference when creating a new type of cell state"""
+    """A protocol to reference when creating a new type of cell state."""
 
     # colors should be a tuple of colors equivalent to the number of possible states in a CellState class
     colors: Sequence[Color]
 
     @property
     def color(self) -> Color:
-        """Correlates a color with arbitrary attributes of a CellState instance
+        """Correlates a color with arbitrary attributes of a CellState instance.
 
         Returns:
             A valid color designator (can be 'red', hex codes, etc. See the rich documentation for details)
@@ -22,11 +24,11 @@ class CellState(Protocol):
         """
 
     @classmethod
-    def set_colors(cls, colors: List[Color]) -> None:
-        """Sets the colors for the CellState"""
+    def set_colors(cls, colors: list[Color]) -> None:
+        """Sets the colors for the CellState."""
 
-    def change_state(self, neighbors: List[Self]) -> CellState:
-        """Retrieves a new state based on its neighbors
+    def change_state(self, neighbors: list[Self]) -> CellState:
+        """Retrieves a new state based on its neighbors.
 
         Returns:
             The cell's new state
@@ -35,7 +37,7 @@ class CellState(Protocol):
 
 
 class ConwayState:
-    """A state that follows the rules for Conway's Game of Life
+    """A state that follows the rules for Conway's Game of Life.
 
     Attributes:
         colors (Tuple[Color, Color]): A tuple of colors (see Textualize's documentation for 'rich' for accepted values).
@@ -53,8 +55,8 @@ class ConwayState:
     def __init__(
         self,
         alive: bool = False,
-    ):
-        """Initializes an instance of the ConwayState class
+    ) -> None:
+        """Initializes an instance of the ConwayState class.
 
         Args:
             colors (Tuple[Color, Color]): A tuple of colors (see Textualize's documentation for 'rich' for accepted values).
@@ -66,14 +68,14 @@ class ConwayState:
 
     @property
     def color(self) -> Color:
-        """Returns the first index of self.colors if alive, else the second"""
+        """Returns the first index of self.colors if alive, else the second."""
         if self.alive is True:
             return self.colors[0]
         return self.colors[1]
 
     @classmethod
-    def set_colors(cls, colors: List[Color]) -> None:
-        """Sets the colors for the CellState
+    def set_colors(cls, colors: list[Color]) -> None:
+        """Sets the colors for the CellState.
 
         Args:
             colors (List[Color]): The list of colors to change to
@@ -86,8 +88,8 @@ class ConwayState:
 
         cls.colors = colors
 
-    def change_state(self, neighbors: List[ConwayState]) -> ConwayState:
-        """Changes the state of the cell
+    def change_state(self, neighbors: list[ConwayState]) -> ConwayState:
+        """Changes the state of the cell.
 
         An instance of this class will follow birth/survival rules according to the ConwayState.birth_rules and
         ConwayState.survival_rules class attributes. Default rules are B3/S23 in accordance with the common standard

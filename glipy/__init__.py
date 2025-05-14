@@ -1,4 +1,4 @@
-"""Provides convenience functions for building Automatons from various I/O formats"""
+"""Provides convenience functions for building Automatons from various I/O formats."""
 import random
 import re
 from collections import namedtuple
@@ -20,8 +20,8 @@ RLEHeader = namedtuple(
 PatternData = namedtuple("PatternData", ["states", "xmax", "ymax"])
 
 
-def from_conway_life(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
-    """Reads lines of a file compliant with life version 1.06
+def from_conway_life(data: str, cell_type: type[Cell] = MooreCell) -> Automaton:
+    """Reads lines of a file compliant with life version 1.06.
 
     Args:
         data (str): The life 1.06 data
@@ -35,7 +35,7 @@ def from_conway_life(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
     xmax = 0
     ymax = 0
     alive = []
-    states: List[List[ConwayState]] = []
+    states: list[list[ConwayState]] = []
     for line in lines:
         if line.startswith("#"):
             continue
@@ -43,8 +43,9 @@ def from_conway_life(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
         try:
             coord = Coordinate(int(split[0]), int(split[1]))
         except (ValueError, IndexError):
+            msg = "Malformatted .life file format (see https://conwaylife.com/wiki/Life_1.06)"
             raise ValueError(
-                "Malformatted .life file format (see https://conwaylife.com/wiki/Life_1.06)",
+                msg,
             )
         alive.append(coord)
         xmax = max(xmax, coord.x)
@@ -63,8 +64,8 @@ def from_conway_life(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
     return automaton
 
 
-def from_conway_rle(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
-    """Reads lines of a file compliant with Run Length Encoded (RLE)
+def from_conway_rle(data: str, cell_type: type[Cell] = MooreCell) -> Automaton:
+    """Reads lines of a file compliant with Run Length Encoded (RLE).
 
     Args:
         data (str): The RLE data
@@ -78,7 +79,7 @@ def from_conway_rle(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
     """
 
     def parse_header(line: str) -> RLEHeader:
-        """Parses header data
+        """Parses header data.
 
         Args:
             line (str): The header line from the RLE data
@@ -92,15 +93,17 @@ def from_conway_rle(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
         """
         data = re.search(r"(x = \d+).*(y = \d+)", line)
         if data is None:
+            msg = "I/O has malformatted header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
             raise ValueError(
-                "I/O has malformatted header line (see https://conwaylife.com/wiki/Run_Length_Encoded)",
+                msg,
             )
 
         width_match = re.search(r"\d+", data[1])
         height_match = re.search(r"\d+", data[2])
         if width_match is None or height_match is None:
+            msg = "I/O has malformatted header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
             raise ValueError(
-                "I/O has malformatted header line (see https://conwaylife.com/wiki/Run_Length_Encoded)",
+                msg,
             )
         width = int(width_match.group(0))
         height = int(height_match.group(0))
@@ -113,8 +116,9 @@ def from_conway_rle(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
             birth_match = re.search(r"[bB]\d+", line)
             survival_match = re.search(r"[sS]\d+", line)
             if birth_match is None or survival_match is None:
+                msg = "I/O has malformatted header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
                 raise ValueError(
-                    "I/O has malformatted header line (see https://conwaylife.com/wiki/Run_Length_Encoded)",
+                    msg,
                 )
 
             birth_rules = [int(n) for n in birth_match.group(0)[1:]]
@@ -122,8 +126,8 @@ def from_conway_rle(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
 
         return RLEHeader(width, height, birth_rules, survival_rules)
 
-    def set_birth_rules(header: RLEHeader):
-        """Sets the birth and survival rules (if detected in the header data)
+    def set_birth_rules(header: RLEHeader) -> None:
+        """Sets the birth and survival rules (if detected in the header data).
 
         Args:
             header (RLEHeader): The header data
@@ -132,8 +136,8 @@ def from_conway_rle(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
         ConwayState.birth_rules = header.birth_rules or ConwayState.birth_rules
         ConwayState.survival_rules = header.survival_rules or ConwayState.survival_rules
 
-    def fill_row(row: List[ConwayState], xmax: int) -> List[ConwayState]:
-        """Fills in missing values for a row with dead ConwayState cells
+    def fill_row(row: list[ConwayState], xmax: int) -> list[ConwayState]:
+        """Fills in missing values for a row with dead ConwayState cells.
 
         Args:
             row (List[ConwayState]): The row to fill in
@@ -148,8 +152,8 @@ def from_conway_rle(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
 
         return row
 
-    def fill_rows(states: List[List[ConwayState]], xmax: int, ymax: int):
-        """Fills in the necessary remaining rows with dead ConwayState cells
+    def fill_rows(states: list[list[ConwayState]], xmax: int, ymax: int):
+        """Fills in the necessary remaining rows with dead ConwayState cells.
 
         Args:
             states (List[List[ConwayState]]): The data to fill
@@ -162,8 +166,8 @@ def from_conway_rle(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
 
         return states
 
-    def parse_states(xmax: int, ymax: int, data: str) -> List[List[ConwayState]]:
-        """Parses state data based on RLE I/O stream content
+    def parse_states(xmax: int, ymax: int, data: str) -> list[list[ConwayState]]:
+        """Parses state data based on RLE I/O stream content.
 
         TODO: This is perfectly functional, but quite messy. We need to come back and do some cleanup
 
@@ -183,8 +187,8 @@ def from_conway_rle(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
             A list of conway states resembling a 2d matrix
 
         """
-        nums: List[str] = []
-        states: List[List[ConwayState]] = [[]]
+        nums: list[str] = []
+        states: list[list[ConwayState]] = [[]]
         y = 0
         for c in data:
             if c == "!":
@@ -194,9 +198,9 @@ def from_conway_rle(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
                     states = fill_rows(states, xmax, ymax)
                 return states
 
-            if c == "o" or c == "b" or c == "$":
+            if c in {"o", "b", "$"}:
                 n = 1 if len(nums) == 0 else int("".join(nums))
-                if c == "o" or c == "b":
+                if c in {"o", "b"}:
                     for _ in range(n):
                         if c == "o":
                             states[y].append(ConwayState(alive=True))
@@ -230,8 +234,9 @@ def from_conway_rle(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
             header = parse_header(line)
             break
     else:
+        msg = "I/O missing header line (see https://conwaylife.com/wiki/Run_Length_Encoded)"
         raise ValueError(
-            "I/O missing header line (see https://conwaylife.com/wiki/Run_Length_Encoded)",
+            msg,
         )
 
     set_birth_rules(header)
@@ -245,18 +250,19 @@ def from_conway_rle(data: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
     return automaton
 
 
-def from_rle_url(url: str, cell_type: Type[Cell] = MooreCell) -> Automaton:
-    """Runs a .rle from a remote URL"""
+def from_rle_url(url: str, cell_type: type[Cell] = MooreCell) -> Automaton:
+    """Runs a .rle from a remote URL."""
     response = requests.get(url)
     if response.status_code != 200:
-        raise ValueError(f"Error {response.status_code}: {response.reason}")
+        msg = f"Error {response.status_code}: {response.reason}"
+        raise ValueError(msg)
     data = response.content.decode()
     automaton: Automaton = from_conway_rle(data, cell_type)
     return automaton
 
 
-def random_conway(xmax: int, ymax: int, cell_type: Type[Cell] = MooreCell) -> Automaton:
-    """Generate a random conway automaton"""
+def random_conway(xmax: int, ymax: int, cell_type: type[Cell] = MooreCell) -> Automaton:
+    """Generate a random conway automaton."""
     automaton: Automaton = Automaton(cell_type, ConwayState(False), xmax, ymax)
     for y in range(automaton.ymax + 1):
         for x in range(automaton.xmax + 1):

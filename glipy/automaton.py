@@ -1,17 +1,19 @@
-"""This module contains the Automaton class, which is the base class for all cellular automata in glipy"""
+"""This module contains the Automaton class, which is the base class for all cellular automata in glipy."""
 
 from __future__ import annotations
 
 import cProfile
 import sys
 import time
-from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Generic, List, Type, TypeVar, Union, cast
+from typing import TYPE_CHECKING, Generic, TypeVar, cast
 
 from .cell import Cell
 from .coordinate import Coordinate
 from .state import CellState
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 C = TypeVar("C", bound=Cell)
 S = TypeVar("S", bound=CellState)
@@ -19,7 +21,7 @@ S = TypeVar("S", bound=CellState)
 
 @dataclass
 class StateData:
-    """Used to simplify access of neighbors and state data in an Automaton instance
+    """Used to simplify access of neighbors and state data in an Automaton instance.
 
     Args:
         neighbors (List[Coordinate]): A list of the neighbor's coordinates to access
@@ -27,7 +29,7 @@ class StateData:
 
     """
 
-    neighbors: List[Coordinate]
+    neighbors: list[Coordinate]
     state: CellState
 
 
@@ -51,12 +53,12 @@ class Automaton(Generic[C, S]):
 
     def __init__(
         self,
-        cell_type: Type[Cell],
-        initial_state: Union[CellState, Sequence[Sequence[CellState]]],
+        cell_type: type[Cell],
+        initial_state: CellState | Sequence[Sequence[CellState]],
         xmax: int,
         ymax: int,
     ) -> None:
-        """Initializes an instance of the Simulation class
+        """Initializes an instance of the Simulation class.
 
         Args:
             cell_type (Type[Cell]): The type of cell the simulation should use when determining neighbors
@@ -73,7 +75,7 @@ class Automaton(Generic[C, S]):
         self.max_coord = Coordinate(self.xmax, self.ymax)
         self.midpoint = Coordinate(self.xmax // 2, self.ymax // 2)
 
-        self.matrix: List[List[StateData]] = []
+        self.matrix: list[list[StateData]] = []
 
         if isinstance(initial_state, list):
             self._state_type = type(initial_state[0][0])
@@ -105,12 +107,12 @@ class Automaton(Generic[C, S]):
         self._current_col = 0
 
     def evolve(self) -> None:
-        """Evolves the simulation once
+        """Evolves the simulation once.
 
         Visits each cell in the 2d matrix and retrieves its new state by passing its neighbor states to the change_state
         method.
         """
-        next_generation: List[List[StateData]] = []
+        next_generation: list[list[StateData]] = []
         for y in range(self.ymax + 1):
             next_generation.append([])
             for x in range(self.xmax + 1):
@@ -127,7 +129,7 @@ class Automaton(Generic[C, S]):
         self.generation += 1
 
     def set_state(self, coord: Coordinate, state: CellState) -> None:
-        """Spawns a CellState instance at a given x/y coordinate
+        """Spawns a CellState instance at a given x/y coordinate.
 
         Args:
             coord (Coordinate): The coordinate to spawn a cell state at
@@ -136,15 +138,15 @@ class Automaton(Generic[C, S]):
         """
         self.matrix[coord.y][coord.x].state = state
 
-    def spawn(self, midpoint: Coordinate, pattern: Automaton):
+    def spawn(self, midpoint: Coordinate, pattern: Automaton) -> None:
         for y in range(pattern.ymax + 1):
             for x in range(pattern.xmax + 1):
                 coord = Coordinate(x, y)
                 offset = Coordinate(x, y) + midpoint
                 self.set_state(offset, pattern.matrix[coord.y][coord.x].state)
 
-    def clear(self):
-        """Sets the Automaton's underlying matrix to the default state type"""
+    def clear(self) -> None:
+        """Sets the Automaton's underlying matrix to the default state type."""
         for y in range(self.ymax + 1):
             for x in range(self.xmax + 1):
                 self.matrix[y][x].state = self._state_type()
@@ -155,7 +157,7 @@ class Automaton(Generic[C, S]):
         generations: float = 0,
         debug: bool = False,
     ) -> None:
-        """Sets initial parameters for the simluation, then runs it
+        """Sets initial parameters for the simluation, then runs it.
 
         Args:
             generations (Union[float, int]): The number of generations the simulation should run for. Defaults to 0 (infinity)
@@ -194,7 +196,7 @@ class Automaton(Generic[C, S]):
 
     @property
     def colors(self) -> Sequence[str]:
-        """For renderers, this property can be used to retrieve a state type's colors
+        """For renderers, this property can be used to retrieve a state type's colors.
 
         Returns:
             The colors being used for the cell state
@@ -204,8 +206,8 @@ class Automaton(Generic[C, S]):
         return self._state_type.colors  # type: ignore
 
     @colors.setter
-    def colors(self, colors: List[str]) -> None:
-        """Sets the colors being used for htis instance's cell state type
+    def colors(self, colors: list[str]) -> None:
+        """Sets the colors being used for htis instance's cell state type.
 
         Args:
             colors (List[str]): The colors to use

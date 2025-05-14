@@ -1,10 +1,10 @@
-from typing import List, Protocol, Tuple
+from typing import Protocol
 
 from .coordinate import Coordinate
 
 
 class Cell(Protocol):
-    """A protocol to reference when creating a new type of cell
+    """A protocol to reference when creating a new type of cell.
 
     A cell is primarily defined by its neighbors. A class that conforms to this protocol shoud have an __init__ method
     which accepts a coordinate, and a get_neighbors method that will retreive valid neighbors based on a maximum
@@ -17,13 +17,13 @@ class Cell(Protocol):
     """
 
     coord: Coordinate
-    neighbors: Tuple[Coordinate, ...]
+    neighbors: tuple[Coordinate, ...]
 
     def __init__(self, coord: Coordinate) -> None:
-        """Initializes an instance of a cell. The coord attr should be set here"""
+        """Initializes an instance of a cell. The coord attr should be set here."""
 
-    def get_neighbors(self, max_coord: Coordinate) -> List[Coordinate]:
-        """Accesses members of a cell's neighborhood and returns a list of valid neighbors
+    def get_neighbors(self, max_coord: Coordinate) -> list[Coordinate]:
+        """Accesses members of a cell's neighborhood and returns a list of valid neighbors.
 
         This is usually achieved by checking coordinates against a maximum possible coordinate. The
         Coordinate.__contains__ special method is available for determining neighbors.
@@ -39,7 +39,7 @@ class Cell(Protocol):
 
 
 class MooreCell:
-    """A cell that references members of a MooreNeighborhood
+    """A cell that references members of a MooreNeighborhood.
 
     +---+---+---+
     | 1 | 2 | 3 |
@@ -51,7 +51,7 @@ class MooreCell:
 
     """
 
-    neighbors: Tuple[Coordinate, ...] = (
+    neighbors: tuple[Coordinate, ...] = (
         # Upper left
         Coordinate(-1, -1),
         # Upper
@@ -71,7 +71,7 @@ class MooreCell:
     )
 
     def __init__(self, coord: Coordinate) -> None:
-        """Initializes an instance of the MooreCell class"""
+        """Initializes an instance of the MooreCell class."""
         self.coord = coord
 
     def get_neighbors(self, max_coord: Coordinate) -> list[Coordinate]:
@@ -117,7 +117,7 @@ class MooreCell:
 
 
 class NeumannCell:
-    """A cell that references members of a Von Neumann neighborhood
+    """A cell that references members of a Von Neumann neighborhood.
 
         +---+
         | 2 |
@@ -128,7 +128,7 @@ class NeumannCell:
         +---+
     """
 
-    neighbors: Tuple[Coordinate, ...] = (
+    neighbors: tuple[Coordinate, ...] = (
         # Upper
         Coordinate(0, -1),
         # Right
@@ -140,7 +140,7 @@ class NeumannCell:
     )
 
     def __init__(self, coord: Coordinate) -> None:
-        """Initializes an instance of the MooreCell class"""
+        """Initializes an instance of the MooreCell class."""
         self.coord = coord
 
     def get_neighbors(self, max_coord: Coordinate) -> list[Coordinate]:
