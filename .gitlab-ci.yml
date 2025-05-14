@@ -1,0 +1,10 @@
+stages:
+  - lint
+
+ruff-lint:
+  stage: lint
+  image: python:3.11  # or your project’s Python version
+  before_script:
+    - pipx install ruff
+  script:
+    - ruff check .
