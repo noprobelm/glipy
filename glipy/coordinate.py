@@ -21,5 +21,5 @@ class Coordinate:
         return Coordinate(self.x - other.x, self.y - other.y)
 
     def __contains__(self, other: Coordinate) -> bool:
-        """Return whether the coordinate is greater than another coordinate"""
+        """Return whether this coordinate is greater than another coordinate."""
         return bool(0 <= other.x <= self.x and 0 <= other.y <= self.y)
