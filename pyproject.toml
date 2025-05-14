@@ -29,3 +29,7 @@ exclude = [
   ".mypy_cache",
   ".ruff_cache",
 ]
+#
+[tool.ruff.extend-per-file-ignores]
+"tests/**/*.py" = ["S101"]
+"test_*.py" = ["S101"]
