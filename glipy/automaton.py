@@ -1,4 +1,4 @@
-"""This module contains the Automaton class, which is the base class for all cellular automata in glipy."""
+"""Contains the Automaton class, which is the base class for all cellular automata in glipy."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import cProfile
 import sys
 import time
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Generic, TypeVar, cast
+from typing import TYPE_CHECKING, Generic, Self, TypeVar, cast
 
 from .cell import Cell
 from .coordinate import Coordinate
@@ -36,9 +36,9 @@ class StateData:
 class Automaton(Generic[C, S]):
     """Hosts the data and methods to store/evolve an automaton.
 
-    An automaton's cell and cell_state types must be homogenous for the duration of its existence to ensure a cell_state
-    is always aware of how it should behave with respect to its provided neighbors. The generics 'C' and 'S' in the class
-    signature enforce this.
+    An automaton's cell and cell_state types must be homogenous for the duration of its existence
+    to ensure a cell_state is always aware of how it should behave with respect to its provided
+    neighbors. The generics 'C' and 'S' in the class signature enforce this.
 
     Attributes:
         generation (int): The generation we're at in the simulation
@@ -58,10 +58,11 @@ class Automaton(Generic[C, S]):
         xmax: int,
         ymax: int,
     ) -> None:
-        """Initializes an instance of the Simulation class.
+        """Initialize an instance of the Simulation class.
 
         Args:
-            cell_type (Type[Cell]): The type of cell the simulation should use when determining neighbors
+            cell_type (Type[Cell]): The type of cell the simulation should use when determining
+            neighbors
             initial_state (CellState): The initial state of a cell the matrix should be filled with
             xmax (Optional[int]): The xmax value to use for the automaton
             ymax (Optional[int]): The ymax value to use for the automaton
@@ -88,11 +89,12 @@ class Automaton(Generic[C, S]):
                     state = initial_state[y][x]
                     self.matrix[y].append(StateData(neighbors, state))
         else:
-            # I don't like this [cast] solution very much, but mypy and our code analysis tools should catch improper arg
-            # usage upstream from here. If we don't use cast here, 'initial_state' is considered to be ambiguous in its
-            # type (Union[CellState, Sequence[Sequence[CellState]]]), which is incompatable with the StateData 'state'
-            # attribute. We've already verified 'initial_state' is not a sequence from our conditional logic above, so
-            # if we're here it must be CellState compliant.
+            # I don't like this [cast] solution very much, but mypy and our code analysis tools
+            # should catch improper arg. usage upstream from here. If we don't use cast here,
+            # 'initial_state' is considered to be ambiguous in its type
+            # (Union[CellState, Sequence[Sequence[CellState]]]), which is incompatable with the
+            # StateData 'state' attribute. We've already verified 'initial_state' is not a sequence
+            # from our conditional logic above, so if we're here it must be CellState compliant.
             initial_state = cast("CellState", initial_state)
             self._state_type = type(initial_state)
             for y in range(self.ymax + 1):
@@ -109,7 +111,8 @@ class Automaton(Generic[C, S]):
     def evolve(self) -> None:
         """Evolves the simulation once.
 
-        Visits each cell in the 2d matrix and retrieves its new state by passing its neighbor states to the change_state
+        Visits each cell in the 2d matrix and retrieves its new state by passing its neighbor
+        states to the change_state
         method.
         """
         next_generation: list[list[StateData]] = []
@@ -129,16 +132,17 @@ class Automaton(Generic[C, S]):
         self.generation += 1
 
     def set_state(self, coord: Coordinate, state: CellState) -> None:
-        """Spawns a CellState instance at a given x/y coordinate.
+        """Spawn a CellState instance at a given x/y coordinate.
 
         Args:
             coord (Coordinate): The coordinate to spawn a cell state at
-            cell (Cell): An object which conforms to the Cell protocol
+            state (CellState): The state of the cell
 
         """
         self.matrix[coord.y][coord.x].state = state
 
     def spawn(self, midpoint: Coordinate, pattern: Automaton) -> None:
+        """Spawn another automaton within this one."""
         for y in range(pattern.ymax + 1):
             for x in range(pattern.xmax + 1):
                 coord = Coordinate(x, y)
@@ -146,7 +150,7 @@ class Automaton(Generic[C, S]):
                 self.set_state(offset, pattern.matrix[coord.y][coord.x].state)
 
     def clear(self) -> None:
-        """Sets the Automaton's underlying matrix to the default state type."""
+        """Set the Automaton's underlying matrix to the default state type."""
         for y in range(self.ymax + 1):
             for x in range(self.xmax + 1):
                 self.matrix[y][x].state = self._state_type()
@@ -157,12 +161,15 @@ class Automaton(Generic[C, S]):
         generations: float = 0,
         debug: bool = False,
     ) -> None:
-        """Sets initial parameters for the simluation, then runs it.
+        """Set initial parameters for the simluation, then runs it.
 
         Args:
-            generations (Union[float, int]): The number of generations the simulation should run for. Defaults to 0 (infinity)
-            refresh_rate (int): The number of times the simluation should run before sleeping. Defaults to 0
-            debug (bool): Controls if the simulation runs in debug mode. This will run cProfile and disable rendering
+            generations (Union[float, int]): The number of generations the simulation should run
+            for. Defaults to 0 (infinity)
+            refresh_rate (int): The number of times the simluation should run before sleeping.
+            Defaults to 0
+            debug (bool): Controls if the simulation runs in debug mode. This will run cProfile and
+            disable rendering
 
         """
         if debug is True:
@@ -203,11 +210,11 @@ class Automaton(Generic[C, S]):
 
         """
         # Ignoring for pyright. Mypy has no issue with this line.
-        return self._state_type.colors  # type: ignore
+        return self._state_type.colors
 
     @colors.setter
     def colors(self, colors: list[str]) -> None:
-        """Sets the colors being used for htis instance's cell state type.
+        """Set the colors being used for htis instance's cell state type.
 
         Args:
             colors (List[str]): The colors to use
@@ -215,10 +222,12 @@ class Automaton(Generic[C, S]):
         """
         self._state_type.set_colors(colors)
 
-    def __iter__(self):
+    def __iter__(self) -> Self:
+        """Iterate on the automaton's cells."""
         return self
 
-    def __next__(self):
+    def __next__(self) -> Cell:
+        """Call next on the iterator."""
         if self._current_row < len(self.matrix):
             result = self.matrix[self._current_row]
             self._current_row += 1
