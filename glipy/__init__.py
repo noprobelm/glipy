@@ -20,7 +20,7 @@ RLEHeader = NamedTuple(
 )
 
 # Stores data needed to build a life pattern
-PatternData = NamedTuple("PatternData", ["states", "xmax", "ymax"])
+PatternData = NamedTuple("PatternData", ["states", "xmax", "ymax"]) 
 
 
 def from_conway_life(data: str, cell_type: type[Cell] = MooreCell) -> Automaton:
