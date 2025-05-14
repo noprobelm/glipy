@@ -19,7 +19,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 lint.select = ["ALL"]
-lint.ignore = ["FBT001", "FBT002", "S311"]
+lint.ignore = ["FBT001", "FBT002", "S311", "PYI024"]
 line-length = 99
 exclude = [
   ".git",

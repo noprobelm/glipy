@@ -2,7 +2,7 @@
 
 import random
 import re
-from typing import NamedTuple
+from collections import namedtuple
 
 import requests
 
@@ -14,13 +14,13 @@ from .state import ConwayState
 HTTP_OK = 200
 
 # Stores header data from  properly formatted RLE I/O
-RLEHeader = NamedTuple(
+RLEHeader = namedtuple(
     "RLEHeader",
     ["width", "height", "birth_rules", "survival_rules"],
 )
 
 # Stores data needed to build a life pattern
-PatternData = NamedTuple("PatternData", ["states", "xmax", "ymax"])
+PatternData = namedtuple("PatternData", ["states", "xmax", "ymax"])
 
 
 def from_conway_life(data: str, cell_type: type[Cell] = MooreCell) -> Automaton:
