@@ -1,10 +1,10 @@
 [tool.poetry]
 name = "glipy"
-version = "0.2.0"
+version = "0.2.1"
 description = ""
 authors = ["noprobelm <noprobelm@protonmail.com>"]
 readme = "README.md"
-packages = [ { include = "glipy" } ]
+packages = [{ include = "glipy" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -16,3 +16,31 @@ ward = "^0.68.0b0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+lint.select = ["ALL"]
+lint.ignore = ["FBT001", "FBT002", "S311", "PYI024"]
+line-length = 99
+exclude = [
+  ".git",
+  "__pycache__",
+  "build",
+  "dist",
+  ".venv",
+  ".mypy_cache",
+  ".ruff_cache",
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 25
+
+[tool.ruff.lint.pylint]
+max-branches = 15
+max-statements = 75
+
+[tool.ruff.lint.extend-per-file-ignores]
+"tests/**/*.py" = ["S101"]
+"test_*.py" = ["S101"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
